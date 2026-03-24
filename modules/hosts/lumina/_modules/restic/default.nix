@@ -8,7 +8,6 @@
       enable = true;
       listenAddress = "8200";
       dataDir = "/srv/backups";
-      appendOnly = true;
       privateRepos = true;
       htpasswd-file = config.age.secrets."restic.htpasswd".path;
     };
@@ -20,16 +19,12 @@
 
       paths = [
         "/var/lib"
-        "/srv/minecraft"
         "/srv/storage"
         "/etc"
         "/root"
       ];
 
       exclude = [
-        "/var/lib/jenkins/.gradle/caches/**"
-        "/var/lib/jenkins/.gradle/daemon/**"
-        "/var/lib/jenkins/.gradle/wrapper/**"
         "/var/lib/docker/overlay2/**"
         "/var/lib/docker/image/**"
         "/var/lib/docker/buildkit/**"
@@ -54,10 +49,23 @@
       backupPrepareCommand = ''
         ${pkgs.systemd}/bin/systemctl restart storage-box-route.service
       '';
+    };
+  };
 
-      backupCleanupCommand = ''
-        ${pkgs.rclone}/bin/rclone sync /srv/backups /mnt/storage-box --progress
-      '';
+  systemd.services = {
+    restic-backups-lumina-sync = {
+      description = "copy restic backups to storage box";
+      requires = ["storage-box-route.service"];
+      after = ["storage-box-route.service"];
+
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.rclone}/bin/rclone copy /srv/backups /mnt/storage-box --stats-one-line";
+      };
+    };
+
+    restic-backups-lumina = {
+      onSuccess = ["restic-backups-lumina-sync.service"];
     };
   };
 
