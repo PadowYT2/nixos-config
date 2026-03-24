@@ -1,0 +1,25 @@
+let
+  keys = import ./_keys.nix;
+
+  publicKeys = {
+    lumina = [keys.lumina keys.padow];
+    transit = [keys.transit keys.padow];
+    vpn = [keys.vpn keys.padow];
+    flopux = [keys.flopux keys.flop4ik];
+  };
+
+  walk = host: dir: relative: let
+    entries = builtins.readDir dir;
+  in
+    builtins.foldl' (
+      acc: name:
+        if entries.${name} == "regular" && builtins.match ".*\\.age" name != null
+        then acc // {"${relative}${name}".publicKeys = publicKeys.${host};}
+        else if entries.${name} == "directory"
+        then acc // walk host (dir + "/${name}") "${relative}${name}/"
+        else acc
+    ) {} (builtins.attrNames entries);
+in
+  builtins.foldl' (
+    acc: host: acc // walk host (./hosts + "/${host}") "hosts/${host}/"
+  ) {} (builtins.attrNames (builtins.readDir ./hosts))

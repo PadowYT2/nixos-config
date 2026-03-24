@@ -1,0 +1,7 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "[nix]": {
+    "editor.defaultFormatter": "kamadorueda.alejandra"
+  }
+}
