@@ -19,7 +19,7 @@
             keys,
             ...
           }: {
-            system.stateVersion = "25.05";
+            system.stateVersion = "26.05";
 
             boot = {
               initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sr_mod"];

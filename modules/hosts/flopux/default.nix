@@ -14,7 +14,7 @@
       ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
       ++ [
         ({keys, ...}: {
-          system.stateVersion = "25.05";
+          system.stateVersion = "26.05";
 
           boot = {
             initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "virtio_scsi" "ahci" "sd_mod" "sr_mod" "virtio_blk"];
