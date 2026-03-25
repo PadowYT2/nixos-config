@@ -1,35 +1,65 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  setupScript = pkgs.writeShellApplication {
+    name = "pterodactyl-wings-cert-setup";
+    runtimeInputs = with pkgs; [coreutils];
+    text = ''
+      install -Dm600 -o ${config.services.pterodactyl.wings.user} -g ${config.services.pterodactyl.wings.group} \
+        /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/transit.lumina.proxied.host/transit.lumina.proxied.host.crt ${config.services.pterodactyl.wings.rootDir}/transit.lumina.proxied.host.crt
+
+      install -Dm600 -o ${config.services.pterodactyl.wings.user} -g ${config.services.pterodactyl.wings.group} \
+        /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/transit.lumina.proxied.host/transit.lumina.proxied.host.key ${config.services.pterodactyl.wings.rootDir}/transit.lumina.proxied.host.key
+    '';
+  };
+in {
   services.caddy.virtualHosts = {
     "transit.lumina.proxied.host".extraConfig = ''
       respond "ok"
     '';
   };
 
-  systemd.services.pterodactyl-wings-cert-setup = {
-    description = "Pterodactyl Wings cert setup";
-    before = ["pterodactyl-wings.service"];
-    requiredBy = ["pterodactyl-wings.service"];
-    after = ["caddy.service"];
-
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      User = "root";
-      Group = "root";
-      StateDirectory = "pterodactyl";
+  systemd = {
+    services.pterodactyl-wings = {
+      after = ["pterodactyl-wings-cert-install.service"];
+      requires = ["pterodactyl-wings-cert-install.service"];
     };
 
-    script = ''
-      set -eu
+    services.pterodactyl-wings-cert-install = {
+      description = "Pterodactyl Wings cert install";
+      after = ["caddy.service"];
 
-      install -D -m 0600 -o ${config.services.pterodactyl.wings.user} -g ${config.services.pterodactyl.wings.group} \
-        /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/transit.lumina.proxied.host/transit.lumina.proxied.host.crt \
-        ${config.services.pterodactyl.wings.rootDir}/transit.lumina.proxied.host.crt
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        User = "root";
+        Group = "root";
+        ExecStart = lib.getExe setupScript;
+      };
+    };
 
-      install -D -m 0600 -o ${config.services.pterodactyl.wings.user} -g ${config.services.pterodactyl.wings.group} \
-        /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/transit.lumina.proxied.host/transit.lumina.proxied.host.key \
-        ${config.services.pterodactyl.wings.rootDir}/transit.lumina.proxied.host.key
-    '';
+    services.pterodactyl-wings-cert-sync = {
+      description = "Pterodactyl Wings cert sync";
+
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+        Group = "root";
+        ExecStart = lib.getExe setupScript;
+        ExecStartPost = "${pkgs.systemd}/bin/systemctl restart pterodactyl-wings.service";
+      };
+    };
+
+    paths.pterodactyl-wings-cert-sync = {
+      wantedBy = ["multi-user.target"];
+      pathConfig = {
+        PathModified = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/transit.lumina.proxied.host";
+        Unit = "pterodactyl-wings-cert-sync.service";
+      };
+    };
   };
 
   services.pterodactyl.wings = {
