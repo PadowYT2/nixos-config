@@ -279,6 +279,15 @@
               };
             };
 
+            virtualisation.docker = {
+              enable = true;
+              daemon.settings = {
+                mtu = 1300;
+                default-cgroupns-mode = "private";
+                exec-opts = ["native.cgroupdriver=systemd"];
+              };
+            };
+
             services.caddy = {
               enable = true;
 
@@ -291,6 +300,10 @@
               virtualHosts = {
                 "2fa.tvrz.dev".extraConfig = ''
                   reverse_proxy http://144.31.167.137:25582
+                '';
+
+                "cdn.magmamc.org".extraConfig = ''
+                  reverse_proxy http://5.83.140.166:25575
                 '';
               };
             };

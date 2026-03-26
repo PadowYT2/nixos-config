@@ -87,15 +87,6 @@ in {
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
-    daemon.settings = {
-      mtu = 1300;
-      default-cgroupns-mode = "private";
-      exec-opts = ["native.cgroupdriver=systemd"];
-    };
-  };
-
   age.secrets = {
     "pterodactyl.wings.token-id" = {
       file = secrets/token-id.age;
