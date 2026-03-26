@@ -82,8 +82,8 @@ in {
             hostName = "transit";
 
             firewall = {
-              allowedTCPPorts = [20269];
-              allowedUDPPorts = [500 4500 20269];
+              allowedTCPPorts = [20145 20269];
+              allowedUDPPorts = [500 4500 20145 20269];
               checkReversePath = "loose";
               trustedInterfaces = ["ipsec0"];
 
@@ -223,6 +223,21 @@ in {
                 udp/:20269 {
                   route {
                     proxy udp/144.31.167.137:25585
+                  }
+                }
+
+                :20145 {
+                  route {
+                    proxy {
+                      upstream 5.83.140.166:25570
+                      proxy_protocol v2
+                    }
+                  }
+                }
+
+                udp/:20145 {
+                  route {
+                    proxy udp/5.83.140.166:25570
                   }
                 }
               }
