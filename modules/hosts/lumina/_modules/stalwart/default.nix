@@ -55,6 +55,9 @@ in {
       stalwart = {
         after = ["postgresql.service" "redis-stalwart.service"];
         requires = ["postgresql.service" "redis-stalwart.service"];
+        serviceConfig = {
+          RestrictAddressFamilies = ["AF_UNIX" "AF_INET" "AF_INET6"];
+        };
       };
 
       stalwart-cert-sync = {
@@ -170,7 +173,7 @@ in {
         redis = {
           type = "redis";
           redis-type = "single";
-          urls = config.services.redis.servers.stalwart.unixSocket;
+          urls = "unix://${config.services.redis.servers.stalwart.unixSocket}";
         };
       };
 
