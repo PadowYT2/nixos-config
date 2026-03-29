@@ -35,11 +35,6 @@
         requires = ["postgresql.service" "redis-coolify.service"];
       };
 
-      docker-coolify-realtime = {
-        after = ["redis-coolify.service"];
-        requires = ["redis-coolify.service"];
-      };
-
       caddy = {
         serviceConfig = {
           EnvironmentFile = [config.age.secrets."coolify.caddy".path];
@@ -69,51 +64,46 @@
         ensureDBOwnership = true;
       }
     ];
-    settings.listen_addresses = lib.mkForce "127.0.0.1,172.17.0.1,172.19.0.1";
-    authentication = lib.mkAfter ''
-      host coolify coolify 172.17.0.0/16 trust
-      host coolify coolify 172.19.0.0/16 trust
-    '';
   };
 
   services.redis.servers.coolify = {
     enable = true;
-    bind = "127.0.0.1 172.17.0.1 172.19.0.1";
-    port = 6380;
+    user = "coolify";
+    group = "coolify";
     requirePassFile = config.age.secrets."coolify.pass".path;
   };
 
-  virtualisation.oci-containers = {
-    backend = "docker";
-    containers = {
-      coolify = {
-        image = "ghcr.io/coollabsio/coolify:4.0.0-beta.469";
-        pull = "always";
-        autoStart = true;
+  virtualisation.arion.projects.coolify.settings = {
+    project.name = "coolify";
+
+    services = {
+      coolify.service = {
+        user = "9999:9999";
+        image = "ghcr.io/coollabsio/coolify:4.0.0-beta.470";
+        restart = "unless-stopped";
 
         environment = {
           APP_ENV = "production";
           APP_NAME = "Coolify";
           APP_URL = "https://deploy.proxied.host";
-          APP_PORT = "7345";
           SSL_MODE = "off";
           AUTOUPDATE = "false";
           SELF_HOSTED = "true";
 
           DB_CONNECTION = "pgsql";
-          DB_HOST = "host.docker.internal";
+          DB_HOST = "/run/postgresql";
           DB_PORT = "5432";
           DB_DATABASE = "coolify";
           DB_USERNAME = "coolify";
 
-          REDIS_HOST = "host.docker.internal";
-          REDIS_PORT = "6380";
+          REDIS_HOST = "/run/redis/redis.sock";
+          REDIS_PORT = "0";
           QUEUE_CONNECTION = "redis";
 
           PUSHER_HOST = "realtime.deploy.proxied.host";
           PUSHER_PORT = "443";
-          PUSHER_SCHEME = "http";
-          PUSHER_BACKEND_HOST = "host.docker.internal";
+          PUSHER_SCHEME = "https";
+          PUSHER_BACKEND_HOST = "coolify-realtime";
           PUSHER_BACKEND_PORT = "6001";
 
           PHP_MEMORY_LIMIT = "512M";
@@ -127,10 +117,12 @@
           PHP_PM_MAX_SPARE_SERVERS = "10";
         };
 
-        environmentFiles = [config.age.secrets."coolify.environment".path];
+        env_file = [config.age.secrets."coolify.environment".path];
 
         volumes = [
           "${config.age.secrets."coolify.environment".path}:/var/www/html/.env:ro"
+          "${config.services.redis.servers.coolify.unixSocket}:/run/redis/redis.sock"
+          "/run/postgresql:/run/postgresql"
           "/var/lib/coolify/ssh:/var/www/html/storage/app/ssh"
           "/var/lib/coolify/applications:/var/www/html/storage/app/applications"
           "/var/lib/coolify/databases:/var/www/html/storage/app/databases"
@@ -141,40 +133,50 @@
         ];
 
         ports = ["7345:8080"];
+        extra_hosts = ["host-gateway:host-gateway" "host.docker.internal:host-gateway"];
 
-        extraOptions = [
-          "--add-host=host.docker.internal:host-gateway"
-        ];
-
-        dependsOn = ["coolify-realtime"];
+        depends_on = ["coolify-realtime"];
       };
 
-      coolify-realtime = {
+      coolify-realtime.service = {
         image = "ghcr.io/coollabsio/coolify-realtime:1.0.11";
-        pull = "always";
-        autoStart = true;
+        restart = "unless-stopped";
 
         environment = {
           APP_NAME = "Coolify";
           SOKETI_DEBUG = "false";
+          REDIS_HOST = "/run/redis/redis.sock";
+          REDIS_PORT = "0";
         };
 
-        environmentFiles = [config.age.secrets."coolify.environment".path];
+        env_file = [config.age.secrets."coolify.environment".path];
 
         volumes = [
           "/var/lib/coolify/ssh:/var/www/html/storage/app/ssh"
+          "${config.services.redis.servers.coolify.unixSocket}:/run/redis/redis.sock"
         ];
 
         ports = ["6001:6001"];
-
-        extraOptions = [
-          "--add-host=host.docker.internal:host-gateway"
-        ];
       };
     };
   };
 
-  users.users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHZilp8Htz7R9+SM0XfVW+APrK/UMsJa5HeV0zszAHw"];
+  users = {
+    users = {
+      root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHZilp8Htz7R9+SM0XfVW+APrK/UMsJa5HeV0zszAHw"];
+
+      coolify = {
+        isSystemUser = true;
+        uid = 9999;
+        group = "coolify";
+        home = "/var/lib/coolify";
+      };
+    };
+
+    groups.coolify = {
+      gid = 9999;
+    };
+  };
 
   age.secrets = {
     "coolify.caddy" = {

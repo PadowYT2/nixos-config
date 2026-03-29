@@ -9,6 +9,7 @@
       [
         common
         "${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
+        inputs.arion.nixosModules.arion
       ]
       ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
       ++ [
@@ -279,12 +280,15 @@
               };
             };
 
-            virtualisation.docker = {
-              enable = true;
-              daemon.settings = {
-                mtu = 1300;
-                default-cgroupns-mode = "private";
-                exec-opts = ["native.cgroupdriver=systemd"];
+            virtualisation = {
+              arion.backend = "docker";
+              docker = {
+                enable = true;
+                daemon.settings = {
+                  mtu = 1300;
+                  default-cgroupns-mode = "private";
+                  exec-opts = ["native.cgroupdriver=systemd"];
+                };
               };
             };
 
