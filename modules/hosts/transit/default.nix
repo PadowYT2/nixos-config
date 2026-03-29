@@ -201,47 +201,38 @@ in {
             };
           };
 
-          services.caddy = {
+          services.nginx = {
             enable = true;
 
-            package = pkgs.caddy.withPlugins {
-              plugins = ["github.com/mholt/caddy-l4@v0.1.0"];
-              hash = "sha256-Q3Og34QO9Zbecf5jZCj+cr8riGW4/T44uJcRc3gU5aE=";
-            };
+            streamConfig = ''
+              server {
+                listen 20269;
+                proxy_pass 144.31.167.137:25585;
+                proxy_protocol on;
+              }
 
-            globalConfig = ''
-              layer4 {
-                :20269 {
-                  route {
-                    proxy {
-                      upstream 144.31.167.137:25585
-                      proxy_protocol v2
-                    }
-                  }
-                }
+              server {
+                listen 20269 udp reuseport;
+                proxy_pass 144.31.167.137:25585;
+                proxy_timeout 60s;
+              }
 
-                udp/:20269 {
-                  route {
-                    proxy udp/144.31.167.137:25585
-                  }
-                }
+              server {
+                listen 20145;
+                proxy_pass 5.83.140.166:25570;
+                proxy_protocol on;
+              }
 
-                :20145 {
-                  route {
-                    proxy {
-                      upstream 5.83.140.166:25570
-                      proxy_protocol v2
-                    }
-                  }
-                }
-
-                udp/:20145 {
-                  route {
-                    proxy udp/5.83.140.166:25570
-                  }
-                }
+              server {
+                listen 20145 udp reuseport;
+                proxy_pass 5.83.140.166:25570;
+                proxy_timeout 60s;
               }
             '';
+          };
+
+          services.caddy = {
+            enable = true;
           };
         })
       ];
