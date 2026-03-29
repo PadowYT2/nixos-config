@@ -1,6 +1,5 @@
 {
   pkgs,
-  lib,
   config,
   ...
 }: {
@@ -30,7 +29,7 @@
 
   systemd = {
     services = {
-      docker-coolify = {
+      arion-coolify = {
         after = ["postgresql.service" "redis-coolify.service"];
         requires = ["postgresql.service" "redis-coolify.service"];
       };

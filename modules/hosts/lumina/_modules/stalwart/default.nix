@@ -30,39 +30,43 @@ in {
         "mta-sts.${lib.removePrefix "mail." domain}"
       ])
       domains
-      ++ ["mail.proxied.host"]
     ) (_: {
-      extraConfig = "reverse_proxy http://127.0.0.1:8025";
-    });
+      extraConfig = ''
+        reverse_proxy http://127.0.0.1:8025
+      '';
+    })
+    // {
+      "mail.proxied.host" = {
+        extraConfig = ''
+          @bulwark path /web*
+          handle @bulwark {
+            reverse_proxy http://127.0.0.1:7249
+          }
 
-  systemd = {
-    services.stalwart = {
-      after = ["postgresql.service" "redis-stalwart.service" "stalwart-cert-install.service"];
-      requires = ["postgresql.service" "redis-stalwart.service" "stalwart-cert-install.service"];
-    };
-
-    services.stalwart-cert-install = {
-      description = "Stalwart cert install";
-      after = ["caddy.service"];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        User = "root";
-        Group = "root";
-        ExecStart = lib.getExe setupScript;
+          handle {
+            reverse_proxy http://127.0.0.1:8025
+          }
+        '';
       };
     };
 
-    services.stalwart-cert-sync = {
-      description = "Stalwart cert sync";
+  systemd = {
+    services = {
+      stalwart = {
+        after = ["postgresql.service" "redis-stalwart.service"];
+        requires = ["postgresql.service" "redis-stalwart.service"];
+      };
 
-      serviceConfig = {
-        Type = "oneshot";
-        User = "root";
-        Group = "root";
-        ExecStart = lib.getExe setupScript;
-        ExecStartPost = "${pkgs.systemd}/bin/systemctl restart stalwart.service";
+      stalwart-cert-sync = {
+        description = "Stalwart cert sync";
+
+        serviceConfig = {
+          Type = "oneshot";
+          User = "root";
+          Group = "root";
+          ExecStart = lib.getExe setupScript;
+          ExecStartPost = "${pkgs.systemd}/bin/systemctl restart stalwart.service";
+        };
       };
     };
 
@@ -73,6 +77,10 @@ in {
         Unit = "stalwart-cert-sync.service";
       };
     };
+
+    tmpfiles.rules = [
+      "d /var/lib/bulwark 0700 9998 9998 -"
+    ];
   };
 
   services.stalwart = {
@@ -183,6 +191,10 @@ in {
         user = "admin";
         secret = "%{file:${config.age.secrets."stalwart.admin".path}}%";
       };
+
+      contacts.max-size = "524288000"; # 512MB
+      calendar.max-size = "524288000"; # 512MB
+      file-storage.max-size = "524288000"; # 512MB
     };
   };
 
@@ -202,11 +214,55 @@ in {
     group = "stalwart";
   };
 
+  virtualisation.arion.projects.bulwark.settings = {
+    project.name = "bulwark";
+
+    services = {
+      bulwark.service = {
+        user = "9998:9998";
+        image = "ghcr.io/bulwarkmail/webmail:1.4.9";
+        restart = "unless-stopped";
+
+        environment = {
+          APP_NAME = "mail.proxied.host";
+          JMAP_SERVER_URL = "https://mail.proxied.host";
+          SETTINGS_SYNC_ENABLED = "true";
+          COOKIE_SAME_SITE = "strict";
+        };
+
+        env_file = [config.age.secrets."bulwark.environment".path];
+
+        volumes = [
+          "/var/lib/bulwark:/app/data/settings"
+        ];
+
+        ports = ["7249:3000"];
+      };
+    };
+  };
+
+  users = {
+    users.bulwark = {
+      isSystemUser = true;
+      uid = 9998;
+      group = "bulwark";
+      home = "/var/lib/bulwark";
+    };
+
+    groups.bulwark = {
+      gid = 9998;
+    };
+  };
+
   age.secrets = {
     "stalwart.admin" = {
       file = secrets/admin.age;
       owner = "stalwart";
       group = "stalwart";
+    };
+
+    "bulwark.environment" = {
+      file = secrets/environment.age;
     };
   };
 }
