@@ -82,7 +82,7 @@ in {
             hostName = "transit";
 
             firewall = {
-              allowedTCPPorts = [20145 20269];
+              allowedTCPPorts = [20145 20269 25575];
               allowedUDPPorts = [500 4500 20145 20269];
               checkReversePath = "loose";
               trustedInterfaces = ["ipsec0"];
@@ -233,6 +233,12 @@ in {
 
           services.caddy = {
             enable = true;
+
+            virtualHosts = {
+              "http://cdn.magmamc.org:25575".extraConfig = ''
+                reverse_proxy http://5.83.140.166:25575
+              '';
+            };
           };
         })
       ];
