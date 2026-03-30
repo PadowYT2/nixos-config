@@ -12,60 +12,74 @@
       htpasswd-file = config.age.secrets."restic.htpasswd".path;
     };
 
-    backups.lumina = {
-      repository = "rest:http://localhost:8200/lumina";
-      passwordFile = config.age.secrets."restic.password".path;
-      environmentFile = config.age.secrets."restic.environment".path;
+    backups = {
+      lumina-local = {
+        repository = "rest:http://localhost:8200/lumina";
+        passwordFile = config.age.secrets."restic.password".path;
+        environmentFile = config.age.secrets."restic.environment".path;
 
-      paths = [
-        "/var/lib"
-        "/srv/storage"
-        "/etc"
-        "/root"
-      ];
+        paths = [
+          "/var/lib"
+          "/srv/storage"
+          "/etc"
+          "/root"
+        ];
 
-      exclude = [
-        "/var/lib/docker/overlay2/**"
-        "/var/lib/docker/image/**"
-        "/var/lib/docker/buildkit/**"
-        "/var/lib/docker/containers/**"
-        "/var/lib/docker/runtimes/**"
-        "/var/lib/systemd/**"
-        "/root/repos/**"
-      ];
+        exclude = [
+          "/var/lib/docker/overlay2/**"
+          "/var/lib/docker/image/**"
+          "/var/lib/docker/buildkit/**"
+          "/var/lib/docker/containers/**"
+          "/var/lib/docker/runtimes/**"
+          "/var/lib/systemd/**"
+          "/root/repos/**"
+        ];
 
-      initialize = true;
-      timerConfig = {
-        OnCalendar = "01:00";
-        Persistent = true;
+        initialize = true;
+        timerConfig = {
+          OnCalendar = "00:00";
+          Persistent = true;
+        };
+
+        pruneOpts = [
+          "--keep-daily 3"
+        ];
       };
 
-      pruneOpts = [
-        "--keep-daily 7"
-        "--keep-weekly 4"
-        "--keep-monthly 6"
-      ];
+      lumina-remote = {
+        repository = "sftp:u488452-sub1@u488452-sub1.your-storagebox.de:/restic/lumina";
+        passwordFile = config.age.secrets."restic.password".path;
+        environmentFile = config.age.secrets."restic.environment".path;
 
-      backupPrepareCommand = ''
-        ${pkgs.systemd}/bin/systemctl restart storage-box-route.service
-      '';
-    };
-  };
+        paths = [
+          "/var/lib"
+          "/srv/storage"
+          "/etc"
+          "/root"
+        ];
 
-  systemd.services = {
-    restic-backups-lumina-sync = {
-      description = "copy restic backups to storage box";
-      requires = ["storage-box-route.service"];
-      after = ["storage-box-route.service"];
+        exclude = [
+          "/var/lib/docker/overlay2/**"
+          "/var/lib/docker/image/**"
+          "/var/lib/docker/buildkit/**"
+          "/var/lib/docker/containers/**"
+          "/var/lib/docker/runtimes/**"
+          "/var/lib/systemd/**"
+          "/root/repos/**"
+        ];
 
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.rclone}/bin/rclone copy /srv/backups /mnt/storage-box --stats-one-line";
+        initialize = true;
+        timerConfig = {
+          OnCalendar = "01:00";
+          Persistent = true;
+        };
+
+        pruneOpts = [
+          "--keep-daily 7"
+          "--keep-weekly 4"
+          "--keep-monthly 6"
+        ];
       };
-    };
-
-    restic-backups-lumina = {
-      onSuccess = ["restic-backups-lumina-sync.service"];
     };
   };
 

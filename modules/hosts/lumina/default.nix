@@ -162,11 +162,13 @@
                     set storage_box_ipv4 {
                       type ipv4_addr
                       flags interval
+                      elements = { 91.98.245.214 }
                     }
 
                     set storage_box_ipv6 {
                       type ipv6_addr
                       flags interval
+                      elements = { 2a01:4f8:bacc:2:200::756 }
                     }
 
                     chain mangle_output {
