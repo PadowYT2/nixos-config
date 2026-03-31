@@ -214,11 +214,13 @@
                     {
                       Gateway = "5.9.109.1";
                       Table = 200;
+                      PreferredSource = "5.9.109.12";
                     }
                     {
                       Gateway = "fe80::1";
                       GatewayOnLink = true;
                       Table = 200;
+                      PreferredSource = "2a01:4f8:162:502e::2";
                     }
                   ];
                   routingPolicyRules = [
