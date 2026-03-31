@@ -249,6 +249,12 @@
                       Table = 200;
                       Priority = 1;
                     }
+                    {
+                      Family = "ipv6";
+                      FirewallMark = 100;
+                      Table = 200;
+                      Priority = 1;
+                    }
                   ];
                   xfrm = ["ipsec0"];
                   linkConfig.RequiredForOnline = "routable";
