@@ -30,22 +30,16 @@ in {
         "mta-sts.${lib.removePrefix "mail." domain}"
       ])
       domains
+      ++ ["mail.proxied.host"]
     ) (_: {
       extraConfig = ''
         reverse_proxy http://127.0.0.1:8025
       '';
     })
     // {
-      "mail.proxied.host" = {
+      "inbox.proxied.host" = {
         extraConfig = ''
-          @bulwark path /web*
-          handle @bulwark {
-            reverse_proxy http://127.0.0.1:7249
-          }
-
-          handle {
-            reverse_proxy http://127.0.0.1:8025
-          }
+          reverse_proxy http://127.0.0.1:7249
         '';
       };
     };
@@ -230,7 +224,6 @@ in {
           APP_NAME = "mail.proxied.host";
           JMAP_SERVER_URL = "https://mail.proxied.host";
           SETTINGS_SYNC_ENABLED = "true";
-          COOKIE_SAME_SITE = "strict";
         };
 
         env_file = [config.age.secrets."bulwark.environment".path];
