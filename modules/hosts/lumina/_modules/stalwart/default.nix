@@ -147,6 +147,7 @@ in {
       http = {
         use-x-forwarded = true;
         url = "https://mail.proxied.host";
+        permissive-cors = true;
       };
 
       certificate = lib.genAttrs domains (domain: {
