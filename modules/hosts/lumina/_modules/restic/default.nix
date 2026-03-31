@@ -47,7 +47,7 @@
       };
 
       lumina-remote = {
-        repository = "sftp:u488452-sub1@u488452-sub1.your-storagebox.de:/restic/lumina";
+        repository = "sftp://u488452-sub1@u488452-sub1.your-storagebox.de:23//home/lumina";
         passwordFile = config.age.secrets."restic.password".path;
         environmentFile = config.age.secrets."restic.environment".path;
 
