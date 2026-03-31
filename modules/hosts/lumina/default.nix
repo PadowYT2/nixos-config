@@ -182,6 +182,12 @@
                       ip daddr @storage_box_ipv4 meta mark set 0x64
                       ip6 daddr @storage_box_ipv6 meta mark set 0x64
                     }
+
+                    chain nat_postrouting {
+                      type nat hook postrouting priority srcnat; policy accept;
+                      ip daddr @storage_box_ipv4 snat to 5.9.109.12
+                      ip6 daddr @storage_box_ipv6 snat to 2a01:4f8:162:502e::2
+                    }
                   '';
                 };
               };
