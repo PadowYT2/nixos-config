@@ -6,6 +6,8 @@
 }: let
   domains = [
     "mail.proxied.host"
+    "konyogony.dev"
+    "qntm.sh"
   ];
 
   setupScript = pkgs.writeShellApplication {
