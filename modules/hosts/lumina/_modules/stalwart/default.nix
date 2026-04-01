@@ -192,6 +192,8 @@ in {
         secret = "%{file:${config.age.secrets."stalwart.admin".path}}%";
       };
 
+      queue.tls.default.dane = "optional";
+
       session = {
         mta-sts.mode = "enforce";
         rcpt.script = "'noreply'";
@@ -220,6 +222,7 @@ in {
         "directory.*"
         "storage.*"
         "authentication.fallback-admin.*"
+        "queue.tls.default.dane"
         "session.mta-sts.*"
         "session.rcpt.script"
         "sieve.trusted.scripts.*"
