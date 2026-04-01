@@ -190,6 +190,8 @@ in {
         secret = "%{file:${config.age.secrets."stalwart.admin".path}}%";
       };
 
+      session.mta-sts.mode = "enforce";
+
       contacts.max-size = "524288000"; # 512MB
       calendar.max-size = "524288000"; # 512MB
       file-storage.max-size = "524288000"; # 512MB
