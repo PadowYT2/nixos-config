@@ -190,11 +190,41 @@ in {
         secret = "%{file:${config.age.secrets."stalwart.admin".path}}%";
       };
 
-      session.mta-sts.mode = "enforce";
+      session = {
+        mta-sts.mode = "enforce";
+        rcpt.script = "'noreply'";
+      };
+
+      sieve.trusted.scripts.noreply.contents = ''
+        require ["envelope", "reject"];
+
+        if envelope :localpart :is "to" "no-reply" {
+          reject "550 This address does not accept incoming mail.";
+          stop;
+        }
+      '';
 
       contacts.max-size = "524288000"; # 512MB
       calendar.max-size = "524288000"; # 512MB
       file-storage.max-size = "524288000"; # 512MB
+
+      config.local-keys = [
+        "server.*"
+        "!server.blocked-ip.*"
+        "!server.allowed-ip.*"
+        "http.*"
+        "certificate.*"
+        "store.*"
+        "directory.*"
+        "storage.*"
+        "authentication.fallback-admin.*"
+        "session.mta-sts.*"
+        "session.rcpt.script"
+        "sieve.trusted.scripts.*"
+        "contacts.max-size"
+        "calendar.max-size"
+        "file-storage.max-size"
+      ];
     };
   };
 
