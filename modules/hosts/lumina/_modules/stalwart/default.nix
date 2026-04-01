@@ -27,6 +27,7 @@ in {
       lib.concatMap (domain: [
         "autoconfig.${lib.removePrefix "mail." domain}"
         "autodiscover.${lib.removePrefix "mail." domain}"
+        "mta-sts.${lib.removePrefix "mail." domain}"
       ])
       domains
       ++ ["mail.proxied.host"]
