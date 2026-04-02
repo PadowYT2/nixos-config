@@ -44,7 +44,7 @@
         };
         s3 = {
           use_path_style_urls = true;
-          garage = {
+          b2-eu-cen = {
             endpoint = "https://s3.ente.padow.ru";
             region = "local";
             bucket = "ente";
