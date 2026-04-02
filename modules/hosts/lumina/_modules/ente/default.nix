@@ -38,6 +38,10 @@
       domain = "api.ente.padow.ru";
       settings = {
         http.port = 8085;
+        webauthn = {
+          rpid = "ente.padow.ru";
+          rporigins = ["https://ente.padow.ru"];
+        };
         s3 = {
           use_path_style_urls = true;
           garage = {
@@ -53,6 +57,7 @@
           hash._secret = config.age.secrets."ente.hash".path;
         };
         jwt.secret._secret = config.age.secrets."ente.jwt".path;
+        internal.disable-registration = true;
       };
     };
   };
