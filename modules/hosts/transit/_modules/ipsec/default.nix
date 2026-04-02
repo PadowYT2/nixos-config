@@ -4,6 +4,7 @@
     swanctl = {
       connections.lumina = {
         version = 2;
+        keyingtries = 0;
         local_addrs = ["95.135.208.17" "2a12:bec4:1821:61f::a"];
         remote_addrs = ["%any"];
         proposals = ["aes256gcm16-prfsha256-x25519"];
