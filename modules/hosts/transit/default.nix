@@ -20,7 +20,7 @@ in {
       ]
       ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
       ++ [
-        ({pkgs, ...}: {
+        {
           system.stateVersion = "26.05";
 
           boot = {
@@ -240,7 +240,7 @@ in {
               '';
             };
           };
-        })
+        }
       ];
   };
 }

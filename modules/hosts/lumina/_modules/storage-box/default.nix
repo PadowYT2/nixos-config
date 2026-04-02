@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   fileSystems."/mnt/storage-box" = {
     device = "//u488452-sub1.your-storagebox.de/u488452-sub1";
     fsType = "cifs";
