@@ -18,8 +18,10 @@
     package = pkgs.garage_2;
     settings = {
       replication_factor = 1;
+      rpc_bind_addr = "127.0.0.1:3901";
       s3_api = {
         s3_region = "local";
+        api_bind_addr = "127.0.0.1:3900";
         root_domain = ".s3.ente.padow.ru";
       };
     };
