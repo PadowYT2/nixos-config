@@ -16,9 +16,13 @@
   services.garage = {
     enable = true;
     package = pkgs.garage_2;
+    environmentFile = config.age.secrets."garage.environment".path;
+
     settings = {
       replication_factor = 1;
       rpc_bind_addr = "127.0.0.1:3901";
+      rpc_public_addr = "127.0.0.1:3901";
+      rpc_secret = "@env:GARAGE_RPC_SECRET";
       s3_api = {
         s3_region = "local";
         api_bind_addr = "127.0.0.1:3900";
@@ -40,8 +44,8 @@
             endpoint = "https://s3.ente.padow.ru";
             region = "local";
             bucket = "ente";
-            key = "ente";
-            secret._secret = config.age.secrets."ente.password".path;
+            key = "GK746d4ea2d53bf7c0b8db5b06";
+            secret._secret = config.age.secrets."ente.key".path;
           };
         };
         key = {
@@ -54,8 +58,12 @@
   };
 
   age.secrets = {
-    "ente.password" = {
-      file = secrets/password.age;
+    "garage.environment" = {
+      file = secrets/environment.age;
+    };
+
+    "ente.key" = {
+      file = secrets/key.age;
       owner = "ente";
       group = "ente";
     };
