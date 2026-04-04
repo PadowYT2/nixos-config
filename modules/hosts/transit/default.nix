@@ -147,6 +147,7 @@ in {
                 ])
                 ++ (map (port: mkForward port "udp") [
                   443
+                  54322
                 ])
                 ++ [
                   {
