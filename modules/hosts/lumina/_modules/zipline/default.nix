@@ -4,6 +4,10 @@
       reverse_proxy http://localhost:3000
     '';
 
+    "cdn.konyogony.dev".extraConfig = ''
+      reverse_proxy http://localhost:3000
+    '';
+
     "cdn.padow.ru".extraConfig = ''
       respond "unfortunately, a data loss occurred and this link no longer works"
     '';
@@ -17,6 +21,9 @@
       FILES_MAX_FILE_SIZE = "100gb";
       WEBSITE_TITLE = "i.proxied.host";
       WEBSITE_EXTERNAL_LINKS = "[]";
+      INVITES_ENABLED = "true";
+      DOMAINS = "cdn.konyogony.dev";
+      OAUTH_GITHUB_CLIENT_ID = "Ov23liGy7UGmHxw4uJzO";
     };
     environmentFiles = [config.age.secrets."zipline.environment".path];
     database.createLocally = true;
