@@ -17,12 +17,17 @@
     enable = true;
     settings = {
       CORE_RETURN_HTTPS_URLS = "true";
+      CORE_DEFAULT_DOMAIN = "i.proxied.host";
       CORE_TRUST_PROXY = "true";
+      CHUNKS_ENABLED = "true";
+      FEATURES_USER_REGISTRATION = "false";
+      FEATURES_OAUTH_REGISTRATION = "false";
+      FILES_DISABLED_EXTENSIONS = "";
       FILES_MAX_FILE_SIZE = "100gb";
-      WEBSITE_TITLE = "i.proxied.host";
-      WEBSITE_EXTERNAL_LINKS = "[]";
       INVITES_ENABLED = "true";
       DOMAINS = "cdn.konyogony.dev";
+      WEBSITE_TITLE = "i.proxied.host";
+      WEBSITE_EXTERNAL_LINKS = "[]";
       OAUTH_GITHUB_CLIENT_ID = "Ov23liGy7UGmHxw4uJzO";
     };
     environmentFiles = [config.age.secrets."zipline.environment".path];
