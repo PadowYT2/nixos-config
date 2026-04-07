@@ -20,6 +20,7 @@
       CORE_DEFAULT_DOMAIN = "i.proxied.host";
       CORE_TRUST_PROXY = "true";
       CHUNKS_ENABLED = "true";
+      FEATURES_IMAGE_COMPRESSION = "false";
       FEATURES_USER_REGISTRATION = "false";
       FEATURES_OAUTH_REGISTRATION = "false";
       FILES_DISABLED_EXTENSIONS = "";
