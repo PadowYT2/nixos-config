@@ -144,6 +144,7 @@ in {
                   6001
                   20411
                   25565
+                  25567
                 ])
                 ++ (map (port: mkForward port "udp") [
                   443
