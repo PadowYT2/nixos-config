@@ -318,6 +318,10 @@
               '';
 
               virtualHosts = {
+                "https://panel.magmamc.org".extraConfig = ''
+                  reverse_proxy http://5.83.140.166:1342
+                '';
+
                 "2fa.tvrz.dev".extraConfig = ''
                   reverse_proxy http://144.31.167.137:25582
                 '';

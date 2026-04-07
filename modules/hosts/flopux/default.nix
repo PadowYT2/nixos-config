@@ -74,6 +74,12 @@
           services.caddy = {
             enable = true;
             openFirewall = true;
+
+            globalConfig = ''
+              servers {
+                trusted_proxies static private_ranges
+              }
+            '';
           };
 
           programs.git.config.user = {
