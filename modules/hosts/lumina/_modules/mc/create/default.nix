@@ -20,6 +20,7 @@
     serverProperties = {
       server-port = 25567;
       white-list = true;
+      allow-flight = true;
       enforce-secure-profile = false;
       max-players = 1000;
       view-distance = 16;
