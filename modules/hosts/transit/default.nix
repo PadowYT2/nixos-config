@@ -230,6 +230,12 @@ in {
                 proxy_pass 5.83.140.166:25570;
                 proxy_timeout 60s;
               }
+
+              server {
+                listen 20436 udp reuseport;
+                proxy_pass 5.83.140.166:25571;
+                proxy_timeout 60s;
+              }
             '';
           };
 
