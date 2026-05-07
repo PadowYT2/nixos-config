@@ -145,6 +145,11 @@ in {
             url = "https://mail.proxied.host";
           };
         };
+
+        auto-ban.scan = {
+          rate = "65535/1d";
+          paths = ["/__completly_non_existing_route__/"];
+        };
       };
 
       http = {
