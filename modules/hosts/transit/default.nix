@@ -3,12 +3,20 @@
   inputs,
   ...
 }: let
-  mkForward = port: proto: {
-    destination = "10.0.0.2:${toString port}";
-    sourcePort = port;
-    inherit proto;
-    loopbackIPs = ["95.135.208.17"];
-  };
+  mkForward = port: proto: [
+    {
+      destination = "10.0.0.2:${toString port}";
+      sourcePort = port;
+      inherit proto;
+      loopbackIPs = ["95.135.208.17"];
+    }
+    {
+      destination = "[fd00:1337::2]:${toString port}";
+      sourcePort = port;
+      inherit proto;
+      loopbackIPs = ["2a12:bec4:1821:61f::a"];
+    }
+  ];
 in {
   flake.nixosConfigurations.transit = inputs.nixpkgs.lib.nixosSystem {
     specialArgs = {inherit inputs;};
@@ -127,26 +135,24 @@ in {
               internalIPs = ["5.9.109.0/27" "10.0.0.0/24"];
 
               forwardPorts =
-                (map (port: mkForward port "tcp") [
+                (builtins.concatMap (port: mkForward port "tcp") [
                   25
                   80
                   110
                   143
                   443
-                  445
                   465
                   587
                   993
                   995
-                  4190
                   2222
+                  4190
                   5555
-                  6001
                   20411
                   25565
                   25567
                 ])
-                ++ (map (port: mkForward port "udp") [
+                ++ (builtins.concatMap (port: mkForward port "udp") [
                   443
                   54322
                 ])
@@ -158,10 +164,22 @@ in {
                     loopbackIPs = ["95.135.208.17"];
                   }
                   {
+                    destination = "[fd00:1337::2]:26000-27000";
+                    sourcePort = "26000:27000";
+                    proto = "tcp";
+                    loopbackIPs = ["2a12:bec4:1821:61f::a"];
+                  }
+                  {
                     destination = "10.0.0.2:26000-27000";
                     sourcePort = "26000:27000";
                     proto = "udp";
                     loopbackIPs = ["95.135.208.17"];
+                  }
+                  {
+                    destination = "[fd00:1337::2]:26000-27000";
+                    sourcePort = "26000:27000";
+                    proto = "udp";
+                    loopbackIPs = ["2a12:bec4:1821:61f::a"];
                   }
                 ];
             };
