@@ -164,22 +164,10 @@ in {
                     loopbackIPs = ["95.135.208.17"];
                   }
                   {
-                    destination = "[fd00:1337::2]:26000-27000";
-                    sourcePort = "26000:27000";
-                    proto = "tcp";
-                    loopbackIPs = ["2a12:bec4:1821:61f::a"];
-                  }
-                  {
                     destination = "10.0.0.2:26000-27000";
                     sourcePort = "26000:27000";
                     proto = "udp";
                     loopbackIPs = ["95.135.208.17"];
-                  }
-                  {
-                    destination = "[fd00:1337::2]:26000-27000";
-                    sourcePort = "26000:27000";
-                    proto = "udp";
-                    loopbackIPs = ["2a12:bec4:1821:61f::a"];
                   }
                 ];
             };
