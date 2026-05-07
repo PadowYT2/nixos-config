@@ -6,6 +6,7 @@
 }: let
   domains = [
     "mail.proxied.host"
+    "padow.dev"
     "konyogony.dev"
     "qntm.sh"
   ];
