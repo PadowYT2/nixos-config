@@ -18,7 +18,7 @@
     };
 
     alejandra = {
-      url = "github:kamadorueda/alejandra/4.0.0";
+      url = "github:kamadorueda/alejandra";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
