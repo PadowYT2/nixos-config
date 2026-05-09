@@ -7,6 +7,7 @@
   domains = [
     "mail.proxied.host"
     "padow.dev"
+    "djoh.pw"
     "konyogony.dev"
     "qntm.sh"
   ];
