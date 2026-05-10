@@ -21,7 +21,10 @@
       };
     };
 
-    nix.settings.experimental-features = ["nix-command" "flakes"];
+    nix = {
+      package = pkgs.lixPackageSets.stable.lix;
+      settings.experimental-features = ["nix-command" "flakes"];
+    };
 
     nixpkgs = {
       config.allowUnfree = true;
@@ -229,14 +232,17 @@
       users.root.openssh.authorizedKeys.keys = [keys.zorin keys.phone keys.padow];
     };
 
-    security.pam.loginLimits = [
-      {
-        domain = "*";
-        type = "-";
-        item = "nofile";
-        value = "2097152";
-      }
-    ];
+    security = {
+      sudo-rs.enable = true;
+      pam.loginLimits = [
+        {
+          domain = "*";
+          type = "-";
+          item = "nofile";
+          value = "2097152";
+        }
+      ];
+    };
 
     age.identityPaths = ["/root/.ssh/id_ed25519"];
   };
