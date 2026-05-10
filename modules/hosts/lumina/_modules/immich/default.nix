@@ -5,9 +5,5 @@
     '';
   };
 
-  services.immich = {
-    enable = true;
-    host = "127.0.0.1";
-    database.enableVectors = false;
-  };
+  services.immich.enable = true;
 }

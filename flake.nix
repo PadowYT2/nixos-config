@@ -57,6 +57,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprkony = {
+      url = "github:konyogony/hypr.konyogony.dev";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     remnawave = {
       url = "git+ssh://git@github.com/PadowYT2/remnawave.nix-wip.git";
       inputs.nixpkgs.follows = "nixpkgs";
