@@ -131,6 +131,18 @@
               };
             };
 
+            fileSystems."/" = {
+              device = "/dev/disk/by-partlabel/root1";
+              fsType = "btrfs";
+              options = ["x-initrd.mount" "defaults" "subvol=/" "compress=zstd:1" "noatime" "ssd" "discard=async" "space_cache=v2"];
+            };
+
+            services.btrfs.autoScrub = {
+              enable = true;
+              interval = "monthly";
+              fileSystems = ["/"];
+            };
+
             networking = {
               hostName = "lumina";
 
