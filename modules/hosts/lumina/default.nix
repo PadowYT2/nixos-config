@@ -131,12 +131,6 @@
               };
             };
 
-            fileSystems."/" = {
-              device = "/dev/disk/by-partlabel/root1";
-              fsType = "btrfs";
-              options = ["x-initrd.mount" "defaults" "subvol=/" "compress=zstd:1" "noatime" "ssd" "discard=async" "space_cache=v2"];
-            };
-
             services.btrfs.autoScrub = {
               enable = true;
               interval = "monthly";
@@ -304,6 +298,14 @@
                     Kind = "xfrm";
                   };
                   xfrmConfig.InterfaceId = 42;
+                };
+              };
+
+              links."10-eth0" = {
+                matchConfig.MACAddress = "50:eb:f6:22:f1:10";
+                linkConfig = {
+                  Name = "eth0";
+                  MACAddressPolicy = "persistent";
                 };
               };
             };
