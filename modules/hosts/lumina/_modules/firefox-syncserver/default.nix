@@ -25,8 +25,6 @@
   age.secrets = {
     "firefox-syncserver.secrets" = {
       file = secrets/secrets.age;
-      owner = "firefox-syncserver";
-      group = "firefox-syncserver";
     };
   };
 }
