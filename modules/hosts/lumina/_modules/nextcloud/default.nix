@@ -33,7 +33,7 @@
       mail_smtpauth = true;
       mail_smtpname = "no-reply@proxied.host";
       mail_from_address = "no-reply";
-      trusted_proxies = ["127.0.0.1" "10.0.0.1"];
+      trusted_proxies = ["127.0.0.1" "10.0.0.1" "fd00:1337::1"];
       forwarded_for_headers = ["HTTP_X_FORWARDED_FOR"];
       enabledPreviewProviders = [
         "OC\\Preview\\BMP"
