@@ -60,13 +60,15 @@ in {
 
       stalwart-cert-sync = {
         description = "Stalwart cert sync";
+        wantedBy = ["stalwart.service"];
+        before = ["stalwart.service"];
 
         serviceConfig = {
           Type = "oneshot";
           User = "root";
           Group = "root";
           ExecStart = lib.getExe setupScript;
-          ExecStartPost = "${pkgs.systemd}/bin/systemctl restart stalwart.service";
+          ExecStartPost = "${pkgs.systemd}/bin/systemctl try-restart stalwart.service";
         };
       };
     };
