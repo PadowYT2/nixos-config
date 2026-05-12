@@ -26,13 +26,13 @@
 
     settings = {
       overwriteprotocol = "https";
-      mail_domain = "mail.proxied.host";
+      mail_domain = "proxied.host";
       mail_smtphost = "mail.proxied.host";
       mail_smtpmode = "smtp";
       mail_smtpport = 587;
       mail_smtpauth = true;
       mail_smtpname = "no-reply@proxied.host";
-      mail_from_address = "no-reply@proxied.host";
+      mail_from_address = "no-reply";
       trusted_proxies = ["127.0.0.1" "10.0.0.1"];
       forwarded_for_headers = ["HTTP_X_FORWARDED_FOR"];
       enabledPreviewProviders = [

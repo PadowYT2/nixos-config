@@ -114,11 +114,12 @@ in {
                   '';
                 };
                 transit-nat = {
-                  family = "ip";
+                  family = "inet";
                   content = ''
                     chain postrouting {
                       type nat hook postrouting priority srcnat; policy accept;
                       ip saddr 5.9.109.0/27 ip daddr 10.0.0.2 masquerade
+                      ip6 saddr 2a01:4f8:162:502e::/64 ip6 daddr fd00:1337::2 masquerade
                     }
                   '';
                 };
