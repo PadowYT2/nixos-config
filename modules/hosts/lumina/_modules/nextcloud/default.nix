@@ -26,6 +26,13 @@
 
     settings = {
       overwriteprotocol = "https";
+      mail_domain = "mail.proxied.host";
+      mail_smtphost = "mail.proxied.host";
+      mail_smtpmode = "smtp";
+      mail_smtpport = 587;
+      mail_smtpauth = true;
+      mail_smtpname = "no-reply@proxied.host";
+      mail_from_address = "no-reply@proxied.host";
       trusted_proxies = ["127.0.0.1" "10.0.0.1"];
       forwarded_for_headers = ["HTTP_X_FORWARDED_FOR"];
       enabledPreviewProviders = [
@@ -42,6 +49,8 @@
         "OC\\Preview\\HEIC"
       ];
     };
+
+    secretFile = config.age.secrets."nextcloud.secrets".path;
 
     extraAppsEnable = true;
     extraApps = with config.services.nextcloud.package.packages.apps; {
@@ -64,6 +73,12 @@
   age.secrets = {
     "nextcloud.password" = {
       file = secrets/password.age;
+      owner = "nextcloud";
+      group = "nextcloud";
+    };
+
+    "nextcloud.secrets" = {
+      file = secrets/secrets.age;
       owner = "nextcloud";
       group = "nextcloud";
     };
