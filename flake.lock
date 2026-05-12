@@ -624,11 +624,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771772248,
-        "narHash": "sha256-SM2QLIZ79ky+mvqvXwJTaVenG0Y/q64Ko8YtO2TOr/U=",
+        "lastModified": 1769451566,
+        "narHash": "sha256-ar5dMg0cFkY7BjPoeKBnRVRnP109uajUMy9ZdT5qQko=",
         "ref": "refs/heads/main",
-        "rev": "c2b9e027e349e9b6aa6fd8dbf5d3b6464cb4e642",
-        "revCount": 18,
+        "rev": "18bdbd6413c9642676d08268c67ca97978b57f3e",
+        "revCount": 10,
         "type": "git",
         "url": "ssh://git@github.com/PadowYT2/remnawave.nix-wip.git"
       },
