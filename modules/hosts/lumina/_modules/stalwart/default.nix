@@ -15,15 +15,13 @@
   setupScript = pkgs.writeShellApplication {
     name = "stalwart-cert-setup";
     runtimeInputs = with pkgs; [coreutils];
-    text =
-      lib.concatMapStrings (domain: ''
-        install -Dm600 -o ${config.services.stalwart.user} -g ${config.services.stalwart.group} \
-          /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/${domain}/${domain}.crt ${config.services.stalwart.dataDir}/certs/${domain}.crt
+    text = ''
+      install -Dm600 -o ${config.services.stalwart.user} -g ${config.services.stalwart.group} \
+        /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.proxied.host/mail.proxied.host.crt ${config.services.stalwart.dataDir}/certs/mail.proxied.host.crt
 
-        install -Dm600 -o ${config.services.stalwart.user} -g ${config.services.stalwart.group} \
-          /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/${domain}/${domain}.key ${config.services.stalwart.dataDir}/certs/${domain}.key
-      '')
-      domains;
+      install -Dm600 -o ${config.services.stalwart.user} -g ${config.services.stalwart.group} \
+        /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.proxied.host/mail.proxied.host.key ${config.services.stalwart.dataDir}/certs/mail.proxied.host.key
+    '';
   };
 in {
   services.caddy.virtualHosts =
@@ -76,7 +74,7 @@ in {
     paths.stalwart-cert-sync = {
       wantedBy = ["multi-user.target"];
       pathConfig = {
-        PathModified = map (domain: "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/${domain}") domains;
+        PathModified = ["/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.proxied.host"];
         Unit = "stalwart-cert-sync.service";
       };
     };
@@ -163,11 +161,11 @@ in {
         permissive-cors = true;
       };
 
-      certificate = lib.genAttrs domains (domain: {
-        cert = "%{file:${config.services.stalwart.dataDir}/certs/${domain}.crt}%";
-        private-key = "%{file:${config.services.stalwart.dataDir}/certs/${domain}.key}%";
-        default = domain == "mail.proxied.host";
-      });
+      certificate."mail.proxied.host" = {
+        cert = "%{file:${config.services.stalwart.dataDir}/certs/mail.proxied.host.crt}%";
+        private-key = "%{file:${config.services.stalwart.dataDir}/certs/mail.proxied.host.key}%";
+        default = true;
+      };
 
       store = {
         postgresql = {
