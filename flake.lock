@@ -413,11 +413,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771098223,
-        "narHash": "sha256-tWLaLZlC2Zh6N+DdEP+ZM/0qehQ04JPLfHCgOnbvLc8=",
+        "lastModified": 1779125308,
+        "narHash": "sha256-294EPdF2QjhSsJJdv2DNZLhAv2UQqUdLEfEEoMerzD8=",
         "owner": "PadowYT2",
         "repo": "flakes",
-        "rev": "a479626f055e12ed0cb7f440eea54bdfd4ac36f2",
+        "rev": "df78cdae6e42156fc91e8c260a35cb7155457bf0",
         "type": "github"
       },
       "original": {
