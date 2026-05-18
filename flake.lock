@@ -889,11 +889,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773169640,
-        "narHash": "sha256-IxHZ3lUetWIDGxJG+8VYph/DgT5Nu40Vo0dDvoCYBKM=",
+        "lastModified": 1779137308,
+        "narHash": "sha256-6b8kGz43iIHxzc0DUrZXlD0Xqk0EXTqmVvYKPs6Ct6c=",
         "owner": "PadowYT2",
         "repo": "yt-cipher",
-        "rev": "6a78a9fde332783b8c286b95f38122c0509468dc",
+        "rev": "518a99ea26829a52f152fffd91dff9f1bebfb855",
         "type": "github"
       },
       "original": {
