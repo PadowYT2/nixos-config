@@ -23,6 +23,21 @@
         /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.proxied.host/mail.proxied.host.key ${config.services.stalwart.dataDir}/certs/mail.proxied.host.key
     '';
   };
+
+  unblockScript = pkgs.writeShellApplication {
+    name = "stalwart-unblock-ips";
+    runtimeInputs = with pkgs; [coreutils stalwart-cli];
+    text = ''
+      credentials="admin:$(cat "$CREDENTIALS_DIRECTORY/admin-password")"
+
+      if [ -z "$(URL=http://127.0.0.1:8025 CREDENTIALS="$credentials" stalwart-cli server list-config server.blocked-ip.)" ]; then
+        exit 0
+      fi
+
+      URL=http://127.0.0.1:8025 CREDENTIALS="$credentials" \
+        stalwart-cli server delete-config server.blocked-ip.
+    '';
+  };
 in {
   services.caddy.virtualHosts =
     lib.genAttrs (
@@ -68,6 +83,28 @@ in {
           ExecStart = lib.getExe setupScript;
           ExecStartPost = "${pkgs.systemd}/bin/systemctl --no-block try-restart stalwart.service";
         };
+      };
+
+      stalwart-unblock-ips = {
+        description = "delete blocked ips";
+
+        serviceConfig = {
+          Type = "oneshot";
+          User = "root";
+          Group = "root";
+          LoadCredential = "admin-password:${config.age.secrets."stalwart.admin".path}";
+          ExecCondition = "${pkgs.systemd}/bin/systemctl --quiet is-active stalwart.service";
+          ExecStart = lib.getExe unblockScript;
+        };
+      };
+    };
+
+    timers.stalwart-unblock-ips = {
+      wantedBy = ["timers.target"];
+      timerConfig = {
+        OnCalendar = "hourly";
+        Persistent = true;
+        Unit = "stalwart-unblock-ips.service";
       };
     };
 
