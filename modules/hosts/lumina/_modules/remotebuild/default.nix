@@ -6,7 +6,7 @@
       isSystemUser = true;
       group = "remotebuild";
       useDefaultShell = true;
-      openssh.authorizedKeys.keys = [keys.flopux keys.transit keys.vpn];
+      openssh.authorizedKeys.keys = [keys.flopux keys.transit keys.solara keys.helius keys.vpn];
     };
 
     groups.remotebuild = {};

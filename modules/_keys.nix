@@ -6,6 +6,8 @@
 
   lumina = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEqJ9PmiSO0H+g1vp9H+YX1/XkHQboN7zICBeSwSprdX lumina@proxied";
   transit = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHM5PXfKL/LKyxI4nznDEdreWGc1WuilVbZyriLADfAR transit@proxied";
+  solara = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxnMAM7u9izzEImYuWWT7E0FpEMU/xpSZNk5QVGvOE1 solara@proxied";
+  helius = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEktt9fII2hsWfXDL0JnTQ3DAxwhFI8K4iP24cx4yaGJ helius@proxied";
 
   vpn = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM/vkarnPdoksBuV0CnRDgZSR+g7P2W7yTMjABct3feU vpn@deluxhost";
 

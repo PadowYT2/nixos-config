@@ -61,9 +61,17 @@
 
           systemd.network.networks."10-ens3" = {
             matchConfig.Name = "ens3";
-            address = ["87.229.95.109" "2a12:bec4:1821:46f::a/64"];
-            gateway = ["87.229.95.1"];
+            address = ["87.229.95.109/32" "2a12:bec4:1821:46f::a/64"];
             routes = [
+              {
+                Destination = "87.229.95.1/32";
+                Scope = "link";
+              }
+              {
+                Destination = "0.0.0.0/0";
+                Gateway = "87.229.95.1";
+                GatewayOnLink = true;
+              }
               {
                 Destination = "::/0";
                 Gateway = "2a12:bec4:1821::";

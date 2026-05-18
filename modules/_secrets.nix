@@ -4,6 +4,8 @@ let
   publicKeys = {
     lumina = [keys.lumina keys.padow];
     transit = [keys.transit keys.padow];
+    solara = [keys.solara keys.padow];
+    helius = [keys.helius keys.padow];
     vpn = [keys.vpn keys.padow];
     flopux = [keys.flopux keys.flop4ik];
   };
