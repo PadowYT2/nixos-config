@@ -66,7 +66,7 @@ in {
           User = "root";
           Group = "root";
           ExecStart = lib.getExe setupScript;
-          ExecStartPost = "${pkgs.systemd}/bin/systemctl try-restart stalwart.service";
+          ExecStartPost = "${pkgs.systemd}/bin/systemctl --no-block try-restart stalwart.service";
         };
       };
     };

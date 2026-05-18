@@ -49,7 +49,7 @@ in {
         User = "root";
         Group = "root";
         ExecStart = lib.getExe setupScript;
-        ExecStartPost = "${pkgs.systemd}/bin/systemctl restart pterodactyl-wings.service";
+        ExecStartPost = "${pkgs.systemd}/bin/systemctl --no-block restart pterodactyl-wings.service";
       };
     };
 
