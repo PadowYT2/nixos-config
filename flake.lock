@@ -547,11 +547,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779367214,
-        "narHash": "sha256-lO6azD5hmPskN8sN3D3oOyV7Po7ywjGvYtJl9mkIDq4=",
+        "lastModified": 1779397945,
+        "narHash": "sha256-/NnVxLq6UEb/DFeraHcTtaM/qg5/KN2M9xwE/N4Mybg=",
         "ref": "refs/heads/main",
-        "rev": "a65c9a9a83a6071af6dadd05a85608df44fee2a7",
-        "revCount": 345,
+        "rev": "e95ef9c0c642457cafd0a10641ce95d739ac9cc7",
+        "revCount": 359,
         "type": "git",
         "url": "ssh://git@github.com/magmaorg/bot.git"
       },
