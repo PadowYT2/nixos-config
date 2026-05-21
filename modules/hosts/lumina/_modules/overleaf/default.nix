@@ -58,7 +58,7 @@
       };
 
       overleaf.service = {
-        image = "rigon/sharelatex-full:6.1.2";
+        image = "rigon/sharelatex-full:6.1.2-shell-escape";
         restart = "unless-stopped";
 
         environment = {
