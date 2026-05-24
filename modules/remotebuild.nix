@@ -12,7 +12,7 @@
           hostName = "lumina.proxied.host";
           sshUser = "remotebuild";
           sshKey = "/root/.ssh/id_ed25519";
-          system = "x86_64-linux";
+          systems = ["x86_64-linux" "aarch64-linux"];
           protocol = "ssh-ng";
           speedFactor = 10;
           maxJobs = 16;
