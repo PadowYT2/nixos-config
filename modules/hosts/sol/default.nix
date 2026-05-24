@@ -23,7 +23,7 @@
 
           disko.devices = {
             disk.main = {
-              device = "/dev/disk/by-id/scsi-360fb9f7032fd4f5b882ed0c2433fde99";
+              device = "/dev/disk/by-id/scsi-360e3731c7e144acda68c52c4b2bc5708";
               type = "disk";
               content = {
                 type = "gpt";
@@ -59,27 +59,37 @@
 
           networking.hostName = "sol";
 
-          systemd.network.networks."10-ens3" = {
-            matchConfig.Name = "ens3";
-            address = ["92.5.24.97/32" "2603:c020:8024:d100::a/64"];
-            routes = [
-              {
-                Destination = "92.5.24.1/32";
-                Scope = "link";
-              }
-              {
-                Destination = "0.0.0.0/0";
-                Gateway = "92.5.24.1";
-                GatewayOnLink = true;
-              }
-              {
-                Destination = "::/0";
-                Gateway = "fe80::1";
-                GatewayOnLink = true;
-                Metric = 1024;
-              }
-            ];
-            linkConfig.RequiredForOnline = "routable";
+          systemd.network = {
+            networks."10-ens3" = {
+              matchConfig.Name = "ens3";
+              address = ["130.61.145.134/32" "2603:c020:8024:d100::a/64"];
+              routes = [
+                {
+                  Destination = "130.61.145.1/32";
+                  Scope = "link";
+                }
+                {
+                  Destination = "0.0.0.0/0";
+                  Gateway = "130.61.145.1";
+                  GatewayOnLink = true;
+                }
+                {
+                  Destination = "::/0";
+                  Gateway = "fe80::1";
+                  GatewayOnLink = true;
+                  Metric = 1024;
+                }
+              ];
+              linkConfig.RequiredForOnline = "routable";
+            };
+
+            links."10-ens3" = {
+              matchConfig.MACAddress = "02:00:17:12:66:C3";
+              linkConfig = {
+                Name = "ens3";
+                MACAddressPolicy = "persistent";
+              };
+            };
           };
         }
       ];

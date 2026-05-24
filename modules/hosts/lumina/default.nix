@@ -302,7 +302,7 @@
               };
 
               links."10-eth0" = {
-                matchConfig.MACAddress = "50:eb:f6:22:f1:10";
+                matchConfig.MACAddress = "50:EB:F6:22:F1:10";
                 linkConfig = {
                   Name = "eth0";
                   MACAddressPolicy = "persistent";
