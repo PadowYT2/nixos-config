@@ -12,7 +12,7 @@
         "${inputs.nixpkgs}/nixos/modules/profiles/qemu-guest.nix"
       ]
       ++ [
-        {
+        ({keys, ...}: {
           system.stateVersion = "26.05";
 
           nixpkgs.hostPlatform = "aarch64-linux";
@@ -88,7 +88,7 @@
           };
 
           users.users.root.openssh.authorizedKeys.keys = [keys.konyogony];
-        }
+        })
       ];
   };
 }

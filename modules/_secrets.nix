@@ -6,7 +6,7 @@ let
     vpn = [keys.vpn keys.padow];
 
     # konyogony
-    sol = [keys.sol keys.konyogony keys.padow];
+    sol = [keys.sol keys.konyogony];
 
     # flop4ik
     flopux = [keys.flopux keys.flop4ik];
