@@ -76,6 +76,11 @@
       url = "git+ssh://git@github.com/magmaorg/bot.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    mangatranslate = {
+      url = "git+ssh://git@github.com/konyogony/MangaTranslate.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:

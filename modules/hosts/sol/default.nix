@@ -87,6 +87,22 @@
             };
           };
 
+          services.caddy = {
+            enable = true;
+            openFirewall = true;
+
+            globalConfig = ''
+              servers {
+                trusted_proxies static private_ranges
+              }
+            '';
+          };
+
+          programs.git.config.user = {
+            name = "konyogony";
+            email = "me@konyogony.dev";
+          };
+
           users.users.root.openssh.authorizedKeys.keys = [keys.konyogony];
         })
       ];
