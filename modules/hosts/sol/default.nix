@@ -23,7 +23,7 @@
 
           disko.devices = {
             disk.main = {
-              device = "/dev/disk/by-id/scsi-360e3731c7e144acda68c52c4b2bc5708";
+              device = "/dev/disk/by-id/scsi-360eac5244c9a4b7e9702026399513496";
               type = "disk";
               content = {
                 type = "gpt";
@@ -62,16 +62,11 @@
           systemd.network = {
             networks."10-ens3" = {
               matchConfig.Name = "ens3";
-              address = ["130.61.145.134/32" "2603:c020:8024:d100::a/64"];
+              address = ["10.0.0.2/24" "2603:c020:8024:d100::a/64"];
               routes = [
                 {
-                  Destination = "130.61.145.1/32";
-                  Scope = "link";
-                }
-                {
                   Destination = "0.0.0.0/0";
-                  Gateway = "130.61.145.1";
-                  GatewayOnLink = true;
+                  Gateway = "10.0.0.1";
                 }
                 {
                   Destination = "::/0";
@@ -84,13 +79,15 @@
             };
 
             links."10-ens3" = {
-              matchConfig.MACAddress = "02:00:17:12:66:C3";
+              matchConfig.MACAddress = "02:00:17:01:33:8D";
               linkConfig = {
                 Name = "ens3";
                 MACAddressPolicy = "persistent";
               };
             };
           };
+
+          users.users.root.openssh.authorizedKeys.keys = [keys.konyogony];
         }
       ];
   };
