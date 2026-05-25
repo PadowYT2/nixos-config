@@ -337,7 +337,7 @@
                 '';
 
                 "2fa.tvrz.dev".extraConfig = ''
-                  reverse_proxy http://144.31.167.137:25582
+                  reverse_proxy http://144.31.167.137:9004
                 '';
               };
             };
