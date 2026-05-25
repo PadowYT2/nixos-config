@@ -221,6 +221,12 @@ in {
               }
 
               server {
+                listen 20145 udp reuseport;
+                proxy_pass 5.83.140.166:25570;
+                proxy_timeout 60s;
+              }
+
+              server {
                 listen 20269 udp reuseport;
                 proxy_pass 144.31.167.137:9007;
                 proxy_timeout 60s;
