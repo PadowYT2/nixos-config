@@ -17,7 +17,7 @@
     singleNode = {
       enable = true;
       hostname = "firefox-sync.proxied.host";
-      capacity = 1;
+      capacity = 2;
       url = "https://firefox-sync.proxied.host";
     };
   };
