@@ -201,6 +201,7 @@
         ripgrep
         ripgrep-all
         sd
+        smartmontools
         tcpdump
         tealdeer
         traceroute
