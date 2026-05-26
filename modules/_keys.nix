@@ -21,5 +21,5 @@
   transit = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHM5PXfKL/LKyxI4nznDEdreWGc1WuilVbZyriLADfAR transit@proxied";
   solara = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIxnMAM7u9izzEImYuWWT7E0FpEMU/xpSZNk5QVGvOE1 solara@proxied";
   helius = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEktt9fII2hsWfXDL0JnTQ3DAxwhFI8K4iP24cx4yaGJ helius@proxied";
-  noctis = "ssh-ed25519 hi noctis@proxied";
+  noctis = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFFG2ZD+PwulOyShKxsrHupOpJG1qvNRIJNKBWM4fmzI noctis@proxied";
 }
