@@ -16,6 +16,7 @@ let
     transit = [keys.transit keys.padow];
     solara = [keys.solara keys.padow];
     helius = [keys.helius keys.padow];
+    noctis = [keys.noctis keys.padow];
   };
 
   walk = host: dir: relative: let
