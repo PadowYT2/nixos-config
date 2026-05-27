@@ -342,7 +342,7 @@
               };
             };
 
-            users.users.root.openssh.authorizedKeys.keys = [keys.djoh];
+            users.users.root.openssh.authorizedKeys.keys = with keys; [djoh];
           }
         )
       ];

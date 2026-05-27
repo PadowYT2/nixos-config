@@ -51,11 +51,11 @@
       nameservers = ["127.0.0.1"] ++ lib.optional config.networking.enableIPv6 "::1";
       enableIPv6 = lib.mkDefault true;
       firewall.enable = true;
-      useDHCP = false;
-      useNetworkd = true;
+      useDHCP = lib.mkDefault false;
+      useNetworkd = lib.mkDefault true;
     };
 
-    systemd.network.enable = true;
+    systemd.network.enable = lib.mkDefault true;
 
     services.dnscrypt-proxy = {
       enable = true;
@@ -85,7 +85,7 @@
     programs = {
       nh = {
         enable = true;
-        flake = "/root/nixos-config";
+        flake = lib.mkDefault "/root/nixos-config";
       };
 
       zsh = {
@@ -161,7 +161,7 @@
             };
           }
           (lib.optionalAttrs (builtins.hasAttr config.networking.hostName keys) {
-            user.signingkey = "/root/.ssh/id_ed25519.pub";
+            user.signingkey = lib.mkDefault "/root/.ssh/id_ed25519.pub";
             commit.gpgsign = true;
             gpg = {
               format = "ssh";
@@ -217,6 +217,8 @@
         BAT_THEME = "Catppuccin Mocha";
         FZF_DEFAULT_COMMAND = "rg --files --hidden --follow";
       };
+
+      shells = with pkgs; [zsh];
     };
 
     services = {
@@ -230,7 +232,7 @@
 
     users = {
       defaultUserShell = pkgs.zsh;
-      users.root.openssh.authorizedKeys.keys = [keys.zorin keys.phone keys.padow];
+      users.root.openssh.authorizedKeys.keys = with keys; [zorin phone padow];
     };
 
     security = {
@@ -245,6 +247,6 @@
       ];
     };
 
-    age.identityPaths = ["/root/.ssh/id_ed25519"];
+    age.identityPaths = lib.mkDefault ["/root/.ssh/id_ed25519"];
   };
 }

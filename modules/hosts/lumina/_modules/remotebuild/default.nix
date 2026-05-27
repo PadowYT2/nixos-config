@@ -8,21 +8,21 @@
       isSystemUser = true;
       group = "remotebuild";
       useDefaultShell = true;
-      openssh.authorizedKeys.keys = [
+      openssh.authorizedKeys.keys = with keys; [
         # padow
-        keys.vpn
+        vpn
 
         # konyogony
-        keys.sol
+        sol
 
         # flop4ik
-        keys.flopux
+        flopux
 
         # proxied infra
-        keys.transit
-        keys.solara
-        keys.helius
-        keys.noctis
+        transit
+        solara
+        helius
+        noctis
       ];
     };
 

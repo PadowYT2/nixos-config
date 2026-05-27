@@ -87,7 +87,7 @@
             email = "avl2010503@gmail.com";
           };
 
-          users.users.root.openssh.authorizedKeys.keys = [keys.flop4ik];
+          users.users.root.openssh.authorizedKeys.keys = with keys; [flop4ik];
         })
       ];
   };

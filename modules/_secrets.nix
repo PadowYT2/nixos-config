@@ -1,22 +1,22 @@
 let
   keys = import ./_keys.nix;
 
-  publicKeys = {
+  publicKeys = with keys; {
     # padow
-    vpn = [keys.vpn keys.padow];
+    vpn = [vpn padow];
 
     # konyogony
-    sol = [keys.sol keys.konyogony];
+    sol = [sol konyogony];
 
     # flop4ik
-    flopux = [keys.flopux keys.flop4ik];
+    flopux = [flopux flop4ik];
 
     # proxied infra
-    lumina = [keys.lumina keys.padow];
-    transit = [keys.transit keys.padow];
-    solara = [keys.solara keys.padow];
-    helius = [keys.helius keys.padow];
-    noctis = [keys.noctis keys.padow];
+    lumina = [lumina padow];
+    transit = [transit padow];
+    solara = [solara padow];
+    helius = [helius padow];
+    noctis = [noctis padow];
   };
 
   walk = host: dir: relative: let

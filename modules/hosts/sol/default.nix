@@ -104,7 +104,7 @@
             email = "me@konyogony.dev";
           };
 
-          users.users.root.openssh.authorizedKeys.keys = [keys.konyogony];
+          users.users.root.openssh.authorizedKeys.keys = with keys; [konyogony];
         })
       ];
   };

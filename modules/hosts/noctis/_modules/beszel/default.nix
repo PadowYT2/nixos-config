@@ -1,8 +1,4 @@
 {
-  config,
-  inputs,
-  ...
-}: {
   services.caddy.virtualHosts = {
     "uptime.proxied.host".extraConfig = ''
       reverse_proxy http://localhost:8090
