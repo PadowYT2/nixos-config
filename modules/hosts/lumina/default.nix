@@ -149,6 +149,7 @@
                   iifname "eth0" icmp type echo-request accept
                   iifname "eth0" icmpv6 type echo-request accept
                   iifname "eth0" ip saddr 95.135.208.17 udp dport {500, 4500} accept
+                  iifname "eth0" tcp dport 45876 accept
                   iifname "eth0" drop
                 '';
 
