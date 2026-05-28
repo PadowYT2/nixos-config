@@ -544,11 +544,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771593011,
-        "narHash": "sha256-D4aFeA4cC+nbRyOYKMcHk+FS1uB8/imG2FJ+MbZl4CI=",
+        "lastModified": 1780001806,
+        "narHash": "sha256-fHA22YjwMFucr9oR2M4V7vL1ywjlCrqV4K9v0CCQhtE=",
         "owner": "konyogony",
         "repo": "KonyTools",
-        "rev": "85a1527afa457abb214d2f84841aa02f565e3ed2",
+        "rev": "a5a1ef0277b707a3bd542102bf638c12d4c370e2",
         "type": "github"
       },
       "original": {
