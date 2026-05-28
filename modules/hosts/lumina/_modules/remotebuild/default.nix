@@ -10,6 +10,7 @@
       useDefaultShell = true;
       openssh.authorizedKeys.keys = with keys; [
         # padow
+        padow
         vpn
 
         # konyogony
