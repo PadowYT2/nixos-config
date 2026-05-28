@@ -14,6 +14,7 @@
 
   # flop4ik
   flop4ik = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICUIyiGJTTsZ5WlgPJbk1YXMiCcJSqZtJ/ZyepnwmiKw avl2010503@gmail.com";
+  flop4ikwin = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFCu660rdFejUDIGwc5C/rNoqgUxg0NKzoe+SnWK3lRN flop4ik@DESKTOP-B1227VT";
   flopux = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHR5ENpI4bWpRy/utPTZFQmvxPQ14AZsc98TBa9di3MN flopux@deluxhost";
 
   # proxied infra
