@@ -7,10 +7,6 @@
     "cdn.konyogony.dev".extraConfig = ''
       reverse_proxy http://localhost:3000
     '';
-
-    "cdn.padow.ru".extraConfig = ''
-      respond "unfortunately, a data loss occurred and this link no longer works"
-    '';
   };
 
   services.zipline = {
