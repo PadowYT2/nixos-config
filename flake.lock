@@ -201,9 +201,9 @@
         "type": "github"
       }
     },
-    "flake-utils_10": {
+    "flake-utils_2": {
       "inputs": {
-        "systems": "systems_12"
+        "systems": "systems_3"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -275,7 +275,7 @@
     },
     "flake-utils_6": {
       "inputs": {
-        "systems": "systems_7"
+        "systems": "systems_8"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -385,7 +385,7 @@
     },
     "hyprkony": {
       "inputs": {
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_2",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -421,7 +421,7 @@
     },
     "konytools": {
       "inputs": {
-        "flake-utils": "flake-utils_4",
+        "flake-utils": "flake-utils_3",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -442,7 +442,7 @@
     },
     "magmabot": {
       "inputs": {
-        "flake-utils": "flake-utils_5",
+        "flake-utils": "flake-utils_4",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -463,17 +463,17 @@
     },
     "mangatranslate": {
       "inputs": {
-        "flake-utils": "flake-utils_6",
+        "flake-utils": "flake-utils_5",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1778247557,
-        "narHash": "sha256-fOMS05JYMxp6/vVL68mx6ak5OOLzWGQFrQpIfkZidnQ=",
+        "lastModified": 1779803416,
+        "narHash": "sha256-FIrD1CMkaF4aSqtwpVOgCPXGzXPf2S/h7+TqSrX2QTc=",
         "ref": "refs/heads/main",
-        "rev": "cbce20136664667aed6d3371abcf80b0ed1a1bfb",
-        "revCount": 81,
+        "rev": "c29bf4d41ca95270aa416c69c7f7c7ece544c63b",
+        "revCount": 83,
         "type": "git",
         "url": "ssh://git@github.com/konyogony/MangaTranslate.git"
       },
@@ -488,7 +488,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "systems": "systems_8"
+        "systems": "systems_7"
       },
       "locked": {
         "lastModified": 1778039471,
@@ -537,7 +537,7 @@
     },
     "pterodactyl": {
       "inputs": {
-        "flake-utils": "flake-utils_7",
+        "flake-utils": "flake-utils_6",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -558,7 +558,7 @@
     },
     "quantum": {
       "inputs": {
-        "flake-utils": "flake-utils_8",
+        "flake-utils": "flake-utils_7",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -579,7 +579,7 @@
     },
     "remnawave": {
       "inputs": {
-        "flake-utils": "flake-utils_9",
+        "flake-utils": "flake-utils_8",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -683,7 +683,7 @@
         "type": "github"
       }
     },
-    "systems_12": {
+    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -698,7 +698,7 @@
         "type": "github"
       }
     },
-    "systems_2": {
+    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -805,7 +805,7 @@
     },
     "yt-cipher": {
       "inputs": {
-        "flake-utils": "flake-utils_10",
+        "flake-utils": "flake-utils_9",
         "nixpkgs": [
           "nixpkgs"
         ]
