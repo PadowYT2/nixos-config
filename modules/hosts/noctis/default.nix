@@ -11,7 +11,6 @@
         remotebuild
         "${inputs.nixpkgs}/nixos/modules/profiles/qemu-guest.nix"
       ]
-      ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
       ++ [
         ({keys, ...}: {
           system.stateVersion = "26.05";
