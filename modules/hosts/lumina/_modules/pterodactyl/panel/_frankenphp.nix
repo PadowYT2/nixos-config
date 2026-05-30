@@ -7,10 +7,7 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.services.frankenphp;
 
   certs = config.security.acme.certs;
@@ -18,69 +15,65 @@ let
   acmeEnabledVhosts = filter (hostOpts: hostOpts.useACMEHost != null) virtualHosts;
   vhostCertNames = unique (map (hostOpts: hostOpts.useACMEHost) acmeEnabledVhosts);
 
-  mkVHostConf =
-    hostOpts:
-    let
-      sslCertDir = certs.${hostOpts.useACMEHost}.directory;
-    in
-    ''
-      ${hostOpts.hostName} ${concatStringsSep " " hostOpts.serverAliases} {
-        ${optionalString (
-          hostOpts.listenAddresses != [ ]
-        ) "bind ${concatStringsSep " " hostOpts.listenAddresses}"}
-        ${optionalString (
-          hostOpts.useACMEHost != null
-        ) "tls ${sslCertDir}/cert.pem ${sslCertDir}/key.pem"}
-        ${optionalString (hostOpts.logFormat != null) ''
-          log {
-            ${hostOpts.logFormat}
-          }
-        ''}
-
-        ${hostOpts.extraConfig}
+  mkVHostConf = hostOpts: let
+    sslCertDir = certs.${hostOpts.useACMEHost}.directory;
+  in ''
+    ${hostOpts.hostName} ${concatStringsSep " " hostOpts.serverAliases} {
+      ${optionalString (
+      hostOpts.listenAddresses != []
+    ) "bind ${concatStringsSep " " hostOpts.listenAddresses}"}
+      ${optionalString (
+      hostOpts.useACMEHost != null
+    ) "tls ${sslCertDir}/cert.pem ${sslCertDir}/key.pem"}
+      ${optionalString (hostOpts.logFormat != null) ''
+      log {
+        ${hostOpts.logFormat}
       }
-    '';
+    ''}
 
-  settingsFormat = pkgs.formats.json { };
+      ${hostOpts.extraConfig}
+    }
+  '';
+
+  settingsFormat = pkgs.formats.json {};
 
   configFile =
-    if cfg.settings != { } then
-      settingsFormat.generate "caddy.json" cfg.settings
-    else
-      let
-        Caddyfile = pkgs.writeTextDir "Caddyfile" ''
-          {
-            ${cfg.globalConfig}
-          }
-          ${cfg.extraConfig}
-          ${concatMapStringsSep "\n" mkVHostConf virtualHosts}
-        '';
+    if cfg.settings != {}
+    then settingsFormat.generate "caddy.json" cfg.settings
+    else let
+      Caddyfile = pkgs.writeTextDir "Caddyfile" ''
+        {
+          ${cfg.globalConfig}
+        }
+        ${cfg.extraConfig}
+        ${concatMapStringsSep "\n" mkVHostConf virtualHosts}
+      '';
 
-        Caddyfile-formatted = pkgs.runCommand "Caddyfile-formatted" { } ''
-          mkdir -p $out
-          cp --no-preserve=mode ${Caddyfile}/Caddyfile $out/Caddyfile
-          ${lib.getExe cfg.package} fmt --overwrite $out/Caddyfile
-        '';
-      in
-      "${
-        if pkgs.stdenv.buildPlatform == pkgs.stdenv.hostPlatform then Caddyfile-formatted else Caddyfile
-      }/Caddyfile";
+      Caddyfile-formatted = pkgs.runCommand "Caddyfile-formatted" {} ''
+        mkdir -p $out
+        cp --no-preserve=mode ${Caddyfile}/Caddyfile $out/Caddyfile
+        ${lib.getExe cfg.package} fmt --overwrite $out/Caddyfile
+      '';
+    in "${
+      if pkgs.stdenv.buildPlatform == pkgs.stdenv.hostPlatform
+      then Caddyfile-formatted
+      else Caddyfile
+    }/Caddyfile";
 
   etcConfigFile = "frankenphp/frankenphp_config";
 
   configPath = "/etc/${etcConfigFile}";
 
   mkCertOwnershipAssertion = import "${inputs.nixpkgs}/nixos/modules/security/acme/mk-cert-ownership-assertion.nix" lib;
-in
-{
+in {
   imports = [
     (mkRemovedOptionModule [
       "services"
       "frankenphp"
       "agree"
     ] "this option is no longer necessary for Caddy 2")
-    (mkRenamedOptionModule [ "services" "frankenphp" "ca" ] [ "services" "frankenphp" "acmeCA" ])
-    (mkRenamedOptionModule [ "services" "frankenphp" "config" ] [ "services" "frankenphp" "extraConfig" ])
+    (mkRenamedOptionModule ["services" "frankenphp" "ca"] ["services" "frankenphp" "acmeCA"])
+    (mkRenamedOptionModule ["services" "frankenphp" "config"] ["services" "frankenphp" "extraConfig"])
   ];
 
   # interface
@@ -115,7 +108,7 @@ in
       '';
     };
 
-    package = mkPackageOption pkgs "frankenphp" { };
+    package = mkPackageOption pkgs "frankenphp" {};
 
     dataDir = mkOption {
       type = types.path;
@@ -186,10 +179,9 @@ in
 
     adapter = mkOption {
       default =
-        if ((cfg.configFile != configFile) || (baseNameOf cfg.configFile) == "Caddyfile") then
-          "caddyfile"
-        else
-          null;
+        if ((cfg.configFile != configFile) || (baseNameOf cfg.configFile) == "Caddyfile")
+        then "caddyfile"
+        else null;
       defaultText = literalExpression ''
         if ((cfg.configFile != configFile) || (baseNameOf cfg.configFile) == "Caddyfile") then "caddyfile" else null
       '';
@@ -259,8 +251,8 @@ in
     };
 
     virtualHosts = mkOption {
-      type = with types; attrsOf (submodule (import "${inputs.nixpkgs}/nixos/modules/services/web-servers/caddy/vhost-options.nix" { inherit cfg; }));
-      default = { };
+      type = with types; attrsOf (submodule (import "${inputs.nixpkgs}/nixos/modules/services/web-servers/caddy/vhost-options.nix" {inherit cfg;}));
+      default = {};
       example = literalExpression ''
         {
           "hydra.example.com" = {
@@ -343,7 +335,7 @@ in
 
     settings = mkOption {
       type = settingsFormat.type;
-      default = { };
+      default = {};
       description = ''
         Structured configuration for Caddy to generate a Caddy JSON configuration file.
         See <https://caddyserver.com/docs/json/> for available options.
@@ -413,37 +405,34 @@ in
 
   # implementation
   config = mkIf cfg.enable {
-
-    assertions = [
-      {
-        assertion = cfg.configFile == configFile -> cfg.adapter == "caddyfile" || cfg.adapter == null;
-        message = "To specify an adapter other than 'caddyfile' please provide your own configuration via `services.frankenphp.configFile`";
-      }
-    ]
-    ++ map (
-      name:
-      mkCertOwnershipAssertion {
-        cert = certs.${name};
-        groups = config.users.groups;
-        services = [ config.systemd.services.frankenphp ];
-      }
-    ) vhostCertNames;
+    assertions =
+      [
+        {
+          assertion = cfg.configFile == configFile -> cfg.adapter == "caddyfile" || cfg.adapter == null;
+          message = "To specify an adapter other than 'caddyfile' please provide your own configuration via `services.frankenphp.configFile`";
+        }
+      ]
+      ++ map (
+        name:
+          mkCertOwnershipAssertion {
+            cert = certs.${name};
+            groups = config.users.groups;
+            services = [config.systemd.services.frankenphp];
+          }
+      )
+      vhostCertNames;
 
     services.frankenphp.globalConfig = ''
       ${optionalString (cfg.email != null) "email ${cfg.email}"}
       ${optionalString (cfg.acmeCA != null) "acme_ca ${cfg.acmeCA}"}
-      ${optionalString (
-        !elem cfg.httpPort [
-          null
-          options.services.frankenphp.httpPort.default
-        ]
-      ) "http_port ${toString cfg.httpPort}"}
-      ${optionalString (
-        !elem cfg.httpsPort [
-          null
-          options.services.frankenphp.httpsPort.default
-        ]
-      ) "https_port ${toString cfg.httpsPort}"}
+      ${optionalString (!elem cfg.httpPort [
+        null
+        options.services.frankenphp.httpPort.default
+      ]) "http_port ${toString cfg.httpPort}"}
+      ${optionalString (!elem cfg.httpsPort [
+        null
+        options.services.frankenphp.httpsPort.default
+      ]) "https_port ${toString cfg.httpsPort}"}
       log {
         ${cfg.logFormat}
       }
@@ -453,51 +442,50 @@ in
     boot.kernel.sysctl."net.core.rmem_max" = mkDefault 2500000;
     boot.kernel.sysctl."net.core.wmem_max" = mkDefault 2500000;
 
-    systemd.packages = [ cfg.package ];
+    systemd.packages = [cfg.package];
     systemd.services.frankenphp = {
       wants = map (certName: "acme-${certName}.service") vhostCertNames;
       after = map (certName: "acme-${certName}.service") vhostCertNames;
 
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
       startLimitIntervalSec = 14400;
       startLimitBurst = 10;
       reloadTriggers = optional cfg.enableReload cfg.configFile;
       restartTriggers = optional (!cfg.enableReload) cfg.configFile;
 
-      serviceConfig =
-        let
-          runOptions = "--config ${configPath} ${
-            optionalString (cfg.adapter != null) "--adapter ${cfg.adapter}"
-          }";
-        in
-        {
-          # Override the `ExecStart` line from upstream's systemd unit file by our own:
-          # https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
-          # If the empty string is assigned to this option, the list of commands to start is reset, prior assignments of this option will have no effect.
-          ExecStart = [
-            ""
-            "${lib.getExe cfg.package} run ${runOptions} ${optionalString cfg.resume "--resume"}"
-          ];
-          # Validating the configuration before applying it ensures we’ll get a proper error that will be reported when switching to the configuration
-          ExecReload = [
+      serviceConfig = let
+        runOptions = "--config ${configPath} ${
+          optionalString (cfg.adapter != null) "--adapter ${cfg.adapter}"
+        }";
+      in {
+        # Override the `ExecStart` line from upstream's systemd unit file by our own:
+        # https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
+        # If the empty string is assigned to this option, the list of commands to start is reset, prior assignments of this option will have no effect.
+        ExecStart = [
+          ""
+          "${lib.getExe cfg.package} run ${runOptions} ${optionalString cfg.resume "--resume"}"
+        ];
+        # Validating the configuration before applying it ensures we’ll get a proper error that will be reported when switching to the configuration
+        ExecReload =
+          [
             ""
           ]
           ++ lib.optional cfg.enableReload "${lib.getExe cfg.package} reload ${runOptions} --force";
-          User = cfg.user;
-          Group = cfg.group;
-          ReadWritePaths = [ cfg.dataDir ];
-          StateDirectory = mkIf (cfg.dataDir == "/var/lib/caddy") [ "caddy" ];
-          LogsDirectory = mkIf (cfg.logDir == "/var/log/caddy") [ "caddy" ];
-          Restart = "on-failure";
-          RestartPreventExitStatus = 1;
-          RestartSec = "5s";
-          EnvironmentFile = optional (cfg.environmentFile != null) cfg.environmentFile;
+        User = cfg.user;
+        Group = cfg.group;
+        ReadWritePaths = [cfg.dataDir];
+        StateDirectory = mkIf (cfg.dataDir == "/var/lib/caddy") ["caddy"];
+        LogsDirectory = mkIf (cfg.logDir == "/var/log/caddy") ["caddy"];
+        Restart = "on-failure";
+        RestartPreventExitStatus = 1;
+        RestartSec = "5s";
+        EnvironmentFile = optional (cfg.environmentFile != null) cfg.environmentFile;
 
-          # TODO: attempt to upstream these options
-          NoNewPrivileges = true;
-          PrivateDevices = true;
-          ProtectHome = true;
-        };
+        # TODO: attempt to upstream these options
+        NoNewPrivileges = true;
+        PrivateDevices = true;
+        ProtectHome = true;
+      };
     };
 
     users.users = optionalAttrs (cfg.user == "caddy") {
@@ -512,16 +500,17 @@ in
       caddy.gid = config.ids.gids.caddy;
     };
 
-    security.acme.certs =
-      let
-        certCfg = map (
+    security.acme.certs = let
+      certCfg =
+        map (
           certName:
-          nameValuePair certName {
-            group = mkDefault cfg.group;
-            reloadServices = [ "frankenphp.service" ];
-          }
-        ) vhostCertNames;
-      in
+            nameValuePair certName {
+              group = mkDefault cfg.group;
+              reloadServices = ["frankenphp.service"];
+            }
+        )
+        vhostCertNames;
+    in
       listToAttrs certCfg;
 
     environment.etc.${etcConfigFile}.source = cfg.configFile;

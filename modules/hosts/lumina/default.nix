@@ -8,8 +8,8 @@
     modules = with self.nixosModules;
       [
         common
-        "${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
         inputs.arion.nixosModules.arion
+        "${inputs.nixpkgs}/nixos/modules/installer/scan/not-detected.nix"
       ]
       ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
       ++ [
