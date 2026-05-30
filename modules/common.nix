@@ -177,7 +177,7 @@
     environment = {
       systemPackages = with pkgs; [
         inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
-        inputs.alejandra.defaultPackage.${pkgs.stdenv.hostPlatform.system}
+        alejandra
         btop
         dnsutils
         eza

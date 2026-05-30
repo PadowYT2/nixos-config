@@ -17,11 +17,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    alejandra = {
-      url = "github:kamadorueda/alejandra";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     arion = {
       url = "github:hercules-ci/arion";
       inputs.nixpkgs.follows = "nixpkgs";
