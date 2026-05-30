@@ -11,7 +11,7 @@
       openssh.authorizedKeys.keys = with keys; [
         # padow
         padow
-        vpn
+        zorin
 
         # konyogony
         sol
@@ -24,6 +24,7 @@
         solara
         helius
         noctis
+        glacius
       ];
     };
 

@@ -47,11 +47,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    remnawave = {
-      url = "git+ssh://git@github.com/PadowYT2/remnawave.nix-wip.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     minecraft = {
       url = "github:Infinidoge/nix-minecraft";
       inputs.nixpkgs.follows = "nixpkgs";

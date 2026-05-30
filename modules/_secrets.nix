@@ -2,9 +2,6 @@ let
   keys = import ./_keys.nix;
 
   publicKeys = with keys; {
-    # padow
-    vpn = [vpn padow];
-
     # konyogony
     sol = [sol konyogony];
 
@@ -17,6 +14,7 @@ let
     solara = [solara padow];
     helius = [helius padow];
     noctis = [noctis padow];
+    glacius = [glacius padow];
   };
 
   walk = host: dir: relative: let

@@ -327,24 +327,6 @@
         "type": "github"
       }
     },
-    "flake-utils_9": {
-      "inputs": {
-        "systems": "systems_11"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "haskell-flake": {
       "locked": {
         "lastModified": 1675296942,
@@ -577,27 +559,6 @@
         "url": "ssh://git@github.com/PadowYT2/quantum.nix.git"
       }
     },
-    "remnawave": {
-      "inputs": {
-        "flake-utils": "flake-utils_8",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1769451566,
-        "narHash": "sha256-ar5dMg0cFkY7BjPoeKBnRVRnP109uajUMy9ZdT5qQko=",
-        "ref": "refs/heads/main",
-        "rev": "18bdbd6413c9642676d08268c67ca97978b57f3e",
-        "revCount": 10,
-        "type": "git",
-        "url": "ssh://git@github.com/PadowYT2/remnawave.nix-wip.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/PadowYT2/remnawave.nix-wip.git"
-      }
-    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -613,7 +574,6 @@
         "nixpkgs": "nixpkgs",
         "pterodactyl": "pterodactyl",
         "quantum": "quantum",
-        "remnawave": "remnawave",
         "yt-cipher": "yt-cipher"
       }
     },
@@ -654,21 +614,6 @@
       }
     },
     "systems_10": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_11": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -805,7 +750,7 @@
     },
     "yt-cipher": {
       "inputs": {
-        "flake-utils": "flake-utils_9",
+        "flake-utils": "flake-utils_8",
         "nixpkgs": [
           "nixpkgs"
         ]

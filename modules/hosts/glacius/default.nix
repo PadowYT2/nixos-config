@@ -3,7 +3,7 @@
   inputs,
   ...
 }: {
-  flake.nixosConfigurations.vpn = inputs.nixpkgs.lib.nixosSystem {
+  flake.nixosConfigurations.glacius = inputs.nixpkgs.lib.nixosSystem {
     specialArgs = {inherit inputs;};
     modules = with self.nixosModules;
       [
@@ -11,7 +11,6 @@
         remotebuild
         "${inputs.nixpkgs}/nixos/modules/profiles/qemu-guest.nix"
       ]
-      ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
       ++ [
         {
           system.stateVersion = "26.05";
@@ -57,7 +56,7 @@
             };
           };
 
-          networking.hostName = "vpn";
+          networking.hostName = "glacius";
 
           systemd.network.networks."10-ens3" = {
             matchConfig.Name = "ens3";
