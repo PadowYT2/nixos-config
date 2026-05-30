@@ -1,6 +1,7 @@
-# https://github.com/NixOS/nixpkgs/blob/c06b4ae3d6599a672a6210b7021d699c351eebda/nixos/modules/services/web-servers/caddy/default.nix
+# https://github.com/NixOS/nixpkgs/blob/e1fbaa4490c79c0358b42088fe62b783d8885753/nixos/modules/services/web-servers/caddy/default.nix
 {
   config,
+  inputs,
   options,
   lib,
   pkgs,
@@ -69,7 +70,7 @@ let
 
   configPath = "/etc/${etcConfigFile}";
 
-  mkCertOwnershipAssertion = import "${pkgs.path}/nixos/modules/security/acme/mk-cert-ownership-assertion.nix" lib;
+  mkCertOwnershipAssertion = import "${inputs.nixpkgs}/nixos/modules/security/acme/mk-cert-ownership-assertion.nix" lib;
 in
 {
   imports = [
@@ -258,7 +259,7 @@ in
     };
 
     virtualHosts = mkOption {
-      type = with types; attrsOf (submodule (import "${pkgs.path}/nixos/modules/services/web-servers/caddy/vhost-options.nix" { inherit cfg; }));
+      type = with types; attrsOf (submodule (import "${inputs.nixpkgs}/nixos/modules/services/web-servers/caddy/vhost-options.nix" { inherit cfg; }));
       default = { };
       example = literalExpression ''
         {
@@ -436,13 +437,13 @@ in
           null
           options.services.frankenphp.httpPort.default
         ]
-      ) "http_port ${cfg.httpPort}"}
+      ) "http_port ${toString cfg.httpPort}"}
       ${optionalString (
         !elem cfg.httpsPort [
           null
           options.services.frankenphp.httpsPort.default
         ]
-      ) "https_port ${cfg.httpsPort}"}
+      ) "https_port ${toString cfg.httpsPort}"}
       log {
         ${cfg.logFormat}
       }
