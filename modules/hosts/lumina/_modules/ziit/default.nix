@@ -1,10 +1,5 @@
-{
-  config,
-  inputs,
-  ...
-}: {
-  imports = [inputs.flakes.nixosModules.default];
-  nixpkgs.overlays = [inputs.flakes.overlays.default];
+{config, ...}: {
+  imports = [../../../../_overlays];
 
   services.caddy.virtualHosts = {
     "wakatime.proxied.host".extraConfig = ''

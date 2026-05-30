@@ -22,11 +22,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flakes = {
-      url = "github:PadowYT2/flakes";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     yt-cipher = {
       url = "github:PadowYT2/yt-cipher";
       inputs.nixpkgs.follows = "nixpkgs";
