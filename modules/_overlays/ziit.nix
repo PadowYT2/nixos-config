@@ -14,7 +14,7 @@
     else cfg.database.url;
 
   env =
-    (lib.filterAttrs (n: v: v != null) {
+    (lib.filterAttrs (_n: v: v != null) {
       HOST = cfg.host;
       PORT = toString cfg.port;
       NUXT_BASE_URL = cfg.baseUrl;

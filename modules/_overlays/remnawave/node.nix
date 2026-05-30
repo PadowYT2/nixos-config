@@ -6,7 +6,7 @@
 }: let
   cfg = config.services.remnawave.node;
 
-  env = lib.filterAttrs (n: v: v != null) {
+  env = lib.filterAttrs (_n: v: v != null) {
     SUPERVISORD_USER =
       if cfg.supervisordUserFile != null
       then "@SUPERVISORD_USER@"
