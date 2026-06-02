@@ -179,6 +179,7 @@
         inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
         alejandra
         btop
+        deadnix
         dnsutils
         eza
         fastfetch
