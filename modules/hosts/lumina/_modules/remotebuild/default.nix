@@ -9,10 +9,6 @@
       group = "remotebuild";
       useDefaultShell = true;
       openssh.authorizedKeys.keys = with keys; [
-        # padow
-        padow
-        zorin
-
         # konyogony
         sol
 

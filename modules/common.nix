@@ -213,7 +213,7 @@
       ];
 
       sessionVariables = {
-        RULES = "/root/nixos-config/modules/_secrets.nix";
+        RULES = lib.mkDefault "/root/nixos-config/modules/_secrets.nix";
         NH_BYPASS_ROOT_CHECK = "true";
         BAT_THEME = "Catppuccin Mocha";
         FZF_DEFAULT_COMMAND = "rg --files --hidden --follow";

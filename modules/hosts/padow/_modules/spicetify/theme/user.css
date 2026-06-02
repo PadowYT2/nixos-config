@@ -1,0 +1,30 @@
+:root {
+    --left-sidebar-width: 260px;
+}
+
+*,
+*::before,
+*::after {
+    font-family: Monocraft !important;
+}
+
+.main-home-filterChipsContainer,
+.main-yourLibraryX-libraryItemContainer > .os-scrollbar-vertical,
+.main-yourLibraryX-filterArea,
+.main-yourLibraryX-rootListHeader,
+.main-yourLibraryX-header {
+    display: none !important;
+}
+
+.main-home-content {
+    padding-top: 1rem;
+}
+
+.main-yourLibraryX-libraryItemContainer {
+    padding-top: 0.5rem;
+}
+
+.Root__globalNav {
+    scale: 0.9;
+    height: 3.5rem;
+}

@@ -2,6 +2,9 @@ let
   keys = import ./_keys.nix;
 
   publicKeys = with keys; {
+    # padow
+    padow = [padow];
+
     # konyogony
     sol = [sol konyogony];
 
