@@ -41,7 +41,6 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    cartridges
     bottles
     wineWow64Packages.stableFull
     winetricks
