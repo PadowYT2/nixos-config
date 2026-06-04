@@ -189,7 +189,7 @@
             systemPackages = with pkgs; [
               ayugram-desktop
               cinny-desktop
-              totem
+              showtime
               davinci-resolve
               gradia
               libreoffice
