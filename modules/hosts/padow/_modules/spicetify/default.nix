@@ -16,7 +16,6 @@
       homeConfig = false;
     };
     enabledExtensions = with inputs.spicetify.legacyPackages.${pkgs.stdenv.system}.extensions; [
-      autoSkipVideo
       trashbin
       adblock
       hidePodcasts
