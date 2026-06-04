@@ -34,10 +34,10 @@
     "d /home/padow/.steam/steam/steamapps 0755 padow users -"
     "d /home/padow/.steam/steam/steamapps/compatdata_hot 0755 padow users -"
     "d /home/padow/.steam/steam/steamapps/compatdata_cold 0755 padow users -"
-    "d /media/storage/hot/Steam/steamapps - - - -"
-    "d /media/storage/cold/Steam/steamapps - - - -"
-    "L /media/storage/hot/Steam/steamapps/compatdata - - - - /home/padow/.steam/steam/steamapps/compatdata_hot"
-    "L /media/storage/cold/Steam/steamapps/compatdata - - - - /home/padow/.steam/steam/steamapps/compatdata_cold"
+    "d /media/storage/hot/SteamLibrary/steamapps - - - -"
+    "d /media/storage/cold/SteamLibrary/steamapps - - - -"
+    "L+ /media/storage/hot/SteamLibrary/steamapps/compatdata - - - - /home/padow/.steam/steam/steamapps/compatdata_hot"
+    "L+ /media/storage/cold/SteamLibrary/steamapps/compatdata - - - - /home/padow/.steam/steam/steamapps/compatdata_cold"
   ];
 
   environment.systemPackages = with pkgs; [
