@@ -102,11 +102,12 @@
                 toggle-message-tray = mkEmptyArray type.string;
               };
               "org/gnome/shell" = {
+                disable-user-extensions = false;
                 enabled-extensions = with pkgs.gnomeExtensions; [
                   advanced-media-controller.extensionUuid
                   appindicator.extensionUuid
                   blur-my-shell.extensionUuid
-                  copyous.extensionUuid
+                  # copyous.extensionUuid
                   valent.extensionUuid
                 ];
                 favorite-apps = mkEmptyArray type.string;
