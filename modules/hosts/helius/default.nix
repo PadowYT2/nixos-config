@@ -79,9 +79,12 @@
                 GatewayOnLink = true;
               }
               {
+                Destination = "2a12:bec4:1821::1/128";
+                Scope = "link";
+              }
+              {
                 Destination = "::/0";
-                Gateway = "2a12:bec4:1821::";
-                GatewayOnLink = true;
+                Gateway = "2a12:bec4:1821::1";
                 Metric = 1024;
               }
             ];

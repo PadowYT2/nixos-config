@@ -182,9 +182,12 @@ in {
                 gateway = ["95.135.208.1"];
                 routes = [
                   {
+                    Destination = "2a12:bec4:1821::1/128";
+                    Scope = "link";
+                  }
+                  {
                     Destination = "::/0";
-                    Gateway = "2a12:bec4:1821::";
-                    GatewayOnLink = true;
+                    Gateway = "2a12:bec4:1821::1";
                     Metric = 1024;
                   }
                 ];
@@ -242,12 +245,6 @@ in {
                 trusted_proxies static private_ranges
               }
             '';
-
-            virtualHosts = {
-              "http://cdn.magmamc.org:25575".extraConfig = ''
-                reverse_proxy http://5.83.140.166:25575
-              '';
-            };
           };
         }
       ];
