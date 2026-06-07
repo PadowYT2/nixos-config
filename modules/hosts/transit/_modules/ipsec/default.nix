@@ -1,4 +1,10 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
+  environment.systemPackages = with pkgs; [strongswan];
+
   services.strongswan-swanctl = {
     enable = true;
     swanctl = {
