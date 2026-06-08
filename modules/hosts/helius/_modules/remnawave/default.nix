@@ -1,5 +1,5 @@
 {config, ...}: {
-  imports = [../../../../_overlays/remnawave/node/default.nix];
+  imports = [../../../../_overlays/remnawave/node.nix];
   nixpkgs.overlays = [
     (_final: prev: {
       remnawave.node = prev.callPackage ../../../../../packages/remnawave/node {};
