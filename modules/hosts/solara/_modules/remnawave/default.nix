@@ -1,5 +1,10 @@
 {config, ...}: {
-  imports = [../../../../_overlays];
+  imports = [../../../../_overlays/remnawave/node/default.nix];
+  nixpkgs.overlays = [
+    (_final: prev: {
+      remnawave.node = prev.callPackage ../../../../../packages/remnawave/node {};
+    })
+  ];
 
   services.remnawave.node = {
     enable = true;

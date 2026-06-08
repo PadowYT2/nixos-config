@@ -1,5 +1,10 @@
 {config, ...}: {
-  imports = [../../../../_overlays];
+  imports = [../../../../_overlays/ziit.nix];
+  nixpkgs.overlays = [
+    (_final: prev: {
+      remnawave.node = prev.callPackage ../../../../../packages/ziit {};
+    })
+  ];
 
   services.caddy.virtualHosts = {
     "wakatime.proxied.host".extraConfig = ''

@@ -3,7 +3,7 @@
   config,
   ...
 }: {
-  imports = [./_frankenphp.nix];
+  imports = [../../../../../_overlays/frankenphp.nix];
 
   services.caddy.virtualHosts = {
     "panel.magmamc.org".extraConfig = ''

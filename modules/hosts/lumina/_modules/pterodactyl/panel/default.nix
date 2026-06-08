@@ -3,7 +3,7 @@
   config,
   ...
 }: {
-  imports = [./_frankenphp.nix];
+  imports = [../../../../../_overlays/frankenphp.nix];
 
   services.caddy.virtualHosts = {
     "manage.proxied.host".extraConfig = ''
@@ -25,9 +25,6 @@
     virtualHosts = {
       "http://:4645".extraConfig = ''
         root * ${config.services.pterodactyl.panel.package}/public
-        file_server {
-          precompressed br
-        }
         php_server
       '';
     };
