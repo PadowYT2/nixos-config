@@ -2,7 +2,7 @@
   imports = [../../../../_overlays/ziit.nix];
   nixpkgs.overlays = [
     (_final: prev: {
-      remnawave.node = prev.callPackage ../../../../../packages/ziit {};
+      ziit = prev.callPackage ../../../../../packages/ziit {};
     })
   ];
 
