@@ -197,6 +197,7 @@
         nvme-cli
         ookla-speedtest
         openssl
+        (ouch.override {enableUnfree = true;})
         pciutils
         psmisc
         ripgrep
