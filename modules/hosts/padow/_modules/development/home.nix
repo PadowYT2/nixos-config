@@ -225,6 +225,13 @@
         languages = {
           YAML.tab_size = 2;
           Nix.tab_size = 2;
+          CSS.formatter.language_server.name = "biome";
+          HTML.formatter.language_server.name = "biome";
+          JSON.formatter.language_server.name = "biome";
+          JSONC.formatter.language_server.name = "biome";
+          JavaScript.formatter.language_server.name = "biome";
+          TSX.formatter.language_server.name = "biome";
+          TypeScript.formatter.language_server.name = "biome";
         };
         "experimental.theme_overrides".accents = ["#848426" "#448446" "#844486" "#2C7B7C"];
       };

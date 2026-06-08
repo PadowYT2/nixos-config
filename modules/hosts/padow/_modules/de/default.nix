@@ -52,9 +52,11 @@
               "org/gnome/desktop/app-folders".folder-children = mkEmptyArray type.string;
               "org/gnome/desktop/background" = {
                 picture-uri = "file:///home/padow/nixos-config/assets/banner.png";
+                picture-uri-dark = "file:///home/padow/nixos-config/assets/banner.png";
               };
               "org/gnome/desktop/screensaver" = {
                 picture-uri = "file:///home/padow/nixos-config/assets/banner.png";
+                picture-uri-dark = "file:///home/padow/nixos-config/assets/banner.png";
               };
               "org/gnome/desktop/sound".event-sounds = false;
               "org/gnome/desktop/session".idle-delay = mkUint32 900;

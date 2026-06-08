@@ -155,6 +155,7 @@
             extraSpecialArgs = {inherit inputs;};
             useGlobalPkgs = true;
             useUserPackages = true;
+            backupFileExtension = "backup";
             users.padow = {
               home = {
                 username = "padow";
