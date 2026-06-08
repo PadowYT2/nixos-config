@@ -85,6 +85,23 @@
             linkConfig.RequiredForOnline = "routable";
           };
 
+          services.caddy = {
+            enable = true;
+            openFirewall = true;
+
+            globalConfig = ''
+              servers {
+                trusted_proxies static private_ranges
+              }
+            '';
+
+            virtualHosts = {
+              "http://cdn.magmamc.org:25575".extraConfig = ''
+                reverse_proxy http://5.83.140.166:25575
+              '';
+            };
+          };
+
           virtualisation.docker = {
             enable = true;
             daemon.settings = {
