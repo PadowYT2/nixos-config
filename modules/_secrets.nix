@@ -18,6 +18,9 @@ let
     helius = [helius padow];
     noctis = [noctis padow];
     glacius = [glacius padow];
+
+    # magmamc infra
+    magma = [magma padow];
   };
 
   walk = host: dir: relative: let
