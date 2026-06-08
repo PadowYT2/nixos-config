@@ -64,6 +64,7 @@ in {
 
   services.pterodactyl.wings = {
     enable = true;
+    openFirewall = true;
     rootDir = "/var/lib/pterodactyl";
     logDir = "/var/log/pterodactyl";
     tmpDir = "/var/cache/pterodactyl";

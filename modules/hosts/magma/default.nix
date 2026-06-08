@@ -66,6 +66,30 @@
           networking = {
             hostName = "magma";
             enableIPv6 = false;
+            firewall = {
+              allowedTCPPorts = [8192 20436 24454 25600];
+              allowedTCPPortRanges = [
+                {
+                  from = 25570;
+                  to = 25575;
+                }
+                {
+                  from = 25580;
+                  to = 25585;
+                }
+              ];
+              allowedUDPPorts = [8192 20436 24454 25600];
+              allowedUDPPortRanges = [
+                {
+                  from = 25570;
+                  to = 25575;
+                }
+                {
+                  from = 25580;
+                  to = 25585;
+                }
+              ];
+            };
           };
 
           systemd.network.networks."10-ens3" = {
