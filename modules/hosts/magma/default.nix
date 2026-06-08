@@ -10,6 +10,7 @@
         common
         "${inputs.nixpkgs}/nixos/modules/profiles/qemu-guest.nix"
       ]
+      ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
       ++ [
         {
           system.stateVersion = "26.05";
@@ -84,6 +85,15 @@
             linkConfig.RequiredForOnline = "routable";
           };
 
+          virtualisation.docker = {
+            enable = true;
+            daemon.settings = {
+              default-cgroupns-mode = "private";
+              exec-opts = ["native.cgroupdriver=systemd"];
+            };
+          };
+
+          services.openssh.settings.PermitRootLogin = "yes";
           users.users.root.hashedPassword = "$y$j9T$AXEaCIfhaJHlBTK57bFcE1$C8yWgyNnz3/SuG20ZPWDjF/MrDRn/VhHHKykk.JEjW8";
         }
       ];
