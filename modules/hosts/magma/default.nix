@@ -94,7 +94,7 @@
           };
 
           services.openssh.settings.PermitRootLogin = "yes";
-          users.users.root.hashedPassword = "$y$j9T$AXEaCIfhaJHlBTK57bFcE1$C8yWgyNnz3/SuG20ZPWDjF/MrDRn/VhHHKykk.JEjW8";
+          users.users.root.hashedPassword = "$y$j9T$OuUrUFjqMr7ryHiP1lEs2.$TK8itnRu/FesWZGJPdvA0qYeWZOmkFR4YwQQfXPw769";
         }
       ];
   };

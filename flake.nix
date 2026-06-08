@@ -37,11 +37,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    quantum = {
-      url = "git+ssh://git@github.com/PadowYT2/quantum.nix.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     konytools = {
       url = "github:konyogony/KonyTools";
       inputs.nixpkgs.follows = "nixpkgs";

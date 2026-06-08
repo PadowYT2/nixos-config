@@ -1,11 +1,9 @@
 {
-  inputs,
   pkgs,
   config,
   ...
 }: {
   imports = [./_frankenphp.nix];
-  nixpkgs.overlays = [inputs.quantum.overlays.default];
 
   services.caddy.virtualHosts = {
     "manage.proxied.host".extraConfig = ''
@@ -46,7 +44,6 @@
 
   services.pterodactyl.panel = {
     enable = true;
-    package = pkgs.quantum;
     user = "caddy";
     group = "caddy";
     enableNginx = false;
