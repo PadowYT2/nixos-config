@@ -686,11 +686,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779831612,
-        "narHash": "sha256-j9cFLv38BvWh33PaYXwETPATW3EPLXITPQjQAnj25Vw=",
+        "lastModified": 1780945693,
+        "narHash": "sha256-jDzCJAYZivSjJxGH8tIJZQntFXhArYVWyFs2lGb35tQ=",
         "owner": "PadowYT2",
         "repo": "pterodactyl.nix",
-        "rev": "65a5d581ad17538c04d0273bc072db8166ac8a73",
+        "rev": "9e345168aff1d0ca433f90d01735575a0c059f02",
         "type": "github"
       },
       "original": {
