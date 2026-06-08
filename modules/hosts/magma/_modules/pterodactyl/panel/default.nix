@@ -51,9 +51,16 @@
     };
     database.user = "caddy";
     hashids.saltFile = config.age.secrets."pterodactyl.panel.salt".path;
+    extraEnvironmentFile = config.age.secrets."pterodactyl.panel.environment".path;
   };
 
   age.secrets = {
+    "pterodactyl.panel.environment" = {
+      file = secrets/environment.age;
+      owner = "caddy";
+      group = "caddy";
+    };
+
     "pterodactyl.panel.key" = {
       file = secrets/key.age;
       owner = "caddy";
