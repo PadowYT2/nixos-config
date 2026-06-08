@@ -89,7 +89,6 @@
               }
             ];
             linkConfig.RequiredForOnline = "routable";
-            networkConfig.QDisc = "cake";
             cakeConfig.Bandwidth = "10G";
           };
         }
