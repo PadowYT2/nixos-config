@@ -24,6 +24,13 @@
         }
         reverse_proxy http://localhost:4080
       '';
+
+      "*.djoh.pw".extraConfig = ''
+        tls {
+          dns cloudflare {$CF_API_TOKEN}
+        }
+        reverse_proxy http://localhost:4080
+      '';
     };
   };
 
