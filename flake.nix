@@ -62,10 +62,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    millennium = {
-      url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
 
     flatpaks.url = "github:in-a-dil-emma/declarative-flatpak";
 
