@@ -31,6 +31,10 @@
         }
         reverse_proxy http://localhost:4080
       '';
+
+      "unitedconvoys.cc".extraConfig = ''
+        reverse_proxy http://localhost:4080
+      '';
     };
   };
 
