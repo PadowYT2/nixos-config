@@ -23,6 +23,7 @@
         "php"
         "tokyo-night-dark"
         "toml"
+        "wakatime"
       ];
 
       userSettings = {
