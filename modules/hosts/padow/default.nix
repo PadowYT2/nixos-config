@@ -183,6 +183,12 @@
             localsend.enable = true;
             nix-ld.enable = true;
 
+            java = {
+              enable = true;
+              binfmt = true;
+              package = pkgs.temurin-bin-25;
+            };
+
             git.config.user.signingkey = "/home/padow/.ssh/id_ed25519.pub";
           };
 
@@ -227,6 +233,9 @@
               valuta
               file-roller
               ghex
+              nixd
+              bun
+              nodejs_24
             ];
 
             sessionVariables.RULES = "/home/padow/nixos-config/modules/_secrets.nix";
