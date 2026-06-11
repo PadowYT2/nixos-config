@@ -120,7 +120,6 @@
               "org/gnome/shell" = {
                 disable-user-extensions = false;
                 enabled-extensions = with pkgs.gnomeExtensions; [
-                  advanced-media-controller.extensionUuid
                   appindicator.extensionUuid
                   blur-my-shell.extensionUuid
                   # copyous.extensionUuid
