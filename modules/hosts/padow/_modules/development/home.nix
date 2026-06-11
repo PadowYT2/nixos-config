@@ -212,6 +212,13 @@
         buffer_font_size = 15;
         theme = "Tokyo Night Dark";
         lsp = {
+          nixd = {
+            initialization_options = {
+              formatting = {
+                command = ["alejandra" "--quiet" "--"];
+              };
+            };
+          };
           biome = {
             settings = {
               require_config_file = true;
@@ -225,7 +232,14 @@
         };
         languages = {
           YAML.tab_size = 2;
-          Nix.tab_size = 2;
+          Nix = {
+            tab_size = 2;
+            language_servers = ["nixd"];
+            formatter.external = {
+              command = "alejandra";
+              arguments = ["--quiet" "--"];
+            };
+          };
           CSS.formatter.language_server.name = "biome";
           HTML.formatter.language_server.name = "biome";
           JSON.formatter.language_server.name = "biome";
