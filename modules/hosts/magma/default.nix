@@ -67,6 +67,7 @@
             hostName = "magma";
             enableIPv6 = false;
             firewall = {
+              trustedInterfaces = ["pterodactyl0"];
               interfaces.pterodactyl0.allowedTCPPorts = [3306];
               allowedTCPPorts = [8192 20436 24454 25600];
               allowedTCPPortRanges = [
@@ -123,8 +124,9 @@
             };
 
             mysql = {
-              settings = {
-                mysqld.bind-address = "127.0.0.1,172.18.0.1";
+              settings.mysqld = {
+                bind-address = "127.0.0.1,172.18.0.1";
+                skip-name-resolve = true;
               };
             };
           };
