@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -17,4 +17,6 @@
       };
     };
   };
+
+  environment.systemPackages = with pkgs; [ncpamixer];
 }
