@@ -80,6 +80,17 @@
               "org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
               "org/gnome/desktop/wm/keybindings" = {
                 show-desktop = ["<Super>d"];
+                move-to-monitor-up = mkEmptyArray type.string;
+                move-to-monitor-down = mkEmptyArray type.string;
+                move-to-monitor-left = mkEmptyArray type.string;
+                move-to-monitor-right = mkEmptyArray type.string;
+                move-to-workspace-left = mkEmptyArray type.string;
+                move-to-workspace-right = mkEmptyArray type.string;
+                move-to-workspace-1 = mkEmptyArray type.string;
+                move-to-workspace-last = mkEmptyArray type.string;
+                switch-to-workspace-1 = mkEmptyArray type.string;
+                switch-to-workspace-last = mkEmptyArray type.string;
+                switch-panels = mkEmptyArray type.string;
                 switch-panels-backward = mkEmptyArray type.string;
                 cycle-panels = mkEmptyArray type.string;
                 cycle-panels-backward = mkEmptyArray type.string;
@@ -87,7 +98,6 @@
                 cycle-windows-backward = mkEmptyArray type.string;
                 cycle-group = mkEmptyArray type.string;
                 cycle-group-backward = mkEmptyArray type.string;
-                show-screen-recording-ui = mkEmptyArray type.string;
                 screenshot = mkEmptyArray type.string;
                 screenshot-window = mkEmptyArray type.string;
                 activate-window-menu = mkEmptyArray type.string;
@@ -98,6 +108,10 @@
               };
               "org/gnome/shell/app-switcher".current-workspace-only = true;
               "org/gnome/shell/keybindings" = {
+                screenshot = mkEmptyArray type.string;
+                screenshot-window = mkEmptyArray type.string;
+                show-screenshot-ui = mkEmptyArray type.string;
+                show-screen-recording-ui = mkEmptyArray type.string;
                 focus-active-notification = mkEmptyArray type.string;
                 toggle-quick-settings = mkEmptyArray type.string;
                 toggle-application-view = mkEmptyArray type.string;
@@ -116,6 +130,16 @@
               };
               "org/gnome/settings-daemon/plugins/media-keys".help = mkEmptyArray type.string;
               "org/gnome/settings-daemon/plugins/power".sleep-inactive-ac-type = "nothing";
+              "org/gnome/settings-daemon/plugins/media-keys" = {
+                custom-keybindings = [
+                  "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+                ];
+              };
+              "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+                binding = "Print";
+                command = "${pkgs.gradia}/bin/gradia --screenshot=INTERACTIVE";
+                name = "Screenshot";
+              };
               "org/gnome/mutter/wayland/keybindings".restore-shortcuts = mkEmptyArray type.string;
             };
           }
