@@ -188,8 +188,11 @@
                   iifname "eth0" drop
                 '';
 
+                # make sure the 172.19.0.0/16 doesn't get updated
                 extraForwardRules = ''
                   iifname {"docker0", "pterodactyl0", "br-*"} oifname {"docker0", "pterodactyl0", "br-*"} accept
+                  ip saddr 172.19.0.0/16 oifname "eth0" accept
+                  ip saddr 172.19.0.0/16 oifname "ipsec0" drop
                   iifname {"docker0", "pterodactyl0", "br-*"} oifname "ipsec0" accept
                   iifname "ipsec0" oifname {"docker0", "pterodactyl0", "br-*"} accept
                   iifname {"docker0", "pterodactyl0", "br-*"} oifname "eth0" drop
@@ -198,7 +201,7 @@
 
               nftables = {
                 enable = true;
-                tables.storage-box = {
+                tables.direct-routing = {
                   family = "inet";
                   content = ''
                     set storage_box_ipv4 {
@@ -221,6 +224,7 @@
 
                     chain mangle_prerouting {
                       type filter hook prerouting priority mangle; policy accept;
+                      ip saddr 172.19.0.0/16 meta mark set 0x64
                       ip daddr @storage_box_ipv4 meta mark set 0x64
                       ip6 daddr @storage_box_ipv6 meta mark set 0x64
                     }
