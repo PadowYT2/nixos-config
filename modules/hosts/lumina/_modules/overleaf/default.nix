@@ -21,7 +21,7 @@
     };
 
     tmpfiles.rules = [
-      "d /var/lib/overleaf 0700 9996 9996 -"
+      "d /var/lib/overleaf 0755 9996 9996 -"
     ];
   };
 
@@ -62,7 +62,7 @@
         restart = "unless-stopped";
 
         environment = {
-          OVERLEAF_ADMIN_EMAIL = "admin@example.com";
+          OVERLEAF_ADMIN_EMAIL = "me@konyogony.dev";
           OVERLEAF_SITE_URL = "https://overleaf.konyogony.dev";
 
           OVERLEAF_MONGO_URL = "mongodb://%2Frun%2Fmongodb%2Fmongodb-27017.sock/sharelatex?directConnection=true";
