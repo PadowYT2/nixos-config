@@ -239,7 +239,10 @@
             arguments = ["--quiet" "--"];
           };
         };
-        CSS.formatter.language_server.name = "biome";
+        CSS = {
+          language_servers = ["tailwindcss-language-server"];
+          formatter.language_server.name = "biome";
+        };
         HTML.formatter.language_server.name = "biome";
         JSON.formatter.language_server.name = "biome";
         JSONC.formatter.language_server.name = "biome";
