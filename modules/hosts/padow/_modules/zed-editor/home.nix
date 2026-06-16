@@ -10,6 +10,7 @@
       "dart"
       "editorconfig"
       "env"
+      "git-firefly"
       "html"
       "import-cost-lsp"
       "java"
