@@ -20,6 +20,10 @@
 
           boot = {
             initrd.availableKernelModules = ["xhci_pci" "virtio_pci" "virtio_scsi" "usbhid"];
+            loader.grub = {
+              devices = ["nodev"];
+              efiInstallAsRemovable = true;
+            };
           };
 
           disko.devices = {
