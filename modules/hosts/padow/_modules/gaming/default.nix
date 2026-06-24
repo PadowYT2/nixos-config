@@ -41,7 +41,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    bottles
+    (bottles.override {removeWarningPopup = true;})
     wineWow64Packages.stableFull
     winetricks
 
