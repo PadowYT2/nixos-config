@@ -145,6 +145,10 @@
           networking = {
             hostName = "padow";
             useNetworkd = false;
+            hosts = {
+              "127.0.0.1" = ["wayclip.test" "api.wayclip.test"];
+              "::1" = ["wayclip.test" "api.wayclip.test"];
+            };
           };
 
           systemd.network.enable = false;
@@ -234,6 +238,7 @@
               file-roller
               ghex
               nixd
+              devenv
               bun
               nodejs_24
             ];
