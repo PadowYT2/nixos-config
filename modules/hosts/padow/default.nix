@@ -201,7 +201,7 @@
               ayugram-desktop
               cinny-desktop
               showtime
-              davinci-resolve
+              (callPackage ../../../packages/davinci-resolve-studio {})
               gradia
               libreoffice
               hunspell
@@ -253,6 +253,8 @@
             extraGroups = ["networkmanager" "wheel"];
             openssh.authorizedKeys.keys = with keys; [zorin phone padow];
           };
+
+          nix.settings.trusted-users = ["padow"];
 
           age.identityPaths = ["/home/padow/.ssh/id_ed25519"];
         })
