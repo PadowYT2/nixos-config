@@ -56,8 +56,7 @@
         betterBanReasons = {
           enable = true;
           isTextInputDefault = true;
-          reasons = {
-          };
+          reasons = [];
         };
         betterBlockedUsers = {
           enable = true;
