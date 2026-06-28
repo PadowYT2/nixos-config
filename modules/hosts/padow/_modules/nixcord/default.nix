@@ -10,6 +10,7 @@
       branch = "canary";
       vencord.enable = false;
       equicord.enable = true;
+      commandLineArgs = ["--ozone-platform=x11"];
     };
 
     quickCss = ''
