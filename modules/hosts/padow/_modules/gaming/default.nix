@@ -48,7 +48,7 @@
     lunar-client
     tetrio-desktop
     (pkgs.writeShellScriptBin "truckersmp-cli" ''
-      exec ${lib.getExe pkgs.steam-run} ${lib.getExe (pkgs.callPackage ./truckersmp.nix {})} "$@"
+      exec ${lib.getExe pkgs.steam-run} ${lib.getExe (pkgs.callPackage ../../../../../packages/truckersmp-cli {})} "$@"
     '')
   ];
 

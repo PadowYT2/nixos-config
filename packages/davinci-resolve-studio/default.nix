@@ -22,7 +22,7 @@
     }
   '';
 in
-  pkgs.davinci-resolve-studio.override (oldArgs: {
+  pkgs.davinci-resolve-studio.override (_: {
     buildFHSEnv = fhsArgs: let
       davinci-patched = fhsArgs.passthru.davinci.overrideAttrs (old: {
         postInstall = ''

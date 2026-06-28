@@ -8,7 +8,7 @@
       obs-pipewire-audio-capture
       obs-gstreamer
       obs-vkcapture
-      (pkgs.qt6Packages.callPackage ./obs-wayland-hotkeys.nix {})
+      (pkgs.qt6Packages.callPackage ../../../../../packages/obs-wayland-hotkeys {})
     ];
   };
 }
