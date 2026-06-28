@@ -10,7 +10,7 @@
         serif = ["Monocraft"];
         sansSerif = ["Monocraft"];
         monospace = ["Monocraft"];
-        emoji = ["Twemoji"];
+        emoji = ["Twitter Color Emoji"];
       };
     };
   };
