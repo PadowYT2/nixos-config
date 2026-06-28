@@ -17,7 +17,6 @@ let
     solara = [solara padow];
     helius = [helius padow];
     noctis = [noctis padow];
-    glacius = [glacius padow];
 
     # magmamc infra
     magma = [magma padow];

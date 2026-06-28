@@ -20,7 +20,6 @@
         solara
         helius
         noctis
-        glacius
       ];
     };
 
