@@ -262,6 +262,11 @@
           "ctrl-shift-tab" = "pane::ActivatePreviousItem";
         };
       }
+      {
+        unbind = {
+          "ctrl-q" = "zed::Quit";
+        };
+      }
     ];
   };
 }
