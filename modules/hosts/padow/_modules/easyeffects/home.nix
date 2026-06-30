@@ -6,17 +6,17 @@
       default = {
         input = {
           blocklist = [];
-          plugins_order = ["deepfilternet#0" "gate#0" "compressor#0"];
-          "deepfilternet#0" = {
-            attenuation-limit = 30;
+          plugins_order = ["rnnoise#0" "gate#0" "compressor#0"];
+          "rnnoise#0" = {
             bypass = false;
+            enable-vad = true;
             input-gain = 0;
-            max-df-processing-threshold = 20;
-            max-erb-processing-threshold = 25;
-            min-processing-buffer = 0;
-            min-processing-threshold = -15;
+            model-name = "\"\"";
             output-gain = 0;
-            post-filter-beta = 0.05;
+            release = 20;
+            use-standard-model = true;
+            vad-thres = 70;
+            wet = 0;
           };
           "gate#0" = {
             attack = 2;
