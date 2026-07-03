@@ -53,6 +53,14 @@
                     };
                   };
 
+                  swap = {
+                    size = "16G";
+                    content = {
+                      type = "swap";
+                      discardPolicy = "both";
+                    };
+                  };
+
                   root = {
                     size = "100%";
                     label = "vespera-root";
