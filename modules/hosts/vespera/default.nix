@@ -127,7 +127,7 @@
               package = pkgs.temurin-bin-25;
             };
 
-            git.config.user.signingkey = "/home/vespera/.ssh/id_padow.pub";
+            git.config.user.signingkey = "/home/vespera/.ssh/id_ed25519.pub";
           };
 
           environment = {

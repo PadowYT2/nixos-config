@@ -73,6 +73,7 @@
                 accel-profile = "flat";
                 speed = 0.2;
               };
+              "org/gnome/desktop/peripherals/touchpad".disable-while-typing = false;
               "org/gnome/desktop/input-sources" = {
                 sources = mkArray [(mkTuple ["xkb" "us"]) (mkTuple ["xkb" "ru"])];
                 xkb-options = ["grp:lalt_lshift_toggle" "lv3:ralt_switch"];
