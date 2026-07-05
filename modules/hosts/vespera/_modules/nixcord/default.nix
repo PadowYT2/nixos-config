@@ -358,8 +358,10 @@
         searchFix = {
           enable = true;
         };
-        selfForward = {
+        betterForwards = {
           enable = true;
+          dontFollowForwards = true;
+          selfForward = true;
         };
         showHiddenThings = {
           enable = true;
@@ -402,7 +404,7 @@
           format = "png";
           imgSize = "1024";
         };
-        viewRawVariant = {
+        viewRaw = {
           enable = true;
         };
         voiceChatUtilities = {

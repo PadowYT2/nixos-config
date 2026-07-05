@@ -25,6 +25,7 @@
           system.stateVersion = "26.05";
 
           boot = {
+            kernelPackages = pkgs.linuxPackages_latest;
             initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod"];
             kernelModules = ["kvm-amd"];
             supportedFilesystems = ["ntfs-3g"];
@@ -237,6 +238,7 @@
               valuta
               file-roller
               ghex
+              lenspect
               nixd
               devenv
               bun

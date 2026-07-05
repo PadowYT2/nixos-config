@@ -25,6 +25,7 @@
           system.stateVersion = "26.05";
 
           boot = {
+            kernelPackages = pkgs.linuxPackages_latest;
             initrd.availableKernelModules = ["nvme" "xhci_pci" "usb_storage" "sr_mod"];
             kernelModules = ["kvm-amd"];
             kernelParams = ["amd_pstate=active"];
@@ -167,6 +168,7 @@
               switcheroo
               valuta
               file-roller
+              lenspect
               ghex
               nixd
               devenv

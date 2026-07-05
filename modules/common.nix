@@ -178,7 +178,13 @@
       systemPackages = with pkgs; [
         inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
         alejandra
-        btop
+        (
+          if config.networking.hostName == "padow"
+          then btop-cuda
+          else if config.networking.hostName == "vespera"
+          then btop-rocm
+          else btop
+        )
         deadnix
         dnsutils
         eza
