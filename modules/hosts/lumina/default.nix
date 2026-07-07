@@ -72,6 +72,9 @@
               };
 
               kernel.sysctl = {
+                "net.core.default_qdisc" = "fq";
+                "net.ipv4.tcp_congestion_control" = "bbr";
+
                 "net.ipv4.ip_forward" = 1;
                 "net.ipv6.conf.all.forwarding" = 1;
                 "net.ipv4.tcp_syncookies" = 1;
@@ -327,7 +330,10 @@
                       Scope = "global";
                     }
                   ];
-                  linkConfig.RequiredForOnline = "no";
+                  linkConfig = {
+                    MTUBytes = "1400";
+                    RequiredForOnline = "no";
+                  };
                 };
               };
 

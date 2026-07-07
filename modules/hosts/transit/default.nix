@@ -35,6 +35,9 @@ in {
             initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "virtio_scsi" "ahci" "sr_mod" "virtio_blk"];
 
             kernel.sysctl = {
+              "net.core.default_qdisc" = "fq";
+              "net.ipv4.tcp_congestion_control" = "bbr";
+
               "net.ipv4.ip_forward" = 1;
               "net.ipv6.conf.all.forwarding" = 1;
               "net.ipv4.tcp_syncookies" = 1;
@@ -200,7 +203,10 @@ in {
               "20-ipsec0" = {
                 matchConfig.Name = "ipsec0";
                 address = ["10.0.0.1/24" "fd00:1337::1/64"];
-                linkConfig.RequiredForOnline = "no";
+                linkConfig = {
+                  MTUBytes = "1400";
+                  RequiredForOnline = "no";
+                };
               };
             };
 
