@@ -88,17 +88,6 @@
                 "net.ipv4.conf.eth0.rp_filter" = 2;
                 "net.ipv4.conf.ipsec0.rp_filter" = 0;
               };
-
-              kernelPatches = [
-                {
-                  name = "cgroups-v1-for-jvm";
-                  patch = null;
-                  structuredExtraConfig = {
-                    CPUSETS_V1 = lib.kernel.yes;
-                    MEMCG_V1 = lib.kernel.yes;
-                  };
-                }
-              ];
             };
 
             hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
