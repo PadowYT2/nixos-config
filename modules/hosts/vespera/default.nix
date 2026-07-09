@@ -66,10 +66,15 @@
                     size = "100%";
                     label = "vespera-root";
                     content = {
-                      type = "btrfs";
-                      extraArgs = ["-f" "-L" "nixos"];
-                      mountpoint = "/";
-                      mountOptions = ["compress=zstd" "noatime"];
+                      type = "luks";
+                      name = "crypted";
+                      settings.allowDiscards = true;
+                      content = {
+                        type = "btrfs";
+                        extraArgs = ["-f" "-L" "nixos"];
+                        mountpoint = "/";
+                        mountOptions = ["compress=zstd" "noatime"];
+                      };
                     };
                   };
                 };
