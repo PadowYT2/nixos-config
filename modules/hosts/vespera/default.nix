@@ -85,6 +85,7 @@
           networking = {
             hostName = "vespera";
             useNetworkd = false;
+            nameservers = lib.mkForce ["114.114.114.114" "114.114.115.115"];
             hosts = {
               "127.0.0.1" = ["wayclip.test" "api.wayclip.test"];
               "::1" = ["wayclip.test" "api.wayclip.test"];
