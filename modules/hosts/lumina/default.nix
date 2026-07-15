@@ -365,12 +365,6 @@
                   trusted_proxies static private_ranges ${builtins.concatStringsSep " " (cloudflare.ipv4 ++ cloudflare.ipv6)}
                 }
               '';
-
-              virtualHosts = {
-                "2fa.tvrz.dev".extraConfig = ''
-                  reverse_proxy http://144.31.167.137:9004
-                '';
-              };
             };
 
             users.users.root.openssh.authorizedKeys.keys = with keys; [djoh];

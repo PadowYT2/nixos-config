@@ -93,8 +93,7 @@ in {
             hostName = "transit";
 
             firewall = {
-              allowedTCPPorts = [20145 20269 25575];
-              allowedUDPPorts = [500 4500 20145 20269];
+              allowedUDPPorts = [500 4500];
               checkReversePath = "loose";
               trustedInterfaces = ["ipsec0"];
 
@@ -219,40 +218,6 @@ in {
                 xfrmConfig.InterfaceId = 42;
               };
             };
-          };
-
-          services.nginx = {
-            enable = true;
-
-            streamConfig = ''
-              server {
-                listen 20269;
-                proxy_pass 144.31.167.137:9007;
-                proxy_protocol on;
-              }
-
-              server {
-                listen 20145 udp reuseport;
-                proxy_pass 5.83.140.166:25570;
-                proxy_timeout 60s;
-              }
-
-              server {
-                listen 20269 udp reuseport;
-                proxy_pass 144.31.167.137:9007;
-                proxy_timeout 60s;
-              }
-            '';
-          };
-
-          services.caddy = {
-            enable = true;
-
-            globalConfig = ''
-              servers {
-                trusted_proxies static private_ranges
-              }
-            '';
           };
         }
       ];
