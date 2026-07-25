@@ -12,11 +12,6 @@
   konyogony = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGyuCGgfuAQPr1IHGqm+hqP+4hQHrliMqh1KQbZ2SB0d me@konyogony.dev";
   sol = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGzrDm3BR+q1xfeuowKA7mo1ts/0E/xPf7sFZKI/4Jv3 sol@oracle";
 
-  # flop4ik
-  flop4ik = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICUIyiGJTTsZ5WlgPJbk1YXMiCcJSqZtJ/ZyepnwmiKw avl2010503@gmail.com";
-  flop4ikwin = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFCu660rdFejUDIGwc5C/rNoqgUxg0NKzoe+SnWK3lRN flop4ik@DESKTOP-B1227VT";
-  flopux = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHR5ENpI4bWpRy/utPTZFQmvxPQ14AZsc98TBa9di3MN flopux@deluxhost";
-
   # proxied infra
   lumina = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEqJ9PmiSO0H+g1vp9H+YX1/XkHQboN7zICBeSwSprdX lumina@proxied";
   transit = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHM5PXfKL/LKyxI4nznDEdreWGc1WuilVbZyriLADfAR transit@proxied";

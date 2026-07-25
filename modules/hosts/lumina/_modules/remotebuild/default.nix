@@ -12,9 +12,6 @@
         # konyogony
         sol
 
-        # flop4ik
-        flopux
-
         # proxied infra
         transit
         solara

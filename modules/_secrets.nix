@@ -9,9 +9,6 @@ let
     # konyogony
     sol = [sol konyogony];
 
-    # flop4ik
-    flopux = [flopux flop4ik];
-
     # proxied infra
     lumina = [lumina padow];
     transit = [transit padow];
