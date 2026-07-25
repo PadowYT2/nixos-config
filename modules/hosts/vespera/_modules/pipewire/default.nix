@@ -10,9 +10,9 @@
     extraConfig.pipewire."92-audio-stability" = {
       "context.properties" = {
         "default.clock.rate" = 48000;
-        "default.clock.allowed-rates" = [48000];
+        "default.clock.allowed-rates" = [48000 44100];
         "default.clock.quantum" = 1024;
-        "default.clock.min-quantum" = 1024;
+        "default.clock.min-quantum" = 512;
         "default.clock.max-quantum" = 2048;
       };
     };
