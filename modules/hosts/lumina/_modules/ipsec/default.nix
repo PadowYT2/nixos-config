@@ -18,12 +18,12 @@
 
         local.main = {
           auth = "psk";
-          id = "2a01:4f8:162:502e::2";
+          id = "5.9.109.12";
         };
 
         remote.main = {
           auth = "psk";
-          id = "2a12:bec4:1821:61f::a";
+          id = "95.135.208.17";
         };
 
         children.tunnel = {
