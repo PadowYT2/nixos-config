@@ -18,7 +18,7 @@
 
         local.main = {
           auth = "psk";
-          id = "2a12:bec4:1821:61f::a";
+          id = "95.135.208.17";
         };
 
         remote.main = {
