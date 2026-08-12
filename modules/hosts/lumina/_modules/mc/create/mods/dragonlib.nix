@@ -1,9 +1,9 @@
 {pkgs, ...}: {
   services.minecraft-servers.servers.create = {
     symlinks = {
-      "mods/dragonlib.jar" = "${pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/sbIsGaOV/versions/M6CMBAur/dragonlib-neoforge-1.21.1-beta-3.0.24.jar";
-        hash = "sha512-8SqtEl95tQuGcNMQApNmO0guIsgZQ1tkhnqMi+7oPkizwvWo7WDkytYhW/rQb4ok8j1s3tLAA9kb8y50dJ95VQ==";
+      "mods/dragonlib-neoforge-1.21.1-beta-3.0.28.jar" = "${pkgs.fetchurl {
+        url = "https://cdn.modrinth.com/data/sbIsGaOV/versions/x376YU9w/dragonlib-neoforge-1.21.1-beta-3.0.28.jar";
+        hash = "sha512-hZ/1vPl9qyr/99dWIKJLsvRyp16MvwT1NrsNllXR9/Xb3KuM8TynBt/FfgWBu7HV4zMcPf7OcyR2G55VvNYpMQ==";
       }}";
     };
   };

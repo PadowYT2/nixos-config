@@ -16,6 +16,7 @@
     whitelist = {
       kony_ogony = "f1b1cf9a-1417-48ef-a68d-c0a461c8e208";
       YellowRun = "98785c54-6b91-4c14-bd15-744813583287";
+      cx__ = "525484a3-4e48-4916-b26f-2b0883a3cc65";
     };
 
     serverProperties = {
@@ -26,7 +27,6 @@
       max-players = 1000;
       view-distance = 16;
       simulation-distance = 16;
-      level-seed = "-2812014757678273382";
     };
 
     symlinks."server-icon.png" = "${pkgs.fetchurl {

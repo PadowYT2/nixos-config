@@ -1,9 +1,9 @@
 {pkgs, ...}: {
   services.minecraft-servers.servers.create = {
     symlinks = {
-      "mods/escalated.jar" = "${pkgs.fetchurl {
-        url = "https://cdn.modrinth.com/data/LyOBYG8Q/versions/6DNGSw3t/escalated-1.2.1%2Bcreate.6.0.8-mc.1.21.1-neoforge.jar";
-        hash = "sha512-I5omItZgwLJo6DJ3SdgbO2ksK0GKvhtyaeypSPhMfbqA7mXXx/nfSBXPUCnSvtLxBcj1kOpIsjvhndHXEYG+xQ==";
+      "mods/escalated-1.3.1-mc.1.21.1.jar" = "${pkgs.fetchurl {
+        url = "https://cdn.modrinth.com/data/LyOBYG8Q/versions/kEo89EkW/escalated-1.3.1-mc.1.21.1.jar";
+        hash = "sha512-qyXt5tiIfj02z2plARIHoMpUNdvX5cwA4CdIke/9mtvuP0Tbf+r6rymStAMLk7PGAOmDhNQ14PdeE0S0wSqOTQ==";
       }}";
     };
   };
