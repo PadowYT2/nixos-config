@@ -16,6 +16,7 @@
       )
       ++ [
         ({
+          inputs,
           config,
           keys,
           lib,
@@ -202,7 +203,7 @@
               ayugram-desktop
               cinny-desktop
               showtime
-              (callPackage ../../../packages/davinci-resolve-studio {})
+              (callPackage (inputs.self.outPath + "/packages/davinci-resolve-studio") {})
               gradia
               libreoffice
               hunspell

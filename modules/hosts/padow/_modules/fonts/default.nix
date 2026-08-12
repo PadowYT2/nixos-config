@@ -1,7 +1,11 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   fonts = {
     packages = with pkgs; [
-      (pkgs.callPackage ../../../../../packages/monocraft {})
+      (pkgs.callPackage (inputs.self.outPath + "/packages/monocraft") {})
       twemoji-color-font
     ];
 

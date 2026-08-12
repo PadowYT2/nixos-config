@@ -1,9 +1,10 @@
 {
+  inputs,
   pkgs,
   config,
   ...
 }: {
-  imports = [../../../../../_overlays/frankenphp.nix];
+  imports = [(inputs.self.outPath + "/modules/_overlays/frankenphp.nix")];
 
   services.caddy.virtualHosts = {
     "manage.proxied.host".extraConfig = ''

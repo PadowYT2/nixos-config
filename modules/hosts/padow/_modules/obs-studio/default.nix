@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   programs.obs-studio = {
     enable = true;
     enableVirtualCamera = true;
@@ -8,7 +12,7 @@
       obs-pipewire-audio-capture
       obs-gstreamer
       obs-vkcapture
-      (pkgs.qt6Packages.callPackage ../../../../../packages/obs-wayland-hotkeys {})
+      (pkgs.qt6Packages.callPackage (inputs.self.outPath + "/packages/obs-wayland-hotkeys") {})
     ];
   };
 }
