@@ -184,8 +184,6 @@
         (
           if config.networking.hostName == "padow"
           then btop-cuda
-          else if config.networking.hostName == "vespera"
-          then btop-rocm
           else btop
         )
         deadnix

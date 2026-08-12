@@ -4,7 +4,6 @@ let
   publicKeys = with keys; {
     # padow
     padow = [padow];
-    vespera = [padow];
 
     # konyogony
     sol = [sol konyogony];
