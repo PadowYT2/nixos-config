@@ -17,6 +17,7 @@
       kony_ogony = "f1b1cf9a-1417-48ef-a68d-c0a461c8e208";
       YellowRun = "98785c54-6b91-4c14-bd15-744813583287";
       cx__ = "525484a3-4e48-4916-b26f-2b0883a3cc65";
+      drangondiego58 = "98492713-02dd-4838-a4f3-b645c0aa54a5";
     };
 
     serverProperties = {
