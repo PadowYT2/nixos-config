@@ -160,7 +160,7 @@
           {
             user = {
               name = lib.mkDefault "PadowYT2";
-              email = lib.mkDefault "me@padow.ru";
+              email = lib.mkDefault "me@padow.dev";
             };
           }
           (lib.optionalAttrs (builtins.hasAttr config.networking.hostName keys) {
