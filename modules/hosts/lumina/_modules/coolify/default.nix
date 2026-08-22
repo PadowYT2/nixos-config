@@ -32,7 +32,7 @@
         reverse_proxy http://localhost:4080
       '';
 
-      "unitedconvoys.cc static.unitedconvoys.cc static-admin.unitedconvoys.cc".extraConfig = ''
+      "unitedconvoys.cc reverb.unitedconvoys.cc static.unitedconvoys.cc static-admin.unitedconvoys.cc".extraConfig = ''
         reverse_proxy http://localhost:4080
       '';
     };
