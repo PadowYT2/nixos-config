@@ -180,6 +180,12 @@
           programs = {
             nh.flake = "/home/padow/nixos-config";
 
+            ssh.extraConfig = ''
+              Host *
+                ServerAliveInterval 60
+                ServerAliveCountMax 120
+            '';
+
             appimage = {
               enable = true;
               binfmt = true;
