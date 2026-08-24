@@ -30,6 +30,10 @@
             initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod"];
             kernelModules = ["kvm-amd"];
             supportedFilesystems = ["ntfs-3g"];
+            loader = {
+              efi.canTouchEfiVariables = true;
+              grub.efiInstallAsRemovable = false;
+            };
           };
 
           hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

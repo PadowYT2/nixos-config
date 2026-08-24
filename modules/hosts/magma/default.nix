@@ -18,13 +18,6 @@
           boot = {
             initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "ahci" "sr_mod" "virtio_blk"];
             kernelModules = ["kvm-amd"];
-            loader = {
-              efi.canTouchEfiVariables = false;
-              grub = {
-                devices = ["nodev"];
-                efiInstallAsRemovable = true;
-              };
-            };
           };
 
           disko.devices = {

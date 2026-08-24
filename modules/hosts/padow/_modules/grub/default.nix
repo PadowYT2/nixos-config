@@ -3,7 +3,6 @@
     loader = {
       timeout = 15;
       grub = {
-        devices = ["nodev"];
         theme = ./theme;
         splashImage = null;
       };

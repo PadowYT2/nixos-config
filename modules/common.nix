@@ -14,10 +14,12 @@
     ];
 
     boot.loader = {
-      efi.canTouchEfiVariables = lib.mkDefault true;
+      efi.canTouchEfiVariables = lib.mkDefault false;
       grub = {
         enable = true;
         efiSupport = true;
+        devices = ["nodev"];
+        efiInstallAsRemovable = lib.mkDefault true;
       };
     };
 
