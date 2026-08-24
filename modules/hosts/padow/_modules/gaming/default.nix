@@ -57,7 +57,7 @@
     steam = {
       enable = true;
       package = pkgs.millennium-steam;
-      extraCompatPackages = with pkgs; [proton-ge-bin];
+      extraCompatPackages = [(pkgs.callPackage (inputs.self.outPath + "/packages/proton-ge-bin") {steamDisplayName = "Proton-GE 10-35";})];
     };
   };
 
