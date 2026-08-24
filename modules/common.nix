@@ -241,7 +241,7 @@
 
     users = {
       defaultUserShell = pkgs.zsh;
-      users.root.openssh.authorizedKeys.keys = with keys; [zorin phone padow];
+      users.root.openssh.authorizedKeys.keys = with keys; [phone padow];
     };
 
     security = {

@@ -254,7 +254,7 @@
             description = "padow";
             hashedPassword = "$y$j9T$U0pnVGJ8bEotT2ymA.XrY.$JfN56sQqFzo0lPAJXRvX6WQ5HmLmmsbKACDHGFB/CqD";
             extraGroups = ["networkmanager" "wheel"];
-            openssh.authorizedKeys.keys = with keys; [zorin phone padow];
+            openssh.authorizedKeys.keys = with keys; [phone padow];
           };
 
           nix.settings.trusted-users = ["padow"];
