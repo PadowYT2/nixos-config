@@ -118,7 +118,8 @@ in {
     };
 
     tmpfiles.rules = [
-      "d /var/lib/bulwark 0700 9998 9998 -"
+      "d /var/lib/bulwark 0700 bulwark bulwark -"
+      "Z /var/lib/bulwark 0700 bulwark bulwark -"
     ];
   };
 
@@ -301,7 +302,7 @@ in {
     services = {
       bulwark.service = {
         user = "9998:9998";
-        image = "ghcr.io/bulwarkmail/webmail:1.7.2";
+        image = "ghcr.io/bulwarkmail/webmail:1.8.1";
         restart = "unless-stopped";
 
         environment = {
@@ -313,7 +314,10 @@ in {
         env_file = [config.age.secrets."bulwark.environment".path];
 
         volumes = [
-          "/var/lib/bulwark:/app/data/settings"
+          "/var/lib/bulwark/settings:/app/data/settings"
+          "/var/lib/bulwark/admin:/app/data/admin"
+          "/var/lib/bulwark/admin-state:/app/data/admin-state"
+          "/var/lib/bulwark/telemetry:/app/data/telemetry"
         ];
 
         ports = ["7249:3000"];

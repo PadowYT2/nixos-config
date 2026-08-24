@@ -55,14 +55,14 @@
     };
 
     tmpfiles.rules = [
-      "d /var/lib/coolify/ssh 0700 9999 9999 -"
-      "d /var/lib/coolify/ssh/keys 0700 9999 9999 -"
-      "d /var/lib/coolify/ssh/mux 0700 9999 9999 -"
-      "d /var/lib/coolify/applications 0700 9999 9999 -"
-      "d /var/lib/coolify/databases 0700 9999 9999 -"
-      "d /var/lib/coolify/services 0700 9999 9999 -"
-      "d /var/lib/coolify/backups 0700 9999 9999 -"
-      "d /var/lib/coolify/webhooks-during-maintenance 0700 9999 9999 -"
+      "d /var/lib/coolify/ssh 0700 coolify coolify -"
+      "d /var/lib/coolify/ssh/keys 0700 coolify coolify -"
+      "d /var/lib/coolify/ssh/mux 0700 coolify coolify -"
+      "d /var/lib/coolify/applications 0700 coolify coolify -"
+      "d /var/lib/coolify/databases 0700 coolify coolify -"
+      "d /var/lib/coolify/services 0700 coolify coolify -"
+      "d /var/lib/coolify/backups 0700 coolify coolify -"
+      "d /var/lib/coolify/webhooks-during-maintenance 0700 coolify coolify -"
     ];
   };
 
