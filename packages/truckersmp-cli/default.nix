@@ -7,13 +7,13 @@
 }:
 python312Packages.buildPythonApplication (finalAttrs: {
   pname = "truckersmp-cli";
-  version = "0.10.2.1";
+  version = "0.11.0";
 
   src = fetchFromGitHub {
     repo = "truckersmp-cli";
     owner = "truckersmp-cli";
     tag = finalAttrs.version;
-    hash = "sha256-BeSPmcbK5GTUWlT3Fhm0MDfA0Go8JlCxl/PHgUN3sX0=";
+    hash = "sha256-7dnXO+Ffq6C4tvm4P3u3oFt4zAzs8u8kBDIqBdlWSeA=";
   };
 
   pyproject = true;

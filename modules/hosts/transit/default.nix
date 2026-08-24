@@ -219,6 +219,8 @@ in {
               };
             };
           };
+
+          users.users.root.openssh.authorizedKeys.keys = with keys; [djoh];
         }
       ];
   };

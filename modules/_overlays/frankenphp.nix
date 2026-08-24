@@ -1,4 +1,4 @@
-# https://github.com/NixOS/nixpkgs/blob/e1fbaa4490c79c0358b42088fe62b783d8885753/nixos/modules/services/web-servers/caddy/default.nix
+# https://github.com/NixOS/nixpkgs/blob/c0e0ddae861e5de655f383dd3994a44f37a12cff/nixos/modules/services/web-servers/caddy/default.nix
 {
   config,
   inputs,
@@ -439,8 +439,8 @@ in {
     '';
 
     # https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
-    boot.kernel.sysctl."net.core.rmem_max" = mkDefault 2500000;
-    boot.kernel.sysctl."net.core.wmem_max" = mkDefault 2500000;
+    boot.kernel.sysctl."net.core.rmem_max" = mkDefault 7500000;
+    boot.kernel.sysctl."net.core.wmem_max" = mkDefault 7500000;
 
     systemd.packages = [cfg.package];
     systemd.services.frankenphp = {

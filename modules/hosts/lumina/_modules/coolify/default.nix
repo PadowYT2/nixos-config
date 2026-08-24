@@ -89,7 +89,7 @@
     services = {
       coolify.service = {
         user = "9999:9999";
-        image = "ghcr.io/coollabsio/coolify:4.3.2";
+        image = "ghcr.io/coollabsio/coolify:4.3.10";
         restart = "unless-stopped";
 
         environment = {

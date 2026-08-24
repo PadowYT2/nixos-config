@@ -9,7 +9,7 @@
     _module.args.keys = import ./_keys.nix;
 
     imports = [
-      inputs.agenix.nixosModules.default
+      inputs.ragenix.nixosModules.default
       inputs.disko.nixosModules.disko
     ];
 
@@ -25,7 +25,7 @@
       package = pkgs.lixPackageSets.stable.lix;
       settings.experimental-features = ["nix-command" "flakes"];
       extraOptions = ''
-        extra-deprecated-features = broken-string-escape
+        extra-deprecated-features = broken-string-escape or-as-identifier
       '';
     };
 
@@ -179,7 +179,7 @@
 
     environment = {
       systemPackages = with pkgs; [
-        inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+        inputs.ragenix.packages.${pkgs.stdenv.hostPlatform.system}.default
         alejandra
         (
           if config.networking.hostName == "padow"

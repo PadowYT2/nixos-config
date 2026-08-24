@@ -7,7 +7,7 @@
 
     discord = {
       enable = true;
-      branch = "canary";
+      branches = ["canary"];
       vencord.enable = false;
       equicord.enable = true;
       commandLineArgs = ["--ozone-platform=x11"];

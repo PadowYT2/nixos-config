@@ -18,12 +18,6 @@
     accounts-daemon.enable = true;
   };
 
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = "adwaita";
-  };
-
   programs = {
     xwayland.enable = true;
 
@@ -123,6 +117,7 @@
                   appindicator.extensionUuid
                   blur-my-shell.extensionUuid
                   # copyous.extensionUuid
+                  medialine.extensionUuid
                   valent.extensionUuid
                 ];
                 favorite-apps = mkEmptyArray type.string;
@@ -154,17 +149,20 @@
 
   environment = {
     systemPackages = with pkgs; [
-      adwaita-qt6
+      qgnomeplatform
+      qgnomeplatform-qt6
+      qadwaitadecorations
+      qadwaitadecorations-qt6
       (lib.hiPrio pkgs.makeDesktopItem {
         name = "nixos-manual";
         desktopName = "NixOS Manual";
         exec = "nixos-help";
         noDisplay = true;
       })
-      gnomeExtensions.advanced-media-controller
       gnomeExtensions.appindicator
       gnomeExtensions.blur-my-shell
       gnomeExtensions.copyous
+      gnomeExtensions.medialine
       gnomeExtensions.valent
     ];
     gnome.excludePackages = with pkgs; [gnome-tour gnome-user-docs];

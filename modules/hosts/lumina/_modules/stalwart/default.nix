@@ -24,6 +24,7 @@
     '';
   };
 
+  # TODO: remove with stalwart 0.16
   unblockScript = pkgs.writeShellApplication {
     name = "stalwart-unblock-ips";
     runtimeInputs = with pkgs; [coreutils stalwart-cli];

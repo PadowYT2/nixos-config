@@ -17,9 +17,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    agenix = {
+    ragenix = {
       url = "github:yaxitech/ragenix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     arion = {
@@ -67,7 +66,7 @@
     flatpaks.url = "github:in-a-dil-emma/declarative-flatpak";
 
     nixcord = {
-      url = "github:FlameFlag/nixcord";
+      url = "github:4evy/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

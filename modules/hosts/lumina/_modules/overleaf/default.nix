@@ -49,7 +49,7 @@
 
     services = {
       redis-proxy.service = {
-        image = "alpine/socat:1.8.0.3";
+        image = "alpine/socat:1.8.1.3";
         command = ["tcp-listen:6379,fork,reuseaddr" "unix-connect:/run/redis/redis.sock"];
         volumes = [
           "${config.services.redis.servers.overleaf.unixSocket}:/run/redis/redis.sock"
@@ -58,7 +58,7 @@
       };
 
       overleaf.service = {
-        image = "rigon/sharelatex-full:6.1.2-shell-escape";
+        image = "rigon/sharelatex-full:6.2.2-shell-escape";
         restart = "unless-stopped";
 
         environment = {
