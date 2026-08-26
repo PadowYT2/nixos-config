@@ -155,12 +155,10 @@ in {
                     20411
                     25565
                     25567
-                    64738
                   ])
                   ++ (builtins.concatMap (port: mkForward port "udp") [
                     443
                     54322
-                    64738
                   ])
                   ++ [
                     {
