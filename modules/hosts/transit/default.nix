@@ -140,36 +140,33 @@ in {
 
                 forwardPorts =
                   (builtins.concatMap (port: mkForward port "tcp") [
-                    25
-                    80
-                    110
-                    143
-                    443
-                    465
-                    587
-                    993
-                    995
-                    2222
-                    4190
-                    5555
-                    20411
-                    25565
-                    25567
+                    25 # stalwart
+                    80 # caddy
+                    110 # stalwart
+                    143 # stalwart
+                    443 # caddy
+                    465 # stalwart
+                    587 # stalwart
+                    993 # stalwart
+                    995 # stalwart
+                    2222 # pterodactyl
+                    4190 # stalwart
+                    5555 # pterodactyl
+                    25565 # minecraft
                   ])
                   ++ (builtins.concatMap (port: mkForward port "udp") [
-                    443
-                    54322
+                    443 # caddy
                   ])
                   ++ [
                     {
-                      destination = "10.0.0.2:26000-27000";
-                      sourcePort = "26000:27000";
+                      destination = "10.0.0.2:26000-26100";
+                      sourcePort = "26000:26200";
                       proto = "tcp";
                       loopbackIPs = ["95.135.208.17"];
                     }
                     {
-                      destination = "10.0.0.2:26000-27000";
-                      sourcePort = "26000:27000";
+                      destination = "10.0.0.2:26000-26100";
+                      sourcePort = "26000:26200";
                       proto = "udp";
                       loopbackIPs = ["95.135.208.17"];
                     }
