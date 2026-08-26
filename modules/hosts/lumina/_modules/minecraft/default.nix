@@ -3,7 +3,6 @@
   imports = [
     inputs.minecraft.nixosModules.minecraft-servers
     ./cinema
-    ./create
   ];
 
   services.minecraft-servers = {
