@@ -29,6 +29,7 @@
     ];
 
     userSettings = {
+      format_on_save = "on";
       hover_popover_delay = 400;
       semantic_tokens = "combined";
       document_folding_ranges = "on";

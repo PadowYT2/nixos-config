@@ -1,3 +1,4 @@
+# https://github.com/NixOS/nixpkgs/blob/586b979a8ccb8f35d5fe06645dd678a8b343f16f/pkgs/by-name/da/davinci-resolve/package.nix
 {
   stdenv,
   lib,
