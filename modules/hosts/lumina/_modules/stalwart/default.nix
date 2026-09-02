@@ -1,45 +1,33 @@
 {
+  inputs,
   config,
   pkgs,
   lib,
   ...
 }: let
+  mailHost = "mail.proxied.host";
   domains = [
-    "mail.proxied.host"
+    "proxied.host"
     "padow.dev"
     "djoh.pw"
     "konyogony.dev"
-    "qntm.sh"
+    "wayclip.com"
   ];
 
-  setupScript = pkgs.writeShellApplication {
-    name = "stalwart-cert-setup";
-    runtimeInputs = with pkgs; [coreutils];
-    text = ''
-      install -Dm600 -o ${config.services.stalwart.user} -g ${config.services.stalwart.group} \
-        /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.proxied.host/mail.proxied.host.crt ${config.services.stalwart.dataDir}/certs/mail.proxied.host.crt
-
-      install -Dm600 -o ${config.services.stalwart.user} -g ${config.services.stalwart.group} \
-        /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.proxied.host/mail.proxied.host.key ${config.services.stalwart.dataDir}/certs/mail.proxied.host.key
-    '';
-  };
-
-  # TODO: remove with stalwart 0.16
-  unblockScript = pkgs.writeShellApplication {
-    name = "stalwart-unblock-ips";
-    runtimeInputs = with pkgs; [coreutils stalwart-cli];
-    text = ''
-      credentials="admin:$(cat "$CREDENTIALS_DIRECTORY/admin-password")"
-
-      if [ -z "$(URL=http://127.0.0.1:8025 CREDENTIALS="$credentials" stalwart-cli server list-config server.blocked-ip.)" ]; then
-        exit 0
-      fi
-
-      URL=http://127.0.0.1:8025 CREDENTIALS="$credentials" \
-        stalwart-cli server delete-config server.blocked-ip.
-    '';
-  };
+  set = elements:
+    builtins.listToAttrs (map (el: {
+        name = el;
+        value = true;
+      })
+      elements);
+  variant = type: value: {"@type" = type;} // value;
 in {
+  disabledModules = ["services/mail/stalwart/default.nix"];
+
+  imports = [
+    "${inputs.nixpkgs-stalwart}/nixos/modules/services/mail/stalwart"
+  ];
+
   services.caddy.virtualHosts =
     lib.genAttrs (
       lib.concatMap (domain: [
@@ -48,237 +36,17 @@ in {
         "mta-sts.${lib.removePrefix "mail." domain}"
       ])
       domains
-      ++ ["mail.proxied.host"]
+      ++ [mailHost]
     ) (_: {
       extraConfig = ''
         reverse_proxy http://127.0.0.1:8025
       '';
     })
     // {
-      "inbox.proxied.host" = {
-        extraConfig = ''
-          reverse_proxy http://127.0.0.1:7249
-        '';
-      };
-    };
-
-  systemd = {
-    services = {
-      stalwart = {
-        after = ["postgresql.service" "redis-stalwart.service"];
-        requires = ["postgresql.service" "redis-stalwart.service"];
-        serviceConfig = {
-          RestrictAddressFamilies = ["AF_UNIX" "AF_INET" "AF_INET6"];
-        };
-      };
-
-      stalwart-cert-sync = {
-        description = "Stalwart cert sync";
-        wantedBy = ["stalwart.service"];
-        before = ["stalwart.service"];
-
-        serviceConfig = {
-          Type = "oneshot";
-          User = "root";
-          Group = "root";
-          ExecStart = lib.getExe setupScript;
-          ExecStartPost = "${pkgs.systemd}/bin/systemctl --no-block try-restart stalwart.service";
-        };
-      };
-
-      stalwart-unblock-ips = {
-        description = "delete blocked ips";
-
-        serviceConfig = {
-          Type = "oneshot";
-          User = "root";
-          Group = "root";
-          LoadCredential = "admin-password:${config.age.secrets."stalwart.admin".path}";
-          ExecCondition = "${pkgs.systemd}/bin/systemctl --quiet is-active stalwart.service";
-          ExecStart = lib.getExe unblockScript;
-        };
-      };
-    };
-
-    timers.stalwart-unblock-ips = {
-      wantedBy = ["timers.target"];
-      timerConfig = {
-        OnCalendar = "hourly";
-        Persistent = true;
-        Unit = "stalwart-unblock-ips.service";
-      };
-    };
-
-    paths.stalwart-cert-sync = {
-      wantedBy = ["multi-user.target"];
-      pathConfig = {
-        PathModified = ["/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/mail.proxied.host"];
-        Unit = "stalwart-cert-sync.service";
-      };
-    };
-
-    tmpfiles.rules = [
-      "d /var/lib/bulwark 0700 bulwark bulwark -"
-      "Z /var/lib/bulwark 0700 bulwark bulwark -"
-    ];
-  };
-
-  services.stalwart = {
-    enable = true;
-    stateVersion = "26.05";
-
-    settings = {
-      server = {
-        hostname = "mail.proxied.host";
-
-        tls = {
-          enable = true;
-          implicit = false;
-          certificate = "mail.proxied.host";
-        };
-
-        listener = {
-          smtp = {
-            protocol = "smtp";
-            bind = ["[::]:25"];
-          };
-
-          submission = {
-            protocol = "smtp";
-            bind = ["[::]:587"];
-          };
-
-          submissions = {
-            protocol = "smtp";
-            bind = ["[::]:465"];
-            tls.implicit = true;
-          };
-
-          imap = {
-            protocol = "imap";
-            bind = ["[::]:143"];
-          };
-
-          imaps = {
-            protocol = "imap";
-            bind = ["[::]:993"];
-            tls.implicit = true;
-          };
-
-          pop3 = {
-            protocol = "pop3";
-            bind = ["[::]:110"];
-          };
-
-          pop3s = {
-            protocol = "pop3";
-            bind = ["[::]:995"];
-            tls.implicit = true;
-          };
-
-          sieve = {
-            protocol = "managesieve";
-            bind = ["[::]:4190"];
-          };
-
-          http = {
-            protocol = "http";
-            bind = ["127.0.0.1:8025"];
-            url = "https://mail.proxied.host";
-          };
-        };
-
-        auto-ban.scan = {
-          rate = "65535/1d";
-          paths = ["/__completly_non_existing_route__/"];
-        };
-      };
-
-      http = {
-        use-x-forwarded = true;
-        url = "https://mail.proxied.host";
-        permissive-cors = true;
-      };
-
-      certificate."mail.proxied.host" = {
-        cert = "%{file:${config.services.stalwart.dataDir}/certs/mail.proxied.host.crt}%";
-        private-key = "%{file:${config.services.stalwart.dataDir}/certs/mail.proxied.host.key}%";
-        default = true;
-      };
-
-      store = {
-        postgresql = {
-          type = "postgresql";
-          host = "/run/postgresql";
-          database = "stalwart";
-          user = "stalwart";
-        };
-
-        redis = {
-          type = "redis";
-          redis-type = "single";
-          urls = "unix://${config.services.redis.servers.stalwart.unixSocket}";
-        };
-      };
-
-      directory.internal = {
-        type = "internal";
-        store = "postgresql";
-      };
-
-      storage = {
-        data = "postgresql";
-        blob = "postgresql";
-        fts = "postgresql";
-        lookup = "redis";
-        directory = "internal";
-      };
-
-      authentication.fallback-admin = {
-        user = "admin";
-        secret = "%{file:${config.age.secrets."stalwart.admin".path}}%";
-      };
-
-      queue.tls.default.dane = "optional";
-
-      session = {
-        mta-sts.mode = "enforce";
-        rcpt.script = "'noreply'";
-      };
-
-      sieve.trusted.scripts.noreply.contents = ''
-        require ["envelope", "reject"];
-
-        if envelope :localpart :is "to" "no-reply" {
-          reject "550 This address does not accept incoming mail.";
-          stop;
-        }
+      "inbox.proxied.host".extraConfig = ''
+        reverse_proxy http://127.0.0.1:7249
       '';
-
-      contacts.max-size = "524288000"; # 512MB
-      calendar.max-size = "524288000"; # 512MB
-      file-storage.max-size = "524288000"; # 512MB
-
-      config.local-keys = [
-        "server.*"
-        "!server.blocked-ip.*"
-        "!server.allowed-ip.*"
-        "http.*"
-        "certificate.*"
-        "store.*"
-        "directory.*"
-        "storage.*"
-        "authentication.fallback-admin.*"
-        "queue.tls.default.dane"
-        "session.mta-sts.*"
-        "session.rcpt.script"
-        "sieve.trusted.scripts.*"
-        "contacts.max-size"
-        "calendar.max-size"
-        "file-storage.max-size"
-      ];
     };
-  };
 
   services.postgresql = {
     ensureDatabases = ["stalwart"];
@@ -296,24 +64,255 @@ in {
     group = "stalwart";
   };
 
+  systemd.services.stalwart = {
+    after = ["postgresql.service" "redis-stalwart.service"];
+    requires = ["postgresql.service" "redis-stalwart.service"];
+  };
+
+  services.stalwart = {
+    enable = true;
+    package = pkgs.stalwart_0_16;
+
+    settings = variant "PostgreSql" {
+      host = "/run/postgresql";
+      port = config.services.postgresql.settings.port;
+      database = "stalwart";
+      authUsername = "stalwart";
+      authSecret = variant "None" {};
+    };
+
+    provision = {
+      enable = true;
+      url = "http://127.0.0.1:8025/";
+      username = "admin";
+      passwordFile = config.age.secrets."stalwart.admin".path;
+
+      singletons = {
+        SystemSettings = {
+          defaultHostname = mailHost;
+          defaultDomainId = "#domain-proxied-host";
+          proxyTrustedNetworks = set ["127.0.0.1/32" "::1/128"];
+        };
+
+        InMemoryStore = variant "Redis" {
+          url = "unix://${config.services.redis.servers.stalwart.unixSocket}";
+        };
+
+        Http = {
+          enableHsts = true;
+          usePermissiveCors = true;
+          useXForwarded = true;
+        };
+
+        SenderAuth = {
+          dkimStrict = true;
+          dmarcVerify = {
+            match = {
+              "0" = {
+                "if" = "listener == 'smtp'";
+                "then" = "strict";
+              };
+            };
+            "else" = "disable";
+          };
+        };
+
+        MtaSts = {
+          mode = "enforce";
+          mxHosts = set [mailHost];
+        };
+
+        MtaStageRcpt = {
+          script = {"else" = "'noreply'";};
+          allowRelaying = {
+            match = {
+              "0" = {
+                "if" = "!is_empty(authenticated_as)";
+                "then" = "true";
+              };
+            };
+            "else" = "false";
+          };
+        };
+
+        ReportSettings = {
+          outboundReportDomain = "proxied.host";
+          inboundReportAddresses = set ["postmaster@proxied.host" "dmarc-reports@proxied.host"];
+        };
+      };
+
+      objects = {
+        SieveSystemScript = {
+          reconcile = true;
+          match = ["name"];
+          objects = {
+            noreply = {
+              name = "noreply";
+              isActive = true;
+              contents = ''
+                require ["envelope", "reject"];
+                if envelope :localpart :is "to" "no-reply" {
+                  reject "550 This address does not accept incoming mail.";
+                  stop;
+                }
+              '';
+            };
+          };
+        };
+
+        DnsServer = {
+          reconcile = true;
+          match = ["description"];
+          objects = builtins.listToAttrs (map (domain: {
+              name = "cloudflare-${lib.replaceStrings ["."] ["-"] domain}";
+              value = variant "Cloudflare" {
+                description = "Cloudflare ${domain}";
+                secret = variant "File" {
+                  filePath = config.age.secrets."stalwart.domains.${lib.replaceStrings ["."] ["-"] domain}".path;
+                };
+              };
+            })
+            domains);
+        };
+
+        AcmeProvider = {
+          reconcile = true;
+          match = ["directory"];
+          objects = {
+            acme-cloudflare = {
+              directory = "https://acme-v02.api.letsencrypt.org/directory";
+              challengeType = "Dns01";
+              contact = set ["postmaster@${mailHost}"];
+              renewBefore = "R23";
+            };
+          };
+        };
+
+        NetworkListener = {
+          reconcile = true;
+          match = ["name"];
+          objects = {
+            smtp = {
+              name = "smtp";
+              protocol = "smtp";
+              bind = set ["[::]:25"];
+              tlsImplicit = false;
+            };
+
+            submissions = {
+              name = "submissions";
+              protocol = "smtp";
+              bind = set ["[::]:465"];
+              tlsImplicit = true;
+            };
+
+            submission = {
+              name = "submission";
+              protocol = "smtp";
+              bind = set ["[::]:587"];
+              tlsImplicit = false;
+            };
+
+            imaps = {
+              name = "imaps";
+              protocol = "imap";
+              bind = set ["[::]:993"];
+              tlsImplicit = true;
+            };
+
+            imap = {
+              name = "imap";
+              protocol = "imap";
+              bind = set ["[::]:143"];
+              tlsImplicit = false;
+            };
+
+            pop3s = {
+              name = "pop3s";
+              protocol = "pop3";
+              bind = set ["[::]:995"];
+              tlsImplicit = true;
+            };
+
+            pop3 = {
+              name = "pop3";
+              protocol = "pop3";
+              bind = set ["[::]:110"];
+              tlsImplicit = false;
+            };
+
+            sieve = {
+              name = "sieve";
+              protocol = "manageSieve";
+              bind = set ["[::]:4190"];
+              tlsImplicit = false;
+            };
+
+            http = {
+              name = "http";
+              protocol = "http";
+              bind = set ["127.0.0.1:8025"];
+              tlsImplicit = false;
+            };
+          };
+        };
+
+        Domain = {
+          reconcile = true;
+          match = ["name"];
+          objects = builtins.listToAttrs (map (domain: {
+              name = "domain-${lib.replaceStrings ["."] ["-"] domain}";
+              value = {
+                name = domain;
+                isEnabled = true;
+                catchAllAddress = null;
+                reportAddressUri = "mailto:postmaster@proxied.host";
+                subAddressing = variant "Enabled" {};
+
+                dnsManagement = variant "Automatic" {
+                  dnsServerId = "#cloudflare-${lib.replaceStrings ["."] ["-"] domain}";
+                  publishRecords = set ["mx" "spf" "dkim" "dmarc" "mtaSts" "autoConfig" "autoDiscover"];
+                };
+
+                certificateManagement = variant "Automatic" {
+                  acmeProviderId = "#acme-cloudflare";
+                };
+
+                dkimManagement = variant "Automatic" {
+                  algorithms = set ["Dkim1Ed25519Sha256" "Dkim1RsaSha256"];
+                  selectorTemplate = "v{version}-{algorithm}-{date-%Y%m%d}";
+                  rotateAfter = 90 * 24 * 60 * 60 * 1000;
+                  retireAfter = 7 * 24 * 60 * 60 * 1000;
+                  deleteAfter = 30 * 24 * 60 * 60 * 1000;
+                };
+              };
+            })
+            domains);
+        };
+      };
+    };
+
+    environmentFile = config.age.secrets."stalwart.environment".path;
+  };
+
   virtualisation.arion.projects.bulwark.settings = {
     project.name = "bulwark";
 
     services = {
       bulwark.service = {
         user = "9998:9998";
-        image = "ghcr.io/bulwarkmail/webmail:1.8.1";
+        image = "ghcr.io/bulwarkmail/webmail:1.9.2";
         restart = "unless-stopped";
 
         environment = {
-          APP_NAME = "mail.proxied.host";
-          JMAP_SERVER_URL = "https://mail.proxied.host";
+          APP_NAME = mailHost;
+          JMAP_SERVER_URL = "https://${mailHost}";
           SETTINGS_SYNC_ENABLED = "true";
+          SESSION_SECRET_FILE = "/app/data/session_secret";
         };
 
-        env_file = [config.age.secrets."bulwark.environment".path];
-
         volumes = [
+          "${config.age.secrets."bulwark.secret".path}:/app/data/session_secret:ro"
           "/var/lib/bulwark/settings:/app/data/settings"
           "/var/lib/bulwark/admin:/app/data/admin"
           "/var/lib/bulwark/admin-state:/app/data/admin-state"
@@ -338,15 +337,58 @@ in {
     };
   };
 
+  systemd.tmpfiles.rules = [
+    "d /var/lib/bulwark 0700 bulwark bulwark -"
+    "Z /var/lib/bulwark 0700 bulwark bulwark -"
+  ];
+
   age.secrets = {
+    "stalwart.environment" = {
+      file = secrets/environment.age;
+      owner = "stalwart";
+      group = "stalwart";
+    };
+
     "stalwart.admin" = {
       file = secrets/admin.age;
       owner = "stalwart";
       group = "stalwart";
     };
 
-    "bulwark.environment" = {
-      file = secrets/environment.age;
+    "bulwark.secret" = {
+      file = secrets/secret.age;
+      owner = "bulwark";
+      group = "bulwark";
+    };
+
+    "stalwart.domains.proxied-host" = {
+      file = secrets/domains/proxied-host.age;
+      owner = "stalwart";
+      group = "stalwart";
+    };
+
+    "stalwart.domains.padow-dev" = {
+      file = secrets/domains/padow-dev.age;
+      owner = "stalwart";
+      group = "stalwart";
+    };
+
+    "stalwart.domains.djoh-pw" = {
+      file = secrets/domains/djoh-pw.age;
+      owner = "stalwart";
+      group = "stalwart";
+    };
+
+    "stalwart.domains.konyogony-dev" = {
+      file = secrets/domains/konyogony-dev.age;
+      owner = "stalwart";
+      group = "stalwart";
+    };
+
+    "stalwart.domains.wayclip-com" = {
+      file = secrets/domains/wayclip-com.age;
+      owner = "stalwart";
+      group = "stalwart";
     };
   };
 }
