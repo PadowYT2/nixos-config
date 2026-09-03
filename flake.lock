@@ -620,6 +620,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-stalwart": {
+      "locked": {
+        "lastModified": 1786661995,
+        "narHash": "sha256-qLxS8IGOV7a6SYgJK7MlErhHcz3wiPuaw9XUvv1fh38=",
+        "owner": "0x57e11a",
+        "repo": "nixpkgs",
+        "rev": "030b10129336920a77aa05972d8243e578aafff7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0x57e11a",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1787498568,
@@ -711,6 +727,7 @@
         "minecraft": "minecraft",
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-stalwart": "nixpkgs-stalwart",
         "pterodactyl": "pterodactyl",
         "ragenix": "ragenix",
         "spicetify": "spicetify",

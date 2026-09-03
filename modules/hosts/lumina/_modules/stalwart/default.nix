@@ -22,10 +22,10 @@
       elements);
   variant = type: value: {"@type" = type;} // value;
 in {
-  disabledModules = ["services/mail/stalwart/default.nix"];
-
+  disabledModules = ["services/mail/stalwart.nix"];
   imports = [
     "${inputs.nixpkgs-stalwart}/nixos/modules/services/mail/stalwart"
+    "${inputs.nixpkgs-stalwart}/nixos/modules/services/mail/stalwart/provision.nix"
   ];
 
   services.caddy.virtualHosts =
@@ -72,6 +72,7 @@ in {
   services.stalwart = {
     enable = true;
     package = pkgs.stalwart_0_16;
+    stateVersion = "26.11";
 
     settings = variant "PostgreSql" {
       host = "/run/postgresql";
@@ -89,9 +90,9 @@ in {
 
       singletons = {
         SystemSettings = {
-          defaultHostname = mailHost;
+          defaultHostname = "transit.lumina.proxied.host";
           defaultDomainId = "#domain-proxied-host";
-          proxyTrustedNetworks = set ["127.0.0.1/32" "::1/128"];
+          proxyTrustedNetworks = {};
         };
 
         InMemoryStore = variant "Redis" {
@@ -119,7 +120,7 @@ in {
 
         MtaSts = {
           mode = "enforce";
-          mxHosts = set [mailHost];
+          mxHosts = set [mailHost "transit.lumina.proxied.host"];
         };
 
         MtaStageRcpt = {
@@ -173,6 +174,17 @@ in {
               };
             })
             domains);
+        };
+
+        Tracer = {
+          reconcile = true;
+          match = ["level"];
+          objects = {
+            journal = variant "Journal" {
+              enable = true;
+              level = "info";
+            };
+          };
         };
 
         AcmeProvider = {
@@ -271,7 +283,10 @@ in {
 
                 dnsManagement = variant "Automatic" {
                   dnsServerId = "#cloudflare-${lib.replaceStrings ["."] ["-"] domain}";
-                  publishRecords = set ["mx" "spf" "dkim" "dmarc" "mtaSts" "autoConfig" "autoDiscover"];
+                  publishRecords =
+                    if domain == "proxied.host"
+                    then set ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoDiscover" "tlsa"]
+                    else set ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoDiscover"];
                 };
 
                 certificateManagement = variant "Automatic" {
