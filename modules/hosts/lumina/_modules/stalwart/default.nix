@@ -91,7 +91,7 @@ in {
 
       singletons = {
         SystemSettings = {
-          defaultHostname = "transit.lumina.proxied.host";
+          defaultHostname = "mail.proxied.host";
           defaultDomainId = "#domain-proxied-host";
           proxyTrustedNetworks = {};
         };
@@ -121,7 +121,7 @@ in {
 
         MtaSts = {
           mode = "enforce";
-          mxHosts = set ["mail.proxied.host" "transit.lumina.proxied.host"];
+          mxHosts = set ["mail.proxied.host"];
         };
 
         MtaStageRcpt = {
@@ -195,7 +195,7 @@ in {
             acme-cloudflare = {
               directory = "https://acme-v02.api.letsencrypt.org/directory";
               challengeType = "Dns01";
-              contact = set ["postmaster@mail.proxied.host"];
+              contact = set ["postmaster@proxied.host"];
               renewBefore = "R23";
             };
           };
