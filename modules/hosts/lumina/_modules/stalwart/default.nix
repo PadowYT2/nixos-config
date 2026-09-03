@@ -5,10 +5,10 @@
   lib,
   ...
 }: let
-  mailHost = "mail.proxied.host";
   domains = [
     "proxied.host"
     "padow.dev"
+    "padow.ru"
     "djoh.pw"
     "konyogony.dev"
     "wayclip.com"
@@ -31,12 +31,13 @@ in {
   services.caddy.virtualHosts =
     lib.genAttrs (
       lib.concatMap (domain: [
+        "ua-auto-config.${lib.removePrefix "mail." domain}"
         "autoconfig.${lib.removePrefix "mail." domain}"
         "autodiscover.${lib.removePrefix "mail." domain}"
         "mta-sts.${lib.removePrefix "mail." domain}"
       ])
       domains
-      ++ [mailHost]
+      ++ ["mail.proxied.host"]
     ) (_: {
       extraConfig = ''
         reverse_proxy http://127.0.0.1:8025
@@ -120,7 +121,7 @@ in {
 
         MtaSts = {
           mode = "enforce";
-          mxHosts = set [mailHost "transit.lumina.proxied.host"];
+          mxHosts = set ["mail.proxied.host" "transit.lumina.proxied.host"];
         };
 
         MtaStageRcpt = {
@@ -194,7 +195,7 @@ in {
             acme-cloudflare = {
               directory = "https://acme-v02.api.letsencrypt.org/directory";
               challengeType = "Dns01";
-              contact = set ["postmaster@${mailHost}"];
+              contact = set ["postmaster@mail.proxied.host"];
               renewBefore = "R23";
             };
           };
@@ -285,8 +286,8 @@ in {
                   dnsServerId = "#cloudflare-${lib.replaceStrings ["."] ["-"] domain}";
                   publishRecords =
                     if domain == "proxied.host"
-                    then set ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoDiscover" "tlsa"]
-                    else set ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoDiscover"];
+                    then set ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoConfigLegacy" "autoDiscover" "tlsa"]
+                    else set ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoConfigLegacy" "autoDiscover"];
                 };
 
                 certificateManagement = variant "Automatic" {
@@ -320,8 +321,8 @@ in {
         restart = "unless-stopped";
 
         environment = {
-          APP_NAME = mailHost;
-          JMAP_SERVER_URL = "https://${mailHost}";
+          APP_NAME = "mail.proxied.host";
+          JMAP_SERVER_URL = "https://mail.proxied.host";
           SETTINGS_SYNC_ENABLED = "true";
           SESSION_SECRET_FILE = "/app/data/session_secret";
         };
@@ -384,6 +385,12 @@ in {
 
     "stalwart.domains.padow-dev" = {
       file = secrets/domains/padow-dev.age;
+      owner = "stalwart";
+      group = "stalwart";
+    };
+
+    "stalwart.domains.padow-ru" = {
+      file = secrets/domains/padow-ru.age;
       owner = "stalwart";
       group = "stalwart";
     };
