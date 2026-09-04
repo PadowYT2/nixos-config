@@ -66,12 +66,12 @@ in {
   };
 
   systemd.services.stalwart = {
+    serviceConfig.LogsDirectory = "stalwart";
     after = ["postgresql.service" "redis-stalwart.service"];
     requires = ["postgresql.service" "redis-stalwart.service"];
   };
 
   systemd.tmpfiles.rules = [
-    "d /var/lib/stalwart/logs 0750 stalwart stalwart -"
     "d /var/lib/bulwark 0700 bulwark bulwark -"
     "Z /var/lib/bulwark 0700 bulwark bulwark -"
   ];
@@ -193,12 +193,12 @@ in {
             };
 
             file-logger = variant "Log" {
-              path = "/var/lib/stalwart/logs";
+              enable = true;
+              path = "/var/log/stalwart";
               prefix = "stalwart.log";
               rotate = "hourly";
               ansi = true;
               multiline = false;
-              enable = true;
               level = "info";
             };
           };
