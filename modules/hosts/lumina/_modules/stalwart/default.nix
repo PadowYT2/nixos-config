@@ -70,6 +70,12 @@ in {
     requires = ["postgresql.service" "redis-stalwart.service"];
   };
 
+  systemd.tmpfiles.rules = [
+    "d /var/lib/stalwart/logs 0750 stalwart stalwart -"
+    "d /var/lib/bulwark 0700 bulwark bulwark -"
+    "Z /var/lib/bulwark 0700 bulwark bulwark -"
+  ];
+
   services.stalwart = {
     enable = true;
     package = pkgs.stalwart_0_16;
@@ -152,10 +158,10 @@ in {
               name = "noreply";
               isActive = true;
               contents = ''
-                require ["envelope", "reject"];
-                if envelope :localpart :is "to" "no-reply" {
-                  reject "550 This address does not accept incoming mail.";
-                  stop;
+                require ["envelope", "ereject", "subaddress"];
+
+                if envelope :user :is "to" "no-reply" {
+                  ereject "This address does not accept incoming mail.";
                 }
               '';
             };
@@ -184,6 +190,27 @@ in {
             journal = variant "Journal" {
               enable = true;
               level = "info";
+            };
+
+            file-logger = variant "Log" {
+              path = "/var/lib/stalwart/logs";
+              prefix = "stalwart.log";
+              rotate = "hourly";
+              ansi = true;
+              multiline = false;
+              enable = true;
+              level = "info";
+            };
+          };
+        };
+
+        MtaConnectionStrategy = {
+          reconcile = true;
+          match = ["name"];
+          objects = {
+            default = {
+              name = "default";
+              ehloHostname = "transit.lumina.proxied.host";
             };
           };
         };
@@ -352,11 +379,6 @@ in {
       gid = 9998;
     };
   };
-
-  systemd.tmpfiles.rules = [
-    "d /var/lib/bulwark 0700 bulwark bulwark -"
-    "Z /var/lib/bulwark 0700 bulwark bulwark -"
-  ];
 
   age.secrets = {
     "stalwart.environment" = {
