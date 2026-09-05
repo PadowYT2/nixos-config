@@ -68,7 +68,11 @@
                 speed = 0.2;
               };
               "org/gnome/desktop/input-sources" = {
-                sources = mkArray [(mkTuple ["xkb" "us"]) (mkTuple ["xkb" "ru"])];
+                sources = mkArray [
+                  (mkTuple ["xkb" "us"])
+                  (mkTuple ["xkb" "ru"])
+                  # (mkTuple ["ibus" "libpinyin"])
+                ];
                 xkb-options = ["grp:lalt_lshift_toggle" "lv3:ralt_switch"];
               };
               "org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
