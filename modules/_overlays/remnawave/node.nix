@@ -6,75 +6,46 @@
 }: let
   cfg = config.services.remnawave.node;
 
-  env = lib.filterAttrs (_n: v: v != null) {
-    SUPERVISORD_USER =
-      if cfg.supervisordUserFile != null
-      then "@SUPERVISORD_USER@"
-      else cfg.supervisordUser;
-    SUPERVISORD_PASSWORD =
-      if cfg.supervisordPasswordFile != null
-      then "@SUPERVISORD_PASSWORD@"
-      else cfg.supervisordPassword;
-    INTERNAL_REST_TOKEN =
-      if cfg.internalRestTokenFile != null
-      then "@INTERNAL_REST_TOKEN@"
-      else cfg.internalRestToken;
-    SECRET_KEY =
-      if cfg.secretKeyFile != null
-      then "@SECRET_KEY@"
-      else cfg.secretKey;
-  };
-
-  setupScript = pkgs.writeShellApplication {
-    name = "remnawave-node-setup";
-    runtimeInputs = with pkgs; [coreutils replace-secret];
+  xrayRun = pkgs.writeShellApplication {
+    name = "xray-run";
+    runtimeInputs = with pkgs; [xray];
     text = ''
-      install -Dm640 -o ${cfg.user} -g ${cfg.group} \
-        ${pkgs.writeText "remnawave-node.env" (lib.generators.toKeyValue {} env)} \
-        /var/lib/remnawave-node/node.env
+      exec 2>&1
 
-      ${lib.optionalString (cfg.supervisordUserFile != null) ''
-        replace-secret '@SUPERVISORD_USER@' ${lib.escapeShellArg cfg.supervisordUserFile} /var/lib/remnawave-node/node.env
-      ''}
+      if [ -z "$INTERNAL_REST_TOKEN" ] && [ -n "$CREDENTIALS_DIRECTORY" ] && [ -f "$CREDENTIALS_DIRECTORY/INTERNAL_REST_TOKEN" ]; then
+        INTERNAL_REST_TOKEN="$(< "$CREDENTIALS_DIRECTORY/INTERNAL_REST_TOKEN")"
+        export INTERNAL_REST_TOKEN
+      fi
 
-      ${lib.optionalString (cfg.supervisordPasswordFile != null) ''
-        replace-secret '@SUPERVISORD_PASSWORD@' ${lib.escapeShellArg cfg.supervisordPasswordFile} /var/lib/remnawave-node/node.env
-      ''}
-
-      ${lib.optionalString (cfg.internalRestTokenFile != null) ''
-        replace-secret '@INTERNAL_REST_TOKEN@' ${lib.escapeShellArg cfg.internalRestTokenFile} /var/lib/remnawave-node/node.env
-      ''}
-
-      ${lib.optionalString (cfg.secretKeyFile != null) ''
-        replace-secret '@SECRET_KEY@' ${lib.escapeShellArg cfg.secretKeyFile} /var/lib/remnawave-node/node.env
-      ''}
+      exec xray \
+        -config @"$INTERNAL_SOCKET_PATH":/internal/get-config?token="$INTERNAL_REST_TOKEN" \
+        -format json
     '';
   };
 
-  remmawaveNodeCli = pkgs.writeShellApplication {
-    name = "remnawave-node-cli";
+  remnawaveNodeStart = pkgs.writeShellApplication {
+    name = "remnawave-node-start";
     text = ''
-      exec ${cfg.package}/bin/remnawave-node-cli "$@"
-    '';
-  };
+      if [ -n "$CREDENTIALS_DIRECTORY" ]; then
+        if [ -f "$CREDENTIALS_DIRECTORY/SECRET_KEY" ]; then
+          SECRET_KEY="$(< "$CREDENTIALS_DIRECTORY/SECRET_KEY")"
+          export SECRET_KEY
+        fi
 
-  cfgService = {
-    User = cfg.user;
-    Group = cfg.group;
-    StateDirectory = "remnawave-node";
-    LogsDirectory = "remnawave-node";
-    RuntimeDirectory = "remnawave-node";
+        if [ -f "$CREDENTIALS_DIRECTORY/INTERNAL_REST_TOKEN" ]; then
+          INTERNAL_REST_TOKEN="$(< "$CREDENTIALS_DIRECTORY/INTERNAL_REST_TOKEN")"
+          export INTERNAL_REST_TOKEN
+        fi
+      fi
+
+      exec ${cfg.package}/bin/remnawave-node
+    '';
   };
 in {
   options.services.remnawave.node = {
     enable = lib.mkEnableOption "Remnawave Node service";
 
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.remnawave.node.override {user = cfg.user;};
-      defaultText = "pkgs.remnawave.node";
-      description = "The Remnawave Node package to use";
-    };
+    package = lib.mkPackageOption pkgs ["remnawave" "node"] {};
 
     user = lib.mkOption {
       type = lib.types.str;
@@ -97,68 +68,37 @@ in {
     secretKey = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
-      description = "The SECRET_KEY from the Remnawave panel";
+      description = "Raw SECRET_KEY string from Remnawave panel";
     };
 
     secretKeyFile = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Path to a file containing the SECRET_KEY";
-    };
-
-    supervisordUser = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = null;
-      description = "Username for the supervisord HTTP API";
-    };
-
-    supervisordUserFile = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = "Path to a file containing the supervisord username";
-    };
-
-    supervisordPassword = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default = null;
-      description = "Password for the supervisord HTTP API";
-    };
-
-    supervisordPasswordFile = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = "Path to a file containing the supervisord password";
+      description = "Path to file containing SECRET_KEY";
     };
 
     internalRestToken = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
-      description = "Token for the internal REST API between the node and Xray";
+      description = "Token for internal REST API between node and Xray";
     };
 
     internalRestTokenFile = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Path to a file containing the internal REST token";
+      description = "Path to file containing internal REST token";
     };
 
     port = lib.mkOption {
       type = lib.types.port;
       default = 2222;
-      description = "Port for the node API";
-    };
-
-    xtlsApiPort = lib.mkOption {
-      type = lib.types.port;
-      default = 61000;
-      description = "Port for the XTLS (Xray) gRPC API";
+      description = "Port for node API";
     };
 
     environment = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [];
-      description = "Additional environment variables to pass to the service";
-      example = ["XTLS_API_PORT=61000"];
+      description = "Additional environment variables to pass to service";
     };
   };
 
@@ -173,22 +113,6 @@ in {
         message = "must set either services.remnawave.node.secretKey or services.remnawave.node.secretKeyFile";
       }
       {
-        assertion = cfg.supervisordUser == null || cfg.supervisordUserFile == null;
-        message = "cannot set both services.remnawave.node.supervisordUser and services.remnawave.node.supervisordUserFile";
-      }
-      {
-        assertion = cfg.supervisordUser != null || cfg.supervisordUserFile != null;
-        message = "must set either services.remnawave.node.supervisordUser or services.remnawave.node.supervisordUserFile";
-      }
-      {
-        assertion = cfg.supervisordPassword == null || cfg.supervisordPasswordFile == null;
-        message = "cannot set both services.remnawave.node.supervisordPassword and services.remnawave.node.supervisordPasswordFile";
-      }
-      {
-        assertion = cfg.supervisordPassword != null || cfg.supervisordPasswordFile != null;
-        message = "must set either services.remnawave.node.supervisordPassword or services.remnawave.node.supervisordPasswordFile";
-      }
-      {
         assertion = cfg.internalRestToken == null || cfg.internalRestTokenFile == null;
         message = "cannot set both services.remnawave.node.internalRestToken and services.remnawave.node.internalRestTokenFile";
       }
@@ -200,74 +124,63 @@ in {
 
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [cfg.port];
 
-    systemd.services.remnawave-node-setup = {
-      description = "Remnawave Node setup";
-      requiredBy = ["remnawave-node-supervisor.service" "remnawave-node.service"];
-      before = ["remnawave-node-supervisor.service" "remnawave-node.service"];
-      restartTriggers = [cfg.package];
-
-      serviceConfig =
-        cfgService
-        // {
-          Type = "oneshot";
-          ExecStart = lib.getExe setupScript;
-          RemainAfterExit = true;
-        };
-    };
+    systemd.tmpfiles.rules = [
+      "d /run/remnawave-node 0750 ${cfg.user} ${cfg.group} -"
+      "d /run/remnawave-node/xray-service 0750 ${cfg.user} ${cfg.group} -"
+      "f /run/remnawave-node/xray-service/down 0640 ${cfg.user} ${cfg.group} -"
+      "L+ /run/remnawave-node/xray-service/run - - - - ${lib.getExe xrayRun}"
+    ];
 
     systemd.services.remnawave-node-supervisor = {
       description = "Remnawave Node Supervisor";
       wantedBy = ["multi-user.target"];
-      after = ["network-online.target" "remnawave-node-setup.service"];
+      after = ["network-online.target"];
       wants = ["network-online.target"];
-      requires = ["remnawave-node-setup.service"];
 
-      serviceConfig =
-        cfgService
-        // {
-          Type = "simple";
-          ExecStart = "${pkgs.python3Packages.supervisor}/bin/supervisord -c ${cfg.package}/share/remnawave-node/supervisord.conf";
-          EnvironmentFile = "/var/lib/remnawave-node/node.env";
-          Environment = [
-            "INTERNAL_SOCKET_PATH=/run/remnawave-node/internal.sock"
-            "SUPERVISORD_SOCKET_PATH=/run/remnawave-node/supervisord.sock"
-            "SUPERVISORD_PID_PATH=/run/remnawave-node/supervisord.pid"
-          ];
-          Restart = "on-failure";
-          AmbientCapabilities = "CAP_NET_BIND_SERVICE";
-        };
+      serviceConfig = {
+        User = cfg.user;
+        Group = cfg.group;
+        Type = "simple";
+        ExecStart = "${pkgs.s6}/bin/s6-supervise /run/remnawave-node/xray-service";
+        LoadCredential = lib.optional (cfg.internalRestTokenFile != null) "INTERNAL_REST_TOKEN:${cfg.internalRestTokenFile}";
+        Environment =
+          ["INTERNAL_SOCKET_PATH=remnawave-internal"]
+          ++ lib.optional (cfg.internalRestToken != null) "INTERNAL_REST_TOKEN=${cfg.internalRestToken}";
+        Restart = "always";
+        AmbientCapabilities = ["CAP_NET_BIND_SERVICE" "CAP_NET_ADMIN"];
+      };
     };
 
     systemd.services.remnawave-node = {
       description = "Remnawave Node service";
       wantedBy = ["multi-user.target"];
-      after = ["network-online.target" "remnawave-node-setup.service" "remnawave-node-supervisor.service"];
+      after = ["network-online.target" "remnawave-node-supervisor.service"];
       wants = ["network-online.target"];
-      requires = ["remnawave-node-setup.service" "remnawave-node-supervisor.service"];
+      requires = ["remnawave-node-supervisor.service"];
 
-      serviceConfig =
-        cfgService
-        // {
-          ExecStart = "${cfg.package}/bin/remnawave-node";
-          WorkingDirectory = "${cfg.package}/share/remnawave-node";
-          EnvironmentFile = "/var/lib/remnawave-node/node.env";
-          Environment =
-            [
-              "NODE_ENV=production"
-              "NODE_PORT=${toString cfg.port}"
-              "XTLS_API_PORT=${toString cfg.xtlsApiPort}"
-              "XRAY_CORE_VERSION=${pkgs.xray.version}"
-              "INTERNAL_SOCKET_PATH=/run/remnawave-node/internal.sock"
-              "SUPERVISORD_SOCKET_PATH=/run/remnawave-node/supervisord.sock"
-              "SUPERVISORD_PID_PATH=/run/remnawave-node/supervisord.pid"
-            ]
-            ++ cfg.environment;
-          Restart = "on-failure";
-          AmbientCapabilities = ["CAP_NET_BIND_SERVICE" "CAP_NET_ADMIN"];
-        };
+      serviceConfig = {
+        User = cfg.user;
+        Group = cfg.group;
+        ExecStart = lib.getExe remnawaveNodeStart;
+        WorkingDirectory = "${cfg.package}/share/remnawave-node";
+        LoadCredential =
+          lib.optional (cfg.secretKeyFile != null) "SECRET_KEY:${cfg.secretKeyFile}"
+          ++ lib.optional (cfg.internalRestTokenFile != null) "INTERNAL_REST_TOKEN:${cfg.internalRestTokenFile}";
+        Environment =
+          [
+            "NODE_ENV=production"
+            "NODE_PORT=${toString cfg.port}"
+            "INTERNAL_SOCKET_PATH=remnawave-internal"
+            "XTLS_API_SOCKET_PATH=remnawave-xtls"
+            "XRAY_S6_SERVICE_DIR=/run/remnawave-node/xray-service"
+          ]
+          ++ lib.optional (cfg.secretKey != null) "SECRET_KEY=${cfg.secretKey}"
+          ++ lib.optional (cfg.internalRestToken != null) "INTERNAL_REST_TOKEN=${cfg.internalRestToken}"
+          ++ cfg.environment;
+        Restart = "on-failure";
+        AmbientCapabilities = ["CAP_NET_BIND_SERVICE" "CAP_NET_ADMIN"];
+      };
     };
-
-    environment.systemPackages = [remmawaveNodeCli];
 
     users.users = lib.mkIf (cfg.user == "remnawave-node") {
       ${cfg.user} = {
