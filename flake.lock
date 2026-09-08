@@ -622,11 +622,11 @@
     },
     "nixpkgs-stalwart": {
       "locked": {
-        "lastModified": 1786661995,
-        "narHash": "sha256-qLxS8IGOV7a6SYgJK7MlErhHcz3wiPuaw9XUvv1fh38=",
+        "lastModified": 1788864104,
+        "narHash": "sha256-miPAj8ANpLn1Lv4vV/INhBProORnRGV80H1WIs2mtYw=",
         "owner": "0x57e11a",
         "repo": "nixpkgs",
-        "rev": "030b10129336920a77aa05972d8243e578aafff7",
+        "rev": "2b6a63b264910b4e8e69e72242273b1d806c7fe9",
         "type": "github"
       },
       "original": {

@@ -5,6 +5,9 @@
   lib,
   ...
 }: let
+  # TODO: remove once merged
+  stalwart = import "${inputs.nixpkgs-stalwart}/nixos/modules/services/mail/stalwart";
+
   domains = [
     "proxied.host"
     "padow.dev"
@@ -14,17 +17,12 @@
     "wayclip.com"
   ];
 
-  set = elements:
-    builtins.listToAttrs (map (el: {
-        name = el;
-        value = true;
-      })
-      elements);
   variant = type: value: {"@type" = type;} // value;
 in {
+  # TODO: remove once merged wtv this mess is
   disabledModules = ["services/mail/stalwart.nix"];
   imports = [
-    "${inputs.nixpkgs-stalwart}/nixos/modules/services/mail/stalwart"
+    (lib.mirrorFunctionArgs stalwart (args: (stalwart args) // {meta = {};}))
     "${inputs.nixpkgs-stalwart}/nixos/modules/services/mail/stalwart/provision.nix"
   ];
 
@@ -81,6 +79,8 @@ in {
     package = pkgs.stalwart_0_16;
     stateVersion = "26.11";
 
+    url = "https://mail.proxied.host";
+
     settings = variant "PostgreSql" {
       host = "/run/postgresql";
       port = config.services.postgresql.settings.port;
@@ -89,17 +89,26 @@ in {
       authSecret = variant "None" {};
     };
 
-    provision = {
+    admin = {
       enable = true;
-      url = "http://127.0.0.1:8025/";
       username = "admin";
       passwordFile = config.age.secrets."stalwart.admin".path;
+    };
+
+    recovery = {
+      enable = false;
+      port = 8025;
+    };
+
+    provision = {
+      enable = true;
+      url = "http://127.0.0.1:8025";
 
       singletons = {
         SystemSettings = {
           defaultHostname = "mail.proxied.host";
           defaultDomainId = "#domain-proxied-host";
-          proxyTrustedNetworks = {};
+          proxyTrustedNetworks = [];
         };
 
         InMemoryStore = variant "Redis" {
@@ -115,37 +124,37 @@ in {
         SenderAuth = {
           dkimStrict = true;
           dmarcVerify = {
-            match = {
-              "0" = {
+            match = [
+              {
                 "if" = "listener == 'smtp'";
                 "then" = "strict";
-              };
-            };
+              }
+            ];
             "else" = "disable";
           };
         };
 
         MtaSts = {
           mode = "enforce";
-          mxHosts = set ["mail.proxied.host"];
+          mxHosts = ["mail.proxied.host"];
         };
 
         MtaStageRcpt = {
           script = {"else" = "'noreply'";};
           allowRelaying = {
-            match = {
-              "0" = {
+            match = [
+              {
                 "if" = "!is_empty(authenticated_as)";
                 "then" = "true";
-              };
-            };
+              }
+            ];
             "else" = "false";
           };
         };
 
         ReportSettings = {
           outboundReportDomain = "proxied.host";
-          inboundReportAddresses = set ["postmaster@proxied.host" "dmarc-reports@proxied.host"];
+          inboundReportAddresses = ["postmaster@proxied.host" "dmarc-reports@proxied.host"];
         };
       };
 
@@ -222,7 +231,7 @@ in {
             acme-cloudflare = {
               directory = "https://acme-v02.api.letsencrypt.org/directory";
               challengeType = "Dns01";
-              contact = set ["postmaster@proxied.host"];
+              contact = ["postmaster@proxied.host"];
               renewBefore = "R23";
             };
           };
@@ -235,63 +244,63 @@ in {
             smtp = {
               name = "smtp";
               protocol = "smtp";
-              bind = set ["[::]:25"];
+              bind = ["[::]:25"];
               tlsImplicit = false;
             };
 
             submissions = {
               name = "submissions";
               protocol = "smtp";
-              bind = set ["[::]:465"];
+              bind = ["[::]:465"];
               tlsImplicit = true;
             };
 
             submission = {
               name = "submission";
               protocol = "smtp";
-              bind = set ["[::]:587"];
+              bind = ["[::]:587"];
               tlsImplicit = false;
             };
 
             imaps = {
               name = "imaps";
               protocol = "imap";
-              bind = set ["[::]:993"];
+              bind = ["[::]:993"];
               tlsImplicit = true;
             };
 
             imap = {
               name = "imap";
               protocol = "imap";
-              bind = set ["[::]:143"];
+              bind = ["[::]:143"];
               tlsImplicit = false;
             };
 
             pop3s = {
               name = "pop3s";
               protocol = "pop3";
-              bind = set ["[::]:995"];
+              bind = ["[::]:995"];
               tlsImplicit = true;
             };
 
             pop3 = {
               name = "pop3";
               protocol = "pop3";
-              bind = set ["[::]:110"];
+              bind = ["[::]:110"];
               tlsImplicit = false;
             };
 
             sieve = {
               name = "sieve";
               protocol = "manageSieve";
-              bind = set ["[::]:4190"];
+              bind = ["[::]:4190"];
               tlsImplicit = false;
             };
 
             http = {
               name = "http";
               protocol = "http";
-              bind = set ["127.0.0.1:8025"];
+              bind = ["127.0.0.1:8025"];
               tlsImplicit = false;
             };
           };
@@ -313,8 +322,8 @@ in {
                   dnsServerId = "#cloudflare-${lib.replaceStrings ["."] ["-"] domain}";
                   publishRecords =
                     if domain == "proxied.host"
-                    then set ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoConfigLegacy" "autoDiscover" "tlsa"]
-                    else set ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoConfigLegacy" "autoDiscover"];
+                    then ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoConfigLegacy" "autoDiscover" "tlsa"]
+                    else ["mx" "dkim" "dmarc" "mtaSts" "tlsRpt" "caa" "autoConfig" "autoConfigLegacy" "autoDiscover"];
                 };
 
                 certificateManagement = variant "Automatic" {
@@ -322,7 +331,7 @@ in {
                 };
 
                 dkimManagement = variant "Automatic" {
-                  algorithms = set ["Dkim1Ed25519Sha256" "Dkim1RsaSha256"];
+                  algorithms = ["Dkim1Ed25519Sha256" "Dkim1RsaSha256"];
                   selectorTemplate = "v{version}-{algorithm}-{date-%Y%m%d}";
                   rotateAfter = 90 * 24 * 60 * 60 * 1000;
                   retireAfter = 7 * 24 * 60 * 60 * 1000;
@@ -334,8 +343,6 @@ in {
         };
       };
     };
-
-    environmentFile = config.age.secrets."stalwart.environment".path;
   };
 
   virtualisation.arion.projects.bulwark.settings = {
@@ -381,12 +388,6 @@ in {
   };
 
   age.secrets = {
-    "stalwart.environment" = {
-      file = secrets/environment.age;
-      owner = "stalwart";
-      group = "stalwart";
-    };
-
     "stalwart.admin" = {
       file = secrets/admin.age;
       owner = "stalwart";
