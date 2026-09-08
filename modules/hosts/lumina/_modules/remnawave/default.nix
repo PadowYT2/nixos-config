@@ -37,7 +37,7 @@
     services = {
       remnawave.service = {
         user = "9997:9997";
-        image = "remnawave/backend:2.7.4";
+        image = "remnawave/backend:3.4.3";
         restart = "unless-stopped";
 
         environment = {
@@ -63,7 +63,7 @@
       };
 
       remnawave-subscription.service = {
-        image = "remnawave/subscription-page:7.2.1";
+        image = "remnawave/subscription-page:8.0.0";
         restart = "unless-stopped";
 
         environment = {
