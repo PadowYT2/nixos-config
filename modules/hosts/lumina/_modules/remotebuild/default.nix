@@ -17,6 +17,7 @@
         solara
         helius
         noctis
+        orion
       ];
     };
 
