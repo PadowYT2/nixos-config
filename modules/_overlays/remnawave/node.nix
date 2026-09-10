@@ -12,13 +12,18 @@
     text = ''
       exec 2>&1
 
-      if [ -z "$INTERNAL_REST_TOKEN" ] && [ -n "$CREDENTIALS_DIRECTORY" ] && [ -f "$CREDENTIALS_DIRECTORY/INTERNAL_REST_TOKEN" ]; then
-        INTERNAL_REST_TOKEN="$(< "$CREDENTIALS_DIRECTORY/INTERNAL_REST_TOKEN")"
-        export INTERNAL_REST_TOKEN
-      fi
+      ${
+        if cfg.internalRestTokenFile != null
+        then ''
+          INTERNAL_REST_TOKEN="$(< ${lib.escapeShellArg cfg.internalRestTokenFile})"
+        ''
+        else ''
+          INTERNAL_REST_TOKEN=${lib.escapeShellArg cfg.internalRestToken}
+        ''
+      }
 
       exec xray \
-        -config @"$INTERNAL_SOCKET_PATH":/internal/get-config?token="$INTERNAL_REST_TOKEN" \
+        -config @"remnawave-internal":/internal/get-config?token="$INTERNAL_REST_TOKEN" \
         -format json
     '';
   };
@@ -26,17 +31,27 @@
   remnawaveNodeStart = pkgs.writeShellApplication {
     name = "remnawave-node-start";
     text = ''
-      if [ -n "$CREDENTIALS_DIRECTORY" ]; then
-        if [ -f "$CREDENTIALS_DIRECTORY/SECRET_KEY" ]; then
-          SECRET_KEY="$(< "$CREDENTIALS_DIRECTORY/SECRET_KEY")"
+      ${
+        if cfg.secretKeyFile != null
+        then ''
+          SECRET_KEY="$(< ${lib.escapeShellArg cfg.secretKeyFile})"
           export SECRET_KEY
-        fi
+        ''
+        else ''
+          export SECRET_KEY=${lib.escapeShellArg cfg.secretKey}
+        ''
+      }
 
-        if [ -f "$CREDENTIALS_DIRECTORY/INTERNAL_REST_TOKEN" ]; then
-          INTERNAL_REST_TOKEN="$(< "$CREDENTIALS_DIRECTORY/INTERNAL_REST_TOKEN")"
+      ${
+        if cfg.internalRestTokenFile != null
+        then ''
+          INTERNAL_REST_TOKEN="$(< ${lib.escapeShellArg cfg.internalRestTokenFile})"
           export INTERNAL_REST_TOKEN
-        fi
-      fi
+        ''
+        else ''
+          export INTERNAL_REST_TOKEN=${lib.escapeShellArg cfg.internalRestToken}
+        ''
+      }
 
       exec ${cfg.package}/bin/remnawave-node
     '';
@@ -142,10 +157,6 @@ in {
         Group = cfg.group;
         Type = "simple";
         ExecStart = "${pkgs.s6}/bin/s6-supervise /run/remnawave-node/xray-service";
-        LoadCredential = lib.optional (cfg.internalRestTokenFile != null) "INTERNAL_REST_TOKEN:${cfg.internalRestTokenFile}";
-        Environment =
-          ["INTERNAL_SOCKET_PATH=remnawave-internal"]
-          ++ lib.optional (cfg.internalRestToken != null) "INTERNAL_REST_TOKEN=${cfg.internalRestToken}";
         Restart = "always";
         AmbientCapabilities = ["CAP_NET_BIND_SERVICE" "CAP_NET_ADMIN"];
       };
@@ -163,9 +174,6 @@ in {
         Group = cfg.group;
         ExecStart = lib.getExe remnawaveNodeStart;
         WorkingDirectory = "${cfg.package}/share/remnawave-node";
-        LoadCredential =
-          lib.optional (cfg.secretKeyFile != null) "SECRET_KEY:${cfg.secretKeyFile}"
-          ++ lib.optional (cfg.internalRestTokenFile != null) "INTERNAL_REST_TOKEN:${cfg.internalRestTokenFile}";
         Environment =
           [
             "NODE_ENV=production"
@@ -174,8 +182,6 @@ in {
             "XTLS_API_SOCKET_PATH=remnawave-xtls"
             "XRAY_S6_SERVICE_DIR=/run/remnawave-node/xray-service"
           ]
-          ++ lib.optional (cfg.secretKey != null) "SECRET_KEY=${cfg.secretKey}"
-          ++ lib.optional (cfg.internalRestToken != null) "INTERNAL_REST_TOKEN=${cfg.internalRestToken}"
           ++ cfg.environment;
         Restart = "on-failure";
         AmbientCapabilities = ["CAP_NET_BIND_SERVICE" "CAP_NET_ADMIN"];

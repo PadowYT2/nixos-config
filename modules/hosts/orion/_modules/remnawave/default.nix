@@ -6,6 +6,7 @@
   imports = [(inputs.self.outPath + "/modules/_overlays/remnawave/node.nix")];
   nixpkgs.overlays = [
     (_final: prev: {
+      xray = prev.callPackage (inputs.self.outPath + "/packages/xray") {};
       remnawave.node = prev.callPackage (inputs.self.outPath + "/packages/remnawave/node") {};
     })
   ];
@@ -18,7 +19,7 @@
       domain = "orion.proxied.host";
       dnsProvider = "cloudflare";
       credentialFiles = {
-        CF_API_KEY_FILE = config.age.secrets."acme.cloudflare".path;
+        CLOUDFLARE_DNS_API_TOKEN_FILE = config.age.secrets."acme.cloudflare".path;
       };
       group = "remnawave-node";
     };
