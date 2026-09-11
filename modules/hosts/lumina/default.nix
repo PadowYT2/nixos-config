@@ -19,37 +19,7 @@
             lib,
             keys,
             ...
-          }: let
-            cloudflare = {
-              ipv4 = [
-                "173.245.48.0/20"
-                "103.21.244.0/22"
-                "103.22.200.0/22"
-                "103.31.4.0/22"
-                "141.101.64.0/18"
-                "108.162.192.0/18"
-                "190.93.240.0/20"
-                "188.114.96.0/20"
-                "197.234.240.0/22"
-                "198.41.128.0/17"
-                "162.158.0.0/15"
-                "104.16.0.0/13"
-                "104.24.0.0/14"
-                "172.64.0.0/13"
-                "131.0.72.0/22"
-              ];
-
-              ipv6 = [
-                "2400:cb00::/32"
-                "2606:4700::/32"
-                "2803:f800::/32"
-                "2405:b500::/32"
-                "2405:8100::/32"
-                "2a06:98c0::/29"
-                "2c0f:f248::/32"
-              ];
-            };
-          in {
+          }: {
             system.stateVersion = "26.05";
 
             boot = {
@@ -69,16 +39,24 @@
 
                 "net.ipv4.ip_forward" = 1;
                 "net.ipv6.conf.all.forwarding" = 1;
-                "net.ipv4.tcp_syncookies" = 1;
-                "net.ipv4.tcp_max_syn_backlog" = 2048;
-                "net.netfilter.nf_conntrack_max" = 262144;
-                "net.netfilter.nf_conntrack_tcp_loose" = 0;
-                "net.ipv4.tcp_abort_on_overflow" = 1;
 
-                "net.ipv4.conf.all.rp_filter" = 2;
-                "net.ipv4.conf.default.rp_filter" = 2;
-                "net.ipv4.conf.eth0.rp_filter" = 2;
-                "net.ipv4.conf.ipsec0.rp_filter" = 0;
+                "net.ipv4.tcp_syn_retries" = 2;
+                "net.ipv4.tcp_synack_retries" = 2;
+                "net.ipv4.tcp_max_syn_backlog" = 65536;
+
+                "net.core.somaxconn" = 65535;
+                "net.core.netdev_max_backlog" = 250000;
+                "net.ipv4.ip_local_port_range" = "1024 65535";
+                "net.ipv4.tcp_tw_reuse" = 1;
+                "net.ipv4.tcp_fin_timeout" = 15;
+
+                "net.core.rmem_max" = 16777216;
+                "net.core.wmem_max" = 16777216;
+                "net.ipv4.tcp_rmem" = "4096 87380 16777216";
+                "net.ipv4.tcp_wmem" = "4096 65536 16777216";
+
+                "net.netfilter.nf_conntrack_max" = 2000000;
+                "net.netfilter.nf_conntrack_tcp_loose" = 0;
               };
             };
 
@@ -153,80 +131,9 @@
 
             networking = {
               hostName = "lumina";
-
               firewall = {
                 checkReversePath = "loose";
-                trustedInterfaces = ["ipsec0" "lo" "docker0" "pterodactyl0"];
-
-                extraInputRules = ''
-                  iifname "eth0" tcp dport 22 accept
-                  iifname "eth0" icmp type echo-request accept
-                  iifname "eth0" icmpv6 type echo-request accept
-
-                  iifname "eth0" ip saddr { ${builtins.concatStringsSep ", " cloudflare.ipv4} } tcp dport {80, 443} accept
-                  iifname "eth0" ip6 saddr { ${builtins.concatStringsSep ", " cloudflare.ipv6} } tcp dport {80, 443} accept
-
-                  iifname "eth0" ip saddr 95.135.208.17 udp dport {500, 4500} accept
-                  iifname "eth0" tcp dport 45876 accept
-
-                  iifname "eth0" drop
-                '';
-
-                # make sure the 172.19.0.0/16 doesn't get updated
-                extraForwardRules = ''
-                  iifname {"docker0", "pterodactyl0", "br-*"} oifname {"docker0", "pterodactyl0", "br-*"} accept
-                  ip saddr 172.19.0.0/16 oifname "eth0" accept
-                  ip saddr 172.19.0.0/16 oifname "ipsec0" drop
-                  iifname {"docker0", "pterodactyl0", "br-*"} oifname "ipsec0" accept
-                  iifname "ipsec0" oifname {"docker0", "pterodactyl0", "br-*"} accept
-                  iifname {"docker0", "pterodactyl0", "br-*"} oifname "eth0" drop
-                '';
-              };
-
-              nftables = {
-                enable = true;
-                tables.direct-routing = {
-                  family = "inet";
-                  content = ''
-                    set storage_box_ipv4 {
-                      type ipv4_addr
-                      flags interval
-                      elements = { 91.98.245.214 }
-                    }
-
-                    set storage_box_ipv6 {
-                      type ipv6_addr
-                      flags interval
-                      elements = { 2a01:4f8:bacc:2:200::756 }
-                    }
-
-                    chain mangle_output {
-                      type route hook output priority mangle; policy accept;
-                      ip daddr @storage_box_ipv4 meta mark set 0x64
-                      ip6 daddr @storage_box_ipv6 meta mark set 0x64
-                    }
-
-                    chain mangle_prerouting {
-                      type filter hook prerouting priority mangle; policy accept;
-                      ip saddr 172.19.0.0/16 meta mark set 0x64
-                      ip daddr @storage_box_ipv4 meta mark set 0x64
-                      ip6 daddr @storage_box_ipv6 meta mark set 0x64
-                    }
-
-                    chain nat_postrouting {
-                      type nat hook postrouting priority srcnat; policy accept;
-                      ip daddr @storage_box_ipv4 snat to 5.9.109.12
-                      ip6 daddr @storage_box_ipv6 snat to 2a01:4f8:162:502e::2
-                    }
-                  '';
-                };
-              };
-
-              iproute2 = {
-                enable = true;
-                rttablesExtraConfig = ''
-                  200 direct
-                '';
+                trustedInterfaces = ["lo" "docker0"];
               };
             };
 
@@ -242,89 +149,8 @@
                       Gateway = "fe80::1";
                       GatewayOnLink = true;
                     }
-                    {
-                      Destination = "2a12:bec4:1821:61f::a/128";
-                      Gateway = "fe80::1";
-                      GatewayOnLink = true;
-                    }
-                    {
-                      Gateway = "5.9.109.1";
-                      Table = 200;
-                      PreferredSource = "5.9.109.12";
-                    }
-                    {
-                      Gateway = "fe80::1";
-                      GatewayOnLink = true;
-                      Table = 200;
-                      PreferredSource = "2a01:4f8:162:502e::2";
-                    }
                   ];
-                  routingPolicyRules = [
-                    {
-                      To = "5.9.109.0/27";
-                      Table = 200;
-                      Priority = 5;
-                    }
-                    {
-                      Family = "ipv6";
-                      To = "2a01:4f8:162:502e::/64";
-                      Table = 200;
-                      Priority = 5;
-                    }
-                    {
-                      From = "5.9.109.12";
-                      Table = 200;
-                      Priority = 10;
-                    }
-                    {
-                      Family = "ipv6";
-                      From = "2a01:4f8:162:502e::2";
-                      Table = 200;
-                      Priority = 10;
-                    }
-                    {
-                      FirewallMark = 100;
-                      Table = 200;
-                      Priority = 1;
-                    }
-                    {
-                      Family = "ipv6";
-                      FirewallMark = 100;
-                      Table = 200;
-                      Priority = 1;
-                    }
-                  ];
-                  xfrm = ["ipsec0"];
                   linkConfig.RequiredForOnline = "routable";
-                };
-
-                "20-ipsec0" = {
-                  matchConfig.Name = "ipsec0";
-                  address = ["10.0.0.2/24" "fd00:1337::2/64"];
-                  routes = [
-                    {
-                      Destination = "0.0.0.0/0";
-                      Scope = "global";
-                    }
-                    {
-                      Destination = "::/0";
-                      Scope = "global";
-                    }
-                  ];
-                  linkConfig = {
-                    MTUBytes = "1400";
-                    RequiredForOnline = "no";
-                  };
-                };
-              };
-
-              netdevs = {
-                "20-ipsec0" = {
-                  netdevConfig = {
-                    Name = "ipsec0";
-                    Kind = "xfrm";
-                  };
-                  xfrmConfig.InterfaceId = 42;
                 };
               };
 
@@ -333,6 +159,8 @@
                 linkConfig = {
                   Name = "eth0";
                   MACAddressPolicy = "persistent";
+                  RxBufferSize = 4096;
+                  TxBufferSize = 4096;
                 };
               };
             };
@@ -342,7 +170,7 @@
               docker = {
                 enable = true;
                 daemon.settings = {
-                  mtu = 1300;
+                  mtu = 1500;
                   default-cgroupns-mode = "private";
                   exec-opts = ["native.cgroupdriver=systemd"];
                 };
@@ -351,12 +179,7 @@
 
             services.caddy = {
               enable = true;
-
-              globalConfig = ''
-                servers {
-                  trusted_proxies static private_ranges ${builtins.concatStringsSep " " (cloudflare.ipv4 ++ cloudflare.ipv6)}
-                }
-              '';
+              openFirewall = true;
             };
 
             users.users.root.openssh.authorizedKeys.keys = with keys; [djoh];
