@@ -15,6 +15,7 @@ let
     helius = [helius padow];
     noctis = [noctis padow];
     orion = [orion padow];
+    vesper = [orion padow];
 
     # magmamc infra
     magma = [magma padow];

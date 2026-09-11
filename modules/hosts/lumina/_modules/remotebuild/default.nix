@@ -18,6 +18,7 @@
         helius
         noctis
         orion
+        vesper
       ];
     };
 
