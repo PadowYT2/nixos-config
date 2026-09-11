@@ -3,10 +3,6 @@
     "surf.proxied.host".extraConfig = ''
       reverse_proxy http://127.0.0.1:9100
     '';
-
-    "surfing.proxied.host".extraConfig = ''
-      reverse_proxy http://127.0.0.1:9101
-    '';
   };
 
   systemd.services.arion-remnawave = {
@@ -61,23 +57,6 @@
 
         ports = ["9100:3000"];
       };
-
-      remnawave-subscription.service = {
-        image = "remnawave/subscription-page:8.0.0";
-        restart = "unless-stopped";
-
-        environment = {
-          APP_PORT = "3010";
-          REMNAWAVE_PANEL_URL = "http://remnawave:3000";
-          CUSTOM_SUB_PREFIX = "waves";
-        };
-
-        env_file = [config.age.secrets."remnawave-subscription.environment".path];
-
-        ports = ["9101:3010"];
-
-        depends_on = ["remnawave"];
-      };
     };
   };
 
@@ -100,10 +79,6 @@
 
     "remnawave.pass" = {
       file = secrets/pass.age;
-    };
-
-    "remnawave-subscription.environment" = {
-      file = secrets/subscription/environment.age;
     };
   };
 }
