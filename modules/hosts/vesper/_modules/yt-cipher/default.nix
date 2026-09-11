@@ -8,13 +8,12 @@
 
   services.caddy.virtualHosts = {
     "cipher.proxied.host".extraConfig = ''
-      reverse_proxy http://localhost:6969
+      reverse_proxy http://localhost:8001
     '';
   };
 
   services.yt-cipher = {
     enable = true;
-    port = 6969;
     apiTokenFile = config.age.secrets."yt-cipher.token".path;
     environment = ["DISABLE_METRICS=true"];
   };
