@@ -1,11 +1,11 @@
 {config, ...}: {
   services.caddy.virtualHosts = {
     "surf.proxied.host".extraConfig = ''
-      reverse_proxy http://localhost:9100
+      reverse_proxy http://127.0.0.1:9100
     '';
 
     "surfing.proxied.host".extraConfig = ''
-      reverse_proxy http://localhost:9101
+      reverse_proxy http://127.0.0.1:9101
     '';
   };
 

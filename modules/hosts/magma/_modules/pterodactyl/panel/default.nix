@@ -8,7 +8,7 @@
 
   services.caddy.virtualHosts = {
     "panel.magmamc.org".extraConfig = ''
-      reverse_proxy http://localhost:4645
+      reverse_proxy http://127.0.0.1:4645
     '';
   };
 

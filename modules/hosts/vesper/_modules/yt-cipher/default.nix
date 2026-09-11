@@ -8,7 +8,7 @@
 
   services.caddy.virtualHosts = {
     "cipher.proxied.host".extraConfig = ''
-      reverse_proxy http://localhost:8001
+      reverse_proxy http://127.0.0.1:8001
     '';
   };
 

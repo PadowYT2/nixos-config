@@ -8,7 +8,7 @@
 
   services.caddy.virtualHosts = {
     "api.konyogony.dev".extraConfig = ''
-      reverse_proxy http://localhost:8115
+      reverse_proxy http://127.0.0.1:8115
     '';
   };
 

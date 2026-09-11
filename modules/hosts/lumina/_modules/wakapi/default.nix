@@ -1,7 +1,7 @@
 {config, ...}: {
   services.caddy.virtualHosts = {
     "wakatime.proxied.host".extraConfig = ''
-      reverse_proxy http://localhost:3002
+      reverse_proxy http://127.0.0.1:3002
     '';
   };
 

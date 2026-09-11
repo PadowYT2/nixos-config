@@ -1,7 +1,7 @@
 {config, ...}: {
   services.caddy.virtualHosts = {
     "matrix.proxied.host".extraConfig = ''
-      reverse_proxy http://localhost:6167
+      reverse_proxy http://127.0.0.1:6167
     '';
   };
 

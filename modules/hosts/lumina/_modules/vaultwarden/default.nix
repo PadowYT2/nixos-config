@@ -1,7 +1,7 @@
 {config, ...}: {
   services.caddy.virtualHosts = {
     "passwords.proxied.host".extraConfig = ''
-      reverse_proxy http://localhost:8000
+      reverse_proxy http://127.0.0.1:8000
     '';
   };
 

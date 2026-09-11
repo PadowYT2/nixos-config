@@ -11,29 +11,29 @@
 
     virtualHosts = {
       "deploy.proxied.host".extraConfig = ''
-        reverse_proxy http://localhost:7345
+        reverse_proxy http://127.0.0.1:7345
       '';
 
       "realtime.deploy.proxied.host".extraConfig = ''
-        reverse_proxy http://localhost:6001
+        reverse_proxy http://127.0.0.1:6001
       '';
 
       "*.deploy.proxied.host".extraConfig = ''
         tls {
           dns cloudflare {$CF_API_TOKEN}
         }
-        reverse_proxy http://localhost:4080
+        reverse_proxy http://127.0.0.1:4080
       '';
 
       "*.djoh.pw".extraConfig = ''
         tls {
           dns cloudflare {$CF_API_TOKEN}
         }
-        reverse_proxy http://localhost:4080
+        reverse_proxy http://127.0.0.1:4080
       '';
 
       "unitedconvoys.cc reverb.unitedconvoys.cc static.unitedconvoys.cc static-admin.unitedconvoys.cc".extraConfig = ''
-        reverse_proxy http://localhost:4080
+        reverse_proxy http://127.0.0.1:4080
       '';
     };
   };

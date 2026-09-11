@@ -5,7 +5,7 @@
 }: {
   services.caddy.virtualHosts = {
     "drive.proxied.host".extraConfig = ''
-      reverse_proxy http://localhost:8079
+      reverse_proxy http://127.0.0.1:8079
     '';
   };
 

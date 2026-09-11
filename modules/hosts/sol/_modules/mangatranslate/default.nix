@@ -8,7 +8,7 @@
 
   services.caddy.virtualHosts = {
     "api.japimg.com".extraConfig = ''
-      reverse_proxy http://localhost:5050
+      reverse_proxy http://127.0.0.1:5050
     '';
   };
 

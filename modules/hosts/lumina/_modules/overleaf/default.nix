@@ -5,7 +5,7 @@
 }: {
   services.caddy.virtualHosts = {
     "overleaf.konyogony.dev".extraConfig = ''
-      reverse_proxy http://localhost:7875
+      reverse_proxy http://127.0.0.1:7875
     '';
   };
 
