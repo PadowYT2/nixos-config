@@ -167,6 +167,7 @@
                   iifname "eth0" ip6 saddr { ${builtins.concatStringsSep ", " cloudflare.ipv6} } tcp dport {80, 443} accept
 
                   iifname "eth0" ip saddr 95.135.208.17 udp dport {500, 4500} accept
+                  iifname "eth0" tcp dport {41230, 41231, 41232} accept
                   iifname "eth0" tcp dport 45876 accept
 
                   iifname "eth0" drop
