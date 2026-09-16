@@ -14,7 +14,6 @@
 
         # proxied infra
         transit
-        solara
         helius
         noctis
         orion
