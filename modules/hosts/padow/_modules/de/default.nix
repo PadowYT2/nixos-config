@@ -116,6 +116,7 @@
                 toggle-message-tray = mkEmptyArray type.string;
               };
               "org/gnome/shell" = {
+                always-show-log-out = true;
                 disable-user-extensions = false;
                 enabled-extensions = with pkgs.gnomeExtensions; [
                   appindicator.extensionUuid
