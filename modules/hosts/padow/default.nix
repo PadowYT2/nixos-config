@@ -28,8 +28,15 @@
           boot = {
             kernelPackages = pkgs.linuxPackages_latest;
             initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod"];
-            kernelModules = ["kvm-amd"];
+            kernelModules = ["kvm-amd" "tcp_bbr"];
             supportedFilesystems = ["ntfs-3g"];
+            kernel.sysctl = {
+              "net.core.default_qdisc" = "fq";
+              "net.ipv4.tcp_congestion_control" = "bbr";
+              "net.core.wmem_max" = 16777216;
+              "net.ipv4.tcp_wmem" = "4096 65536 16777216";
+              "net.ipv4.tcp_notsent_lowat" = 16384;
+            };
             loader = {
               efi.canTouchEfiVariables = true;
               grub.efiInstallAsRemovable = false;
