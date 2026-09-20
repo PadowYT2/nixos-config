@@ -15,6 +15,7 @@
     "djoh.pw"
     "konyogony.dev"
     "wayclip.com"
+    "wanivy.com"
   ];
 
   variant = type: value: {"@type" = type;} // value;
@@ -432,6 +433,12 @@ in {
 
     "stalwart.domains.wayclip-com" = {
       file = secrets/domains/wayclip-com.age;
+      owner = "stalwart";
+      group = "stalwart";
+    };
+
+    "stalwart.domains.wanivy-com" = {
+      file = secrets/domains/wanivy-com.age;
       owner = "stalwart";
       group = "stalwart";
     };
