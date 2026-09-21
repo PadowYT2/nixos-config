@@ -157,6 +157,10 @@ in {
           outboundReportDomain = "proxied.host";
           inboundReportAddresses = ["postmaster@proxied.host" "dmarc-reports@proxied.host"];
         };
+
+        SpamSettings = {
+          scoreReject = 15;
+        };
       };
 
       objects = {
