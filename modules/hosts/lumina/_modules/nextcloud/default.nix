@@ -5,7 +5,9 @@
 }: {
   services.caddy.virtualHosts = {
     "drive.proxied.host".extraConfig = ''
-      reverse_proxy http://127.0.0.1:8079
+      reverse_proxy http://localhost:8079 {
+        trusted_proxies 78.142.195.83 2a0c:59c0:12::338
+      }
     '';
   };
 
@@ -33,7 +35,8 @@
       mail_smtpauth = true;
       mail_smtpname = "no-reply@proxied.host";
       mail_from_address = "no-reply";
-      trusted_proxies = ["127.0.0.1" "::1"];
+      trusted_domains = ["relay.drive.proxied.host"];
+      trusted_proxies = ["127.0.0.1" "::1" "78.142.195.83" "2a0c:59c0:12::338"];
       forwarded_for_headers = ["HTTP_X_FORWARDED_FOR"];
       enabledPreviewProviders = [
         "OC\\Preview\\BMP"
@@ -59,7 +62,7 @@
 
     notify_push = {
       enable = true;
-      nextcloudUrl = "https://drive.proxied.host";
+      nextcloudUrl = "https://relay.drive.proxied.host";
     };
   };
 
