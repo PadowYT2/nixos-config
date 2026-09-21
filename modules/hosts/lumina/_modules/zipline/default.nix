@@ -1,7 +1,9 @@
 {config, ...}: {
   services.caddy.virtualHosts = {
     "i.proxied.host".extraConfig = ''
-      reverse_proxy http://127.0.0.1:3000
+      reverse_proxy http://127.0.0.1:3000 {
+        trusted_proxies 78.142.195.83 2a0c:59c0:12::338
+      }
     '';
 
     "cdn.konyogony.dev".extraConfig = ''

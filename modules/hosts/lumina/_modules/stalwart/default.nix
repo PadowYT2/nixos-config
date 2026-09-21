@@ -253,6 +253,7 @@ in {
               protocol = "smtp";
               bind = ["[::]:25"];
               tlsImplicit = false;
+              overrideProxyTrustedNetworks = ["78.142.195.194/32" "2a0c:59c0:12::f6/128"];
             };
 
             submissions = {
