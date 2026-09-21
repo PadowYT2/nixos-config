@@ -10,7 +10,6 @@ let
 
     # proxied infra
     lumina = [lumina padow];
-    transit = [transit padow];
     helius = [helius padow];
     noctis = [noctis padow];
     orion = [orion padow];

@@ -75,6 +75,8 @@ in {
     "Z /var/lib/bulwark 0700 bulwark bulwark -"
   ];
 
+  networking.firewall.allowedTCPPorts = [25 110 143 465 587 993 995 4190];
+
   services.stalwart = {
     enable = true;
     package = pkgs.stalwart_0_16;
@@ -224,7 +226,7 @@ in {
           objects = {
             default = {
               name = "default";
-              ehloHostname = "transit.lumina.proxied.host";
+              ehloHostname = "lumina.proxied.host";
             };
           };
         };
