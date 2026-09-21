@@ -13,7 +13,6 @@
         sol
 
         # proxied infra
-        transit
         helius
         noctis
         orion
