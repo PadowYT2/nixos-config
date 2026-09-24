@@ -8,8 +8,6 @@
   programs.spicetify = {
     enable = true;
     wayland = false;
-    alwaysEnableDevTools = true;
-    experimentalFeatures = true;
     theme = {
       name = "custom";
       src = ./theme;
@@ -18,9 +16,7 @@
     enabledExtensions = with inputs.spicetify.legacyPackages.${pkgs.stdenv.system}.extensions; [
       trashbin
       adblock
-      hidePodcasts
       volumePercentage
-      sideHide
       sidebarCustomizer
     ];
   };
