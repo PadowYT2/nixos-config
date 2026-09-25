@@ -18,18 +18,20 @@
 
           boot = {
             initrd.availableKernelModules = ["uhci_hcd" "ehci_pci" "ahci" "virtio_pci" "virtio_scsi" "sd_mod" "sr_mod"];
-            kernelModules = ["tcp_bbr"];
+            kernelModules = ["tcp_bbr" "nf_conntrack"];
             kernel.sysctl = {
               "net.core.default_qdisc" = "fq";
               "net.ipv4.tcp_congestion_control" = "bbr";
-              "net.ipv4.tcp_mtu_probing" = 1;
-              "net.ipv4.tcp_fastopen" = 1;
+
+              "net.ipv4.ip_forward" = 1;
+              "net.ipv6.conf.all.forwarding" = 1;
+              "net.ipv4.tcp_max_syn_backlog" = 8192;
+              "net.netfilter.nf_conntrack_max" = 262144;
+
               "net.core.rmem_max" = 16777216;
               "net.core.wmem_max" = 16777216;
               "net.ipv4.tcp_rmem" = "4096 87380 16777216";
               "net.ipv4.tcp_wmem" = "4096 65536 16777216";
-              "net.core.somaxconn" = 8192;
-              "net.core.netdev_max_backlog" = 10000;
             };
           };
 
@@ -107,23 +109,23 @@
             enable = true;
             openFirewall = true;
 
-            package = pkgs.caddy.withPlugins {
-              plugins = ["github.com/mholt/caddy-l4@v0.1.2"];
-              hash = "sha256-UIv8PxtJMlX7qClnPazFsSSl7G1BzsTT8VjrMIfB46Q=";
-            };
+            # package = pkgs.caddy.withPlugins {
+            #   plugins = ["github.com/mholt/caddy-l4@v0.1.2"];
+            #   hash = "sha256-UIv8PxtJMlX7qClnPazFsSSl7G1BzsTT8VjrMIfB46Q=";
+            # };
 
-            globalConfig = ''
-              layer4 {
-                :25 {
-                  route {
-                    proxy {
-                      upstream lumina.proxied.host:25
-                      proxy_protocol v2
-                    }
-                  }
-                }
-              }
-            '';
+            # globalConfig = ''
+            #   layer4 {
+            #     :25 {
+            #       route {
+            #         proxy {
+            #           upstream lumina.proxied.host:25
+            #           proxy_protocol v2
+            #         }
+            #       }
+            #     }
+            #   }
+            # '';
 
             virtualHosts = {
               "relay.drive.proxied.host".extraConfig = ''
