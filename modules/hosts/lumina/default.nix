@@ -172,6 +172,7 @@
                   }
                 ];
               };
+              nftables.enable = true;
             };
 
             systemd.network = {
