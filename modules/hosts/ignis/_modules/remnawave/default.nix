@@ -33,7 +33,7 @@
     internalRestTokenFile = config.age.secrets."remnawave.node.token".path;
   };
 
-  networking.firewall.allowedTCPPorts = [443];
+  networking.firewall.allowedTCPPorts = [443 8443];
   networking.firewall.allowedUDPPorts = [443];
 
   users.users.remnawave-node.extraGroups = ["acme"];
