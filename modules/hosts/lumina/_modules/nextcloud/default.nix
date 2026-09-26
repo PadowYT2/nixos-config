@@ -36,7 +36,14 @@
       mail_smtpname = "no-reply@proxied.host";
       mail_from_address = "no-reply";
       trusted_domains = ["relay.drive.proxied.host"];
-      trusted_proxies = ["127.0.0.1" "::1" "78.142.195.83" "2a0c:59c0:12::338"];
+      trusted_proxies = [
+        "127.0.0.1"
+        "::1"
+        "5.9.109.12"
+        "2a01:4f8:162:502e::2"
+        "78.142.195.83"
+        "2a0c:59c0:12::338"
+      ];
       forwarded_for_headers = ["HTTP_X_FORWARDED_FOR"];
       enabledPreviewProviders = [
         "OC\\Preview\\BMP"

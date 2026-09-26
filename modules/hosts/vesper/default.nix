@@ -129,7 +129,9 @@
 
             virtualHosts = {
               "relay.drive.proxied.host".extraConfig = ''
-                reverse_proxy https://drive.proxied.host
+                reverse_proxy https://drive.proxied.host {
+                  trusted_proxies 5.9.109.12 2a01:4f8:162:502e::2
+                }
               '';
 
               "relay.i.proxied.host".extraConfig = ''
