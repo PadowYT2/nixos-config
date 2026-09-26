@@ -1,0 +1,112 @@
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosConfigurations.ignis = inputs.nixpkgs.lib.nixosSystem {
+    specialArgs = {inherit inputs;};
+    modules = with self.nixosModules;
+      [
+        common
+        remotebuild
+        "${inputs.nixpkgs}/nixos/modules/profiles/qemu-guest.nix"
+      ]
+      ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
+      ++ [
+        {
+          system.stateVersion = "26.05";
+
+          boot = {
+            initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "virtio_scsi" "ahci" "sr_mod" "virtio_blk"];
+            kernelModules = ["tcp_bbr" "nf_conntrack"];
+            extraModprobeConfig = ''
+              options nf_conntrack hashsize=65536
+            '';
+            kernel.sysctl = {
+              "net.core.default_qdisc" = "fq";
+              "net.ipv4.tcp_congestion_control" = "bbr";
+
+              "net.ipv4.ip_forward" = 1;
+              "net.ipv6.conf.all.forwarding" = 1;
+              "net.ipv4.tcp_max_syn_backlog" = 8192;
+              "net.netfilter.nf_conntrack_max" = 262144;
+
+              "net.ipv4.ip_local_port_range" = "16384 65535";
+              "net.ipv4.tcp_tw_reuse" = 1;
+
+              "net.core.rmem_max" = 16777216;
+              "net.core.wmem_max" = 16777216;
+              "net.ipv4.tcp_rmem" = "4096 87380 16777216";
+              "net.ipv4.tcp_wmem" = "4096 65536 16777216";
+            };
+          };
+
+          disko.devices = {
+            disk.main = {
+              device = "/dev/disk/by-path/virtio-pci-0000:00:07.0";
+              type = "disk";
+              content = {
+                type = "gpt";
+                partitions = {
+                  boot = {
+                    size = "1M";
+                    type = "EF02";
+                  };
+
+                  ESP = {
+                    size = "1G";
+                    type = "EF00";
+                    content = {
+                      type = "filesystem";
+                      format = "vfat";
+                      mountpoint = "/boot";
+                      mountOptions = ["umask=0077"];
+                    };
+                  };
+
+                  root = {
+                    size = "100%";
+                    content = {
+                      type = "filesystem";
+                      format = "ext4";
+                      mountpoint = "/";
+                    };
+                  };
+                };
+              };
+            };
+          };
+
+          networking.hostName = "ignis";
+
+          systemd.network = {
+            networks."10-ens3" = {
+              matchConfig.Name = "ens3";
+              address = ["95.135.208.17/24" "2a12:bec4:1821:61f::a/64"];
+              gateway = ["95.135.208.1"];
+              routes = [
+                {
+                  Destination = "2a12:bec4:1821::1/128";
+                  Scope = "link";
+                }
+                {
+                  Destination = "::/0";
+                  Gateway = "2a12:bec4:1821::1";
+                  Metric = 1024;
+                }
+              ];
+              linkConfig.RequiredForOnline = "routable";
+            };
+
+            links."10-ens3" = {
+              matchConfig.MACAddress = "00:31:C5:02:3C:CE";
+              linkConfig = {
+                Name = "ens3";
+                MACAddressPolicy = "persistent";
+              };
+            };
+          };
+        }
+      ];
+  };
+}

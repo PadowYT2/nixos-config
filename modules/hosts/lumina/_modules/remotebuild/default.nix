@@ -15,8 +15,9 @@
         # proxied infra
         helius
         noctis
-        orion
         vesper
+        orion
+        ignis
       ];
     };
 
