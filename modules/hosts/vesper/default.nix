@@ -108,25 +108,6 @@
           services.caddy = {
             enable = true;
             openFirewall = true;
-
-            # package = pkgs.caddy.withPlugins {
-            #   plugins = ["github.com/mholt/caddy-l4@v0.1.2"];
-            #   hash = "sha256-UIv8PxtJMlX7qClnPazFsSSl7G1BzsTT8VjrMIfB46Q=";
-            # };
-
-            # globalConfig = ''
-            #   layer4 {
-            #     :25 {
-            #       route {
-            #         proxy {
-            #           upstream lumina.proxied.host:25
-            #           proxy_protocol v2
-            #         }
-            #       }
-            #     }
-            #   }
-            # '';
-
             virtualHosts = {
               "relay.drive.proxied.host".extraConfig = ''
                 reverse_proxy https://drive.proxied.host {
