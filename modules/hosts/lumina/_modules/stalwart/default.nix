@@ -359,7 +359,7 @@ in {
     services = {
       bulwark.service = {
         user = "9998:9998";
-        image = "ghcr.io/bulwarkmail/webmail:1.9.2";
+        image = "ghcr.io/bulwarkmail/webmail:1.11.2";
         restart = "unless-stopped";
 
         environment = {
