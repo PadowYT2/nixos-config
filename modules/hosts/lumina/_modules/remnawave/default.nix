@@ -55,7 +55,7 @@
           "/run/postgresql:/run/postgresql"
         ];
 
-        ports = ["9100:3000"];
+        ports = ["127.0.0.1:9100:3000"];
       };
     };
   };

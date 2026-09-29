@@ -88,7 +88,7 @@
           "/var/lib/overleaf:/var/lib/overleaf"
         ];
 
-        ports = ["7875:80"];
+        ports = ["127.0.0.1:7875:80"];
         extra_hosts = ["host-gateway:host-gateway" "host.docker.internal:host-gateway"];
 
         depends_on = ["redis-proxy"];

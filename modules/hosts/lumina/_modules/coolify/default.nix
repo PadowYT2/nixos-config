@@ -142,7 +142,7 @@
           "/var/run/docker.sock:/var/run/docker.sock"
         ];
 
-        ports = ["7345:8080"];
+        ports = ["127.0.0.1:7345:8080"];
         extra_hosts = ["host-gateway:host-gateway" "host.docker.internal:host-gateway"];
 
         depends_on = ["coolify-realtime"];
@@ -166,7 +166,7 @@
           "${config.services.redis.servers.coolify.unixSocket}:/run/redis/redis.sock"
         ];
 
-        ports = ["6001:6001"];
+        ports = ["127.0.0.1:6001:6001"];
       };
     };
   };

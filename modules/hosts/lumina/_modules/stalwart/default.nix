@@ -376,7 +376,7 @@ in {
           "/var/lib/bulwark/telemetry:/app/data/telemetry"
         ];
 
-        ports = ["7249:3000"];
+        ports = ["127.0.0.1:7249:3000"];
       };
     };
   };
