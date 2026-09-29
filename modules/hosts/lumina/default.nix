@@ -209,6 +209,7 @@
                 enable = true;
                 daemon.settings = {
                   mtu = 1500;
+                  ip = "127.0.0.1";
                   default-cgroupns-mode = "private";
                   exec-opts = ["native.cgroupdriver=systemd"];
                 };
