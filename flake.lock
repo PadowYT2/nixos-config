@@ -384,11 +384,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778498824,
-        "narHash": "sha256-ingrgYAvo1o7bjQNXnv+zWhfazykHH0uVcOqWdBvxdk=",
+        "lastModified": 1790728656,
+        "narHash": "sha256-VmALBwkbzzlKIepxYPK1a8T9ATfaMNWbKRJssnZJRb4=",
         "owner": "konyogony",
         "repo": "hypr.konyogony.dev",
-        "rev": "f60af220c4e9f8104890f4cc94205c840c8e770c",
+        "rev": "b79fdb479ee631d7d8c4c0f8a4ef44f676083bc0",
         "type": "github"
       },
       "original": {

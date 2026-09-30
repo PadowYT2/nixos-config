@@ -70,6 +70,11 @@ in {
     requires = ["postgresql.service" "redis-stalwart.service"];
   };
 
+  services.unbound = {
+    enable = true;
+    settings.server.port = 5335;
+  };
+
   systemd.tmpfiles.rules = [
     "d /var/lib/bulwark 0700 bulwark bulwark -"
     "Z /var/lib/bulwark 0700 bulwark bulwark -"
@@ -122,6 +127,21 @@ in {
           enableHsts = true;
           usePermissiveCors = true;
           useXForwarded = true;
+        };
+
+        DnsResolver = variant "Custom" {
+          servers = [
+            {
+              address = "127.0.0.1";
+              port = 5335;
+              protocol = "udp";
+            }
+            {
+              address = "127.0.0.1";
+              port = 5335;
+              protocol = "tcp";
+            }
+          ];
         };
 
         SenderAuth = {
