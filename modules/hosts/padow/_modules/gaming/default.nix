@@ -28,16 +28,29 @@
     };
   };
 
+  systemd.mounts = [
+    {
+      what = "/home/padow/.local/share/Steam/steamapps/compatdata_hot";
+      where = "/media/storage/hot/SteamLibrary/steamapps/compatdata";
+      options = "bind";
+      after = ["media-storage-hot.mount"];
+      wantedBy = ["multi-user.target"];
+    }
+    {
+      what = "/home/padow/.local/share/Steam/steamapps/compatdata_cold";
+      where = "/media/storage/cold/SteamLibrary/steamapps/compatdata";
+      options = "bind";
+      after = ["media-storage-cold.mount"];
+      wantedBy = ["multi-user.target"];
+    }
+  ];
+
   systemd.tmpfiles.rules = [
     "d /home/padow/.steam 0755 padow users -"
     "d /home/padow/.steam/steam 0755 padow users -"
     "d /home/padow/.steam/steam/steamapps 0755 padow users -"
     "d /home/padow/.steam/steam/steamapps/compatdata_hot 0755 padow users -"
     "d /home/padow/.steam/steam/steamapps/compatdata_cold 0755 padow users -"
-    "d /media/storage/hot/SteamLibrary/steamapps - - - -"
-    "d /media/storage/cold/SteamLibrary/steamapps - - - -"
-    "L+ /media/storage/hot/SteamLibrary/steamapps/compatdata - - - - /home/padow/.steam/steam/steamapps/compatdata_hot"
-    "L+ /media/storage/cold/SteamLibrary/steamapps/compatdata - - - - /home/padow/.steam/steam/steamapps/compatdata_cold"
   ];
 
   environment.systemPackages = with pkgs; [
