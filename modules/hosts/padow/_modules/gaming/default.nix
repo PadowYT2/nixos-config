@@ -32,6 +32,7 @@
     {
       what = "/home/padow/.local/share/Steam/steamapps/compatdata_hot";
       where = "/media/storage/hot/SteamLibrary/steamapps/compatdata";
+      type = "none";
       options = "bind";
       after = ["media-storage-hot.mount"];
       wantedBy = ["multi-user.target"];
@@ -39,6 +40,7 @@
     {
       what = "/home/padow/.local/share/Steam/steamapps/compatdata_cold";
       where = "/media/storage/cold/SteamLibrary/steamapps/compatdata";
+      type = "none";
       options = "bind";
       after = ["media-storage-cold.mount"];
       wantedBy = ["multi-user.target"];
