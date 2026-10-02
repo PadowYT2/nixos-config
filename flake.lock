@@ -636,6 +636,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-sure": {
+      "locked": {
+        "lastModified": 1786906516,
+        "narHash": "sha256-VwlydvN3nveHPxE0fTTB/c9XXDRz/24+xbR4z7kYg9Q=",
+        "owner": "pjrm",
+        "repo": "nixpkgs",
+        "rev": "28e3daf2f707a2f97053cbf8a033d38e93f04d19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pjrm",
+        "ref": "nixossure",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1787498568,
@@ -728,6 +744,7 @@
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stalwart": "nixpkgs-stalwart",
+        "nixpkgs-sure": "nixpkgs-sure",
         "pterodactyl": "pterodactyl",
         "ragenix": "ragenix",
         "spicetify": "spicetify",
