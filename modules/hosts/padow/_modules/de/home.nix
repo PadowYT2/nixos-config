@@ -20,11 +20,6 @@
     configFile = {
       "gtk-3.0/bookmarks".force = true;
       "user-dirs.dirs".force = true;
-      "mimeapps.list".force = true;
-    };
-
-    mimeApps = {
-      enable = true;
     };
   };
 
