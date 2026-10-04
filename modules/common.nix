@@ -56,6 +56,7 @@
       nameservers = ["127.0.0.1"] ++ lib.optional config.networking.enableIPv6 "::1";
       enableIPv6 = lib.mkDefault true;
       firewall.enable = true;
+      nftables.enable = lib.mkDefault true;
       useDHCP = lib.mkDefault false;
       useNetworkd = lib.mkDefault true;
     };

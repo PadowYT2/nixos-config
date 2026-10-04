@@ -162,9 +162,6 @@
               firewall = {
                 checkReversePath = "loose";
                 trustedInterfaces = ["lo" "docker0"];
-                extraForwardRules = ''
-                  iifname {"docker0", "pterodactyl0", "br-*"} accept
-                '';
                 allowedTCPPortRanges = [
                   {
                     from = 41230;
@@ -172,7 +169,6 @@
                   }
                 ];
               };
-              nftables.enable = true;
             };
 
             systemd.network = {
