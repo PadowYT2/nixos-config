@@ -38,8 +38,23 @@
               "net.core.wmem_max" = 16777216;
               "net.ipv4.tcp_rmem" = "4096 87380 16777216";
               "net.ipv4.tcp_wmem" = "4096 65536 16777216";
+
+              "vm.dirty_writeback_centisecs" = 6000;
+              "vm.dirty_expire_centisecs" = 6000;
+              "vm.dirty_ratio" = 40;
+              "vm.dirty_background_ratio" = 10;
+            };
+
+            tmp = {
+              useTmpfs = true;
+              tmpfsSize = "256M";
             };
           };
+
+          services.journald.extraConfig = ''
+            Storage=volatile
+            RuntimeMaxUse=64M
+          '';
 
           disko.devices = {
             disk.main = {
@@ -70,6 +85,7 @@
                       type = "filesystem";
                       format = "ext4";
                       mountpoint = "/";
+                      mountOptions = ["noatime" "nodiratime" "barrier=0" "commit=300"];
                     };
                   };
                 };
