@@ -61,6 +61,8 @@
       fromAddress = "no-reply@proxied.host";
       fromName = "proxied.host";
     };
+    trustedProxies = ["127.0.0.1" "::1"];
+    telemetry.enable = false;
   };
 
   age.secrets = {
