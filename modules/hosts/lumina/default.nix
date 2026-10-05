@@ -164,8 +164,18 @@
                 trustedInterfaces = ["lo" "docker0"];
                 allowedTCPPortRanges = [
                   {
+                    from = 26033;
+                    to = 26035;
+                  }
+                  {
                     from = 41230;
                     to = 41232;
+                  }
+                ];
+                allowedUDPPortRanges = [
+                  {
+                    from = 26033;
+                    to = 26035;
                   }
                 ];
               };
