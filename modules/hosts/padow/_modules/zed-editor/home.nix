@@ -22,6 +22,7 @@
       "mdx"
       "nix"
       "php"
+      "svelte"
       "tokyo-night-dark"
       "tombi"
       "toml"
@@ -74,6 +75,9 @@
       };
       collaboration_panel = {
         button = false;
+      };
+      code_actions_on_format = {
+        "source.organizeImports.biome" = true;
       };
       git_panel = {
         tree_view = true;
@@ -253,6 +257,7 @@
         JavaScript.formatter.language_server.name = "biome";
         TSX.formatter.language_server.name = "biome";
         TypeScript.formatter.language_server.name = "biome";
+        Svelte.formatter.language_server.name = "biome";
       };
       "experimental.theme_overrides".accents = ["#848426" "#448446" "#844486" "#2C7B7C"];
     };
