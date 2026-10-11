@@ -3,6 +3,24 @@
   pkgs,
   ...
 }: {
+  nixpkgs.overlays = [
+    (final: prev: {
+      gnomeExtensions =
+        prev.gnomeExtensions
+        // {
+          copyous = prev.gnomeExtensions.copyous.overrideAttrs (_old: {
+            buildInputs = with final; [libgda5 gsound];
+            preInstall = ''
+              sed -i "1i import GIRepository from 'gi://GIRepository';\nGIRepository.Repository.dup_default().prepend_search_path('${final.libgda5}/lib/girepository-1.0');\nGIRepository.Repository.dup_default().prepend_search_path('${final.gsound}/lib/girepository-1.0');\n" lib/preferences/dependencies/dependencies.js
+              sed -i "1i import GIRepository from 'gi://GIRepository';\nGIRepository.Repository.dup_default().prepend_search_path('${final.libgda5}/lib/girepository-1.0');\n" lib/database/entryTracker.js
+              sed -i "1i import GIRepository from 'gi://GIRepository';\nGIRepository.Repository.dup_default().prepend_search_path('${final.gsound}/lib/girepository-1.0');\n" lib/common/sound.js
+              sed -i "1i import GIRepository from 'gi://GIRepository';\nGIRepository.Repository.dup_default().prepend_search_path('${final.gsound}/lib/girepository-1.0');\n" lib/preferences/general/feedbackSettings.js
+            '';
+          });
+        };
+    })
+  ];
+
   services = {
     desktopManager.gnome.enable = true;
     gnome = {
@@ -114,7 +132,7 @@
                 enabled-extensions = with pkgs.gnomeExtensions; [
                   appindicator.extensionUuid
                   blur-my-shell.extensionUuid
-                  # copyous.extensionUuid
+                  copyous.extensionUuid
                   medialine.extensionUuid
                   valent.extensionUuid
                 ];
