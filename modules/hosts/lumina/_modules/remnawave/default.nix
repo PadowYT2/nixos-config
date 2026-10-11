@@ -33,7 +33,7 @@
     services = {
       remnawave.service = {
         user = "9997:9997";
-        image = "remnawave/backend:3.4.3";
+        image = "ghcr.io/remnawave/backend:3.4.5";
         restart = "unless-stopped";
 
         environment = {

@@ -3,8 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stalwart.url = "github:0x57e11a/nixpkgs/master"; # TODO: remove once merged
-    nixpkgs-sure.url = "github:pjrm/nixpkgs/nixossure"; # TODO: remove once merged
+    nixpkgs-stalwart.url = "github:0x57e11a/nixpkgs/master"; # TODO: nixos/nixpkgs#552103
+    nixpkgs-sure.url = "github:pjrm/nixpkgs/nixossure"; # TODO: nixos/nixpkgs#532586
 
     import-tree.url = "github:vic/import-tree";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -24,7 +24,7 @@
     };
 
     arion = {
-      url = "github:hercules-ci/arion";
+      url = "github:AnthonyDickson/arion"; # TODO: hercules-ci/arion#290
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

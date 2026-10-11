@@ -6,7 +6,7 @@
   services.caddy = {
     package = pkgs.caddy.withPlugins {
       plugins = ["github.com/caddy-dns/cloudflare@v0.2.4"];
-      hash = "sha256-hEHgAG0F0ozHRAPuxEqLyTATBrE+pajeXDiSNwniorg=";
+      hash = "sha256-xRJ5evsAJ2akg47j3Bt6YDXJOgX88B/rKNP50KSVyNY=";
     };
 
     virtualHosts = {
@@ -89,7 +89,7 @@
     services = {
       coolify.service = {
         user = "9999:9999";
-        image = "ghcr.io/coollabsio/coolify:4.3.23";
+        image = "ghcr.io/coollabsio/coolify:4.4.6";
         restart = "unless-stopped";
 
         environment = {

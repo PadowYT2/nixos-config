@@ -16,7 +16,7 @@
       Type = "oneshot";
       RemainAfterExit = true;
       WorkingDirectory = "/opt/sentry";
-      ExecStart = "${pkgs.docker}/bin/docker compose up --wait --detach";
+      ExecStart = "${pkgs.docker}/bin/docker compose up --detach";
       ExecStop = "${pkgs.docker}/bin/docker compose down";
       TimeoutStartSec = "1200";
       TimeoutStopSec = "300";

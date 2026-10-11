@@ -3,15 +3,7 @@
   pkgs,
   ...
 }: {
-  nixpkgs.overlays = [
-    inputs.millennium.overlays.default
-    # https://nixpk.gs/pr-tracker.html?pr=515956
-    (_final: prev: {
-      openldap = prev.openldap.overrideAttrs (_: {
-        doCheck = !prev.stdenv.hostPlatform.isi686;
-      });
-    })
-  ];
+  nixpkgs.overlays = [inputs.millennium.overlays.default];
   imports = [inputs.flatpaks.nixosModules.default];
 
   fileSystems = {
@@ -72,7 +64,7 @@
     steam = {
       enable = true;
       package = pkgs.millennium-steam;
-      extraCompatPackages = [(pkgs.callPackage (inputs.self.outPath + "/packages/proton-ge-bin") {steamDisplayName = "Proton-GE 10-35";})];
+      extraCompatPackages = [(pkgs.callPackage (inputs.self.outPath + "/packages/proton-ge-bin") {steamDisplayName = "Proton-GE 10-34";})];
     };
   };
 

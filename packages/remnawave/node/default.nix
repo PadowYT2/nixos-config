@@ -11,18 +11,18 @@
 }:
 buildNpmPackage (finalAttrs: {
   pname = "remnawave-node";
-  version = "3.4.1";
+  version = "3.4.2";
 
   src = fetchFromGitHub {
     owner = "remnawave";
     repo = "node";
     tag = finalAttrs.version;
-    hash = "sha256-TSSfsjfkfsq2s+i8gVy7yW6zZrA2gQd+pIGNxYGCQXQ=";
+    hash = "sha256-9+LXA0JmMUN43s+0GgS8DgQ49j/VJdaOGgjeARPGdlc=";
   };
 
   nodejs = nodejs_24;
 
-  npmDepsHash = "sha256-/FAURUg5piGEF0F7Sop2sOLTU5QwLOC9p9XXBBozuEE=";
+  npmDepsHash = "sha256-iK9BnqDZv8ZzaWo1xf+ubBnkskAvvFu2fYtb4i3Fcg4=";
 
   nativeBuildInputs = [makeWrapper];
 

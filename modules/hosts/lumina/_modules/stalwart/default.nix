@@ -100,12 +100,15 @@ in {
     admin = {
       enable = true;
       username = "admin";
-      passwordFile = config.age.secrets."stalwart.admin".path;
     };
 
     recovery = {
       enable = false;
       port = 8025;
+    };
+
+    credentials = {
+      admin = config.age.secrets."stalwart.admin".path;
     };
 
     provision = {
@@ -378,7 +381,7 @@ in {
     services = {
       bulwark.service = {
         user = "9998:9998";
-        image = "ghcr.io/bulwarkmail/webmail:1.11.2";
+        image = "ghcr.io/bulwarkmail/webmail:1.13.0";
         restart = "unless-stopped";
 
         environment = {
