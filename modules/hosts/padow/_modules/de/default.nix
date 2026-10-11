@@ -67,14 +67,7 @@
                 accel-profile = "flat";
                 speed = 0.2;
               };
-              "org/gnome/desktop/input-sources" = {
-                sources = mkArray [
-                  (mkTuple ["xkb" "us"])
-                  (mkTuple ["xkb" "ru"])
-                  # (mkTuple ["ibus" "libpinyin"])
-                ];
-                xkb-options = ["grp:lalt_lshift_toggle" "lv3:ralt_switch"];
-              };
+              "org/gnome/desktop/input-sources".xkb-options = ["grp:lalt_lshift_toggle" "lv3:ralt_switch"];
               "org/gnome/desktop/wm/preferences".button-layout = ":minimize,maximize,close";
               "org/gnome/desktop/wm/keybindings" = {
                 show-desktop = ["<Super>d"];
@@ -140,6 +133,14 @@
                 name = "Screenshot";
               };
               "org/gnome/mutter/wayland/keybindings".restore-shortcuts = mkEmptyArray type.string;
+            };
+          }
+          {
+            settings = with lib.gvariant; {
+              "org/gnome/desktop/input-sources".sources = mkArray [
+                (mkTuple ["xkb" "us"])
+                (mkTuple ["xkb" "ru"])
+              ];
             };
           }
         ];
