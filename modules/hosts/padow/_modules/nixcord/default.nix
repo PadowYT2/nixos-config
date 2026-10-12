@@ -145,10 +145,10 @@
             quest-ban-warning-2026-08-07 = true;
             quest-ban-warning-2026-08-26 = true;
           };
-          newQuestAlertSound = "discodo"; # 4evy/nixcord#252
+          newQuestAlertSound = null;
           questButtonBadgeCount = 11;
           questButtonDisplay = "never";
-          questCompletedAlertSound = ""; # 4evy/nixcord#252
+          questCompletedAlertSound = null;
         };
         randomVoice = {
           keybind = [];
