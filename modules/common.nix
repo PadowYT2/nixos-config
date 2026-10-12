@@ -26,9 +26,6 @@
     nix = {
       package = pkgs.lixPackageSets.stable.lix;
       settings.experimental-features = ["nix-command" "flakes"];
-      extraOptions = ''
-        extra-deprecated-features = broken-string-indentation broken-string-escape or-as-identifier
-      '';
     };
 
     nixpkgs = {
