@@ -14,7 +14,6 @@
       "{446900e4-71c2-419f-a6a7-df9c091e268b}" = forceInstall "5076543/bitwarden_password_manager-2026.9.3.xpi"; # Bitwarden Password Manager
       "{cb31ec5d-c49a-4e5a-b240-16c767444f62}" = forceInstall "5057371/indie_wiki_buddy-4.0.1.xpi"; # Indie Wiki Buddy
       "{eac6e624-97fa-4f28-9d24-c06c9b8aa713}" = forceInstall "5080172/material_icons_for_github-1.17.1.xpi"; # Material Icons for Github
-      "@react-devtools" = forceInstall "4432990/react_devtools-6.1.1.xpi"; # React Developer Tools
       "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" = forceInstall "5075070/refined_github-26.10.xpi"; # Refined GitHub
       "{762f9885-5a13-4abd-9c77-433dcd38b8fd}" = forceInstall "5012638/return_youtube_dislikes-4.0.6.xpi"; # Return YouTube Dislike
       "sponsorBlocker@ajay.app" = forceInstall "4897574/sponsorblock-6.1.7.xpi"; # SponsorBlock
