@@ -13,6 +13,17 @@
       ++ map (name: ./_modules + "/${name}") (builtins.attrNames (builtins.readDir ./_modules))
       ++ [
         {
+          # TODO: nixos/nixpkgs#576853
+          nixpkgs.overlays = [
+            (final: prev: let
+              master = inputs."nixpkgs-master".legacyPackages.${final.stdenv.hostPlatform.system};
+            in {
+              php83 = master.php83;
+              php84 = master.php84;
+              php85 = master.php85;
+            })
+          ];
+
           system.stateVersion = "26.05";
 
           boot = {

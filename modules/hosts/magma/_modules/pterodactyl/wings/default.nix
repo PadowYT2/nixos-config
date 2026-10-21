@@ -56,11 +56,13 @@ in {
     paths.pterodactyl-wings-cert-sync = {
       wantedBy = ["multi-user.target"];
       pathConfig = {
-        PathModified = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/meow.magmamc.org";
+        PathModified = "/var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/meow.magmamc.org/meow.magmamc.org.crt";
         Unit = "pterodactyl-wings-cert-sync.service";
       };
     };
   };
+
+  networking.firewall.allowedTCPPorts = [config.services.pterodactyl.wings.api.port];
 
   services.pterodactyl.wings = {
     enable = true;
@@ -69,20 +71,27 @@ in {
     logDir = "/var/log/pterodactyl";
     tmpDir = "/var/cache/pterodactyl";
     runDir = "/run/wings";
-    uuid = "20b841ff-2ccb-46b4-a150-ec2c5c0c9617";
-    remote = "https://panel.magmamc.org";
-    tokenIdFile = config.age.secrets."pterodactyl.wings.token-id".path;
-    tokenFile = config.age.secrets."pterodactyl.wings.token".path;
-    api = {
-      port = 5555;
-      uploadLimit = 1024;
-      ssl = {
-        enable = true;
-        certFile = "${config.services.pterodactyl.wings.rootDir}/meow.magmamc.org.crt";
-        keyFile = "${config.services.pterodactyl.wings.rootDir}/meow.magmamc.org.key";
-      };
+
+    secrets = {
+      tokenIdFile = config.age.secrets."pterodactyl.wings.token-id".path;
+      tokenFile = config.age.secrets."pterodactyl.wings.token".path;
     };
-    system.sftp.port = 2222;
+
+    settings = {
+      uuid = "20b841ff-2ccb-46b4-a150-ec2c5c0c9617";
+      remote = "https://panel.magmamc.org";
+      api = {
+        port = 5555;
+        upload_limit = 10240;
+        ssl = {
+          enabled = true;
+          certFile = "${config.services.pterodactyl.wings.rootDir}/meow.magmamc.org.crt";
+          keyFile = "${config.services.pterodactyl.wings.rootDir}/meow.magmamc.org.key";
+        };
+      };
+      system.sftp.bind_port = 2222;
+      remote_query.timeout = 600;
+    };
   };
 
   age.secrets = {
