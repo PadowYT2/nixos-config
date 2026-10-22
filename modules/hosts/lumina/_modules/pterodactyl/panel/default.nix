@@ -51,7 +51,6 @@
       keyFile = config.age.secrets."pterodactyl.panel.key".path;
     };
     database.user = "caddy";
-    redis.passwordFile = config.age.secrets."pterodactyl.panel.redis".path;
     hashids.saltFile = config.age.secrets."pterodactyl.panel.salt".path;
     mail = {
       host = "mail.proxied.host";
@@ -68,12 +67,6 @@
   age.secrets = {
     "pterodactyl.panel.key" = {
       file = secrets/key.age;
-      owner = "caddy";
-      group = "caddy";
-    };
-
-    "pterodactyl.panel.redis" = {
-      file = secrets/redis.age;
       owner = "caddy";
       group = "caddy";
     };

@@ -24,7 +24,6 @@
     enable = true;
     user = "remnawave";
     group = "remnawave";
-    requirePassFile = config.age.secrets."remnawave.pass".path;
   };
 
   virtualisation.arion.projects.remnawave.settings = {
@@ -75,10 +74,6 @@
   age.secrets = {
     "remnawave.environment" = {
       file = secrets/environment.age;
-    };
-
-    "remnawave.pass" = {
-      file = secrets/pass.age;
     };
   };
 }

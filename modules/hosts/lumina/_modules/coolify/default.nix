@@ -80,7 +80,6 @@
     enable = true;
     user = "coolify";
     group = "coolify";
-    requirePassFile = config.age.secrets."coolify.pass".path;
   };
 
   virtualisation.arion.projects.coolify.settings = {
@@ -197,10 +196,6 @@
 
     "coolify.environment" = {
       file = secrets/environment.age;
-    };
-
-    "coolify.pass" = {
-      file = secrets/pass.age;
     };
   };
 }
