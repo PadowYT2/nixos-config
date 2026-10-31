@@ -159,8 +159,8 @@
             hostName = "padow";
             useNetworkd = false;
             hosts = {
-              "127.0.0.1" = ["wayclip.test" "api.wayclip.test"];
-              "::1" = ["wayclip.test" "api.wayclip.test"];
+              "127.0.0.1" = ["wayclip.test" "api.wayclip.test" "cdn.wayclip.test"];
+              "::1" = ["wayclip.test" "api.wayclip.test" "cdn.wayclip.test"];
             };
           };
 
