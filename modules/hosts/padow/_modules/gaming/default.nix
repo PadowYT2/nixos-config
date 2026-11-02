@@ -12,12 +12,6 @@
       fsType = "ntfs-3g";
       options = ["uid=1000" "gid=100" "umask=0022" "windows_names" "nofail" "x-gvfs-show"];
     };
-
-    "/media/storage/cold" = {
-      device = "/dev/disk/by-partlabel/storage-cold";
-      fsType = "ntfs-3g";
-      options = ["uid=1000" "gid=100" "umask=0022" "windows_names" "nofail" "x-gvfs-show"];
-    };
   };
 
   systemd.mounts = [
@@ -29,14 +23,6 @@
       after = ["media-storage-hot.mount"];
       wantedBy = ["multi-user.target"];
     }
-    {
-      what = "/home/padow/.local/share/Steam/steamapps/compatdata_cold";
-      where = "/media/storage/cold/SteamLibrary/steamapps/compatdata";
-      type = "none";
-      options = "bind";
-      after = ["media-storage-cold.mount"];
-      wantedBy = ["multi-user.target"];
-    }
   ];
 
   systemd.tmpfiles.rules = [
@@ -44,7 +30,6 @@
     "d /home/padow/.steam/steam 0755 padow users -"
     "d /home/padow/.steam/steam/steamapps 0755 padow users -"
     "d /home/padow/.steam/steam/steamapps/compatdata_hot 0755 padow users -"
-    "d /home/padow/.steam/steam/steamapps/compatdata_cold 0755 padow users -"
   ];
 
   environment.systemPackages = with pkgs; [

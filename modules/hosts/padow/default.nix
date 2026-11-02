@@ -132,27 +132,6 @@
                 };
               };
             };
-
-            hdd = {
-              device = "/dev/disk/by-id/ata-WDC_WD10EZEX-22MFCA0_WD-WCC6Y2VUZAS8";
-              type = "disk";
-              content = {
-                type = "gpt";
-                partitions.storage = {
-                  size = "100%";
-                  type = "0700";
-                  label = "storage-cold";
-                  content = {
-                    type = "filesystem";
-                    format = "ntfs";
-                    extraArgs = ["-f" "-L" "storage-cold"];
-                    preCreateHook = ''
-                      export PATH=${lib.makeBinPath [pkgs.ntfs3g]}:$PATH
-                    '';
-                  };
-                };
-              };
-            };
           };
 
           networking = {
