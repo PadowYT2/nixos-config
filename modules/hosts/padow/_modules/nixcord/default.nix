@@ -74,10 +74,12 @@
         customTimestamps = {
           formats.enable = false;
         };
+        directFileDownload.enable = true;
         disableCallIdle.enable = true;
         disableCameras.enable = true;
+        draftNavigator.enable = true;
         experiments.enable = true;
-        expressionCloner.enable = true;
+        expressionManager.enable = true;
         f8Break.enable = true;
         favoriteEmojiFirst.enable = true;
         findReply.enable = true;
@@ -146,7 +148,7 @@
             quest-ban-warning-2026-08-26 = true;
           };
           newQuestAlertSound = null;
-          questButtonBadgeCount = 11;
+          questButtonBadgeCount = 14;
           questButtonDisplay = "never";
           questCompletedAlertSound = null;
         };
