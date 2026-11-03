@@ -20,12 +20,7 @@
     caching.redis = true;
     maxUploadSize = "100G";
 
-    config = {
-      dbtype = "pgsql";
-      adminuser = "PadowYT2";
-      adminpassFile = config.age.secrets."nextcloud.password".path;
-    };
-
+    config.dbtype = "pgsql";
     settings = {
       overwriteprotocol = "https";
       mail_domain = "proxied.host";
@@ -81,12 +76,6 @@
   ];
 
   age.secrets = {
-    "nextcloud.password" = {
-      file = secrets/password.age;
-      owner = "nextcloud";
-      group = "nextcloud";
-    };
-
     "nextcloud.secrets" = {
       file = secrets/secrets.age;
       owner = "nextcloud";
