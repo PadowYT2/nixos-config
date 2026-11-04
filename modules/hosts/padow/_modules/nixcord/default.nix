@@ -194,6 +194,11 @@
         whosWatching.enable = true;
         youtubeAdblock.enable = true;
       };
+      uiElements = {
+        chatBarButtons = {
+          DraftNavigator.enable = false;
+        };
+      };
     };
   };
 }
