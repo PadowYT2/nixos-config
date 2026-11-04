@@ -128,14 +128,6 @@
               };
               "org/gnome/shell" = {
                 always-show-log-out = true;
-                disable-user-extensions = false;
-                enabled-extensions = with pkgs.gnomeExtensions; [
-                  appindicator.extensionUuid
-                  blur-my-shell.extensionUuid
-                  copyous.extensionUuid
-                  medialine.extensionUuid
-                  valent.extensionUuid
-                ];
                 favorite-apps = mkEmptyArray type.string;
               };
               "org/gnome/settings-daemon/plugins/media-keys".help = mkEmptyArray type.string;
@@ -159,6 +151,16 @@
                 (mkTuple ["xkb" "us"])
                 (mkTuple ["xkb" "ru"])
               ];
+              "org/gnome/shell" = {
+                disable-user-extensions = false;
+                enabled-extensions = with pkgs.gnomeExtensions; [
+                  appindicator.extensionUuid
+                  blur-my-shell.extensionUuid
+                  copyous.extensionUuid
+                  medialine.extensionUuid
+                  valent.extensionUuid
+                ];
+              };
             };
           }
         ];

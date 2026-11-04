@@ -33,15 +33,15 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    (bottles.override {removeWarningPopup = true;})
     wineWow64Packages.stableFull
     winetricks
-
+    (bottles.override {removeWarningPopup = true;})
     lunar-client
     (tetrio-desktop.override {withTetrioPlus = true;})
     (pkgs.writeShellScriptBin "truckersmp-cli" ''
       exec ${lib.getExe pkgs.steam-run} ${lib.getExe (pkgs.callPackage (inputs.self.outPath + "/packages/truckersmp-cli") {})} "$@"
     '')
+    gale
   ];
 
   programs = {
@@ -50,7 +50,7 @@
       enable = true;
       package = pkgs.millennium-steam;
       extraPackages = with pkgs; [gamemode];
-      extraCompatPackages = with pkgs; [(callPackage (inputs.self.outPath + "/packages/proton-ge-bin") {steamDisplayName = "Proton-GE 10-34";})];
+      extraCompatPackages = with pkgs; [(callPackage (inputs.self.outPath + "/packages/proton-ge-bin") {steamDisplayName = "Proton-GE 10-21";})];
     };
   };
 
