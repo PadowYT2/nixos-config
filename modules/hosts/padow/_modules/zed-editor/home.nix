@@ -30,249 +30,345 @@
     ];
 
     userSettings = {
+      calls = {
+        mute_on_join = true;
+      };
       format_on_save = "on";
-      hover_popover_delay = 400;
-      semantic_tokens = "combined";
-      document_folding_ranges = "on";
-      document_symbols = "on";
-      inline_code_actions = true;
-      centered_layout = {
-        right_padding = 0.2;
-        left_padding = 0.2;
-      };
-      tab_size = 4;
-      gutter = {
-        folds = true;
-        bookmarks = false;
-        breakpoints = false;
-        runnables = false;
-        min_line_number_digits = 3;
-        line_numbers = true;
-      };
-      auto_indent = "syntax_aware";
-      indent_guides = {
-        line_width = 1;
-        active_line_width = 1;
-        background_coloring = "indent_aware";
-        coloring = "fixed";
-      };
-      scrollbar = {
-        diagnostics = "all";
-        git_diff = true;
-        search_results = true;
-        selected_text = true;
-        selected_symbol = true;
-        axes = {
-          vertical = true;
-          horizontal = true;
-        };
-        cursors = true;
-      };
-      ui_font_family = "Monocraft";
-      disable_ai = true;
+      cli_default_open_behavior = "new_window";
       agent = {
         button = false;
+      };
+      auto_indent = "syntax_aware";
+      base_keymap = "VSCode";
+      bottom_dock_layout = "contained";
+      buffer_font_family = "Monocraft";
+      buffer_font_size = 15;
+      buffer_font_weight = 400;
+      buffer_line_height = "standard";
+      centered_layout = {
+        left_padding = 0.2;
+        right_padding = 0.2;
       };
       collaboration_panel = {
         button = false;
       };
-      code_actions_on_format = {
-        "source.organizeImports.biome" = true;
-      };
-      git_panel = {
-        tree_view = true;
-        status_style = "icon";
-        default_width = 448;
-        dock = "right";
-      };
-      outline_panel = {
-        indent_size = 20;
-        button = false;
-      };
-      project_panel = {
-        git_status_indicator = true;
-        show_diagnostics = "errors";
-        sort_mode = "directories_first";
-        hide_root = false;
-        sticky_scroll = false;
-        bold_folder_labels = false;
-        indent_size = 20;
-        git_status = true;
-        folder_icons = true;
-        file_icons = true;
-        entry_spacing = "standard";
-        default_width = 320;
-        dock = "left";
-      };
-      bottom_dock_layout = "contained";
-      tabs = {
-        show_close_button = "hover";
-        file_icons = true;
-        close_position = "right";
-        git_status = true;
-      };
-      tab_bar = {
-        show_pinned_tabs_in_separate_row = false;
-        show_nav_history_buttons = false;
-        show_tab_bar_buttons = true;
-        show = true;
-      };
-      title_bar = {
-        button_layout = "platform_default";
-        show_menus = false;
-        show_user_picture = true;
-        show_user_menu = true;
-        show_sign_in = true;
-        show_onboarding_banner = true;
-        show_project_items = true;
-        show_branch_name = true;
-        show_branch_status_icon = false;
-      };
-      debugger = {
-        button = false;
-      };
-      search = {
-        button = true;
-      };
-      diagnostics = {
-        inline = {
-          padding = 4;
-        };
-        button = true;
-      };
-      status_bar = {
-        show_active_file = false;
-        active_language_button = true;
-        cursor_position_button = true;
-        line_endings_button = true;
-      };
-      middle_click_paste = false;
-      inlay_hints = {
-        enabled = false;
-      };
       completions = {
         words = "fallback";
       };
-      show_whitespaces = "selection";
-      line_ending = "prefer_lf";
-      preferred_line_length = 80;
-      toolbar = {
-        breadcrumbs = true;
-        agent_review = false;
-        code_actions = false;
-        quick_actions = true;
+      cursor_blink = true;
+      debugger = {
+        button = false;
       };
-      minimap = {
-        current_line_highlight = "none";
-        max_width_columns = 80;
-        thumb = "always";
-        show = "always";
-      };
-      which_key = {
-        delay_ms = 200;
-      };
-      show_wrap_guides = true;
-      text_rendering_mode = "platform_default";
-      agent_ui_font_size = 16;
-      buffer_line_height = "standard";
-      buffer_font_weight = 400;
-      icon_theme = "Material Icon Theme";
-      auto_update = false;
-      redact_private_values = false;
-      session = {
-        trust_all_worktrees = true;
-      };
-      terminal = {
-        font_size = 14;
-        toolbar = {
-          breadcrumbs = false;
-        };
-        scroll_multiplier = 1;
-        show_count_badge = false;
-        flexible = true;
-        dock = "bottom";
+      diagnostics = {
         button = true;
-        max_scroll_history_lines = 100000;
+        inline = {
+          padding = 4;
+        };
       };
-      telemetry = {
-        diagnostics = false;
-        metrics = false;
-      };
-      node = {
-        npm_path = "bun";
+      disable_ai = true;
+      document_folding_ranges = "on";
+      document_symbols = "on";
+      "experimental.theme_overrides" = {
+        accents = [
+          "#848426"
+          "#448446"
+          "#844486"
+          "#2C7B7C"
+        ];
       };
       git = {
         inline_blame = {
           enabled = true;
         };
       };
-      base_keymap = "VSCode";
-      preview_tabs = {
+      git_panel = {
+        group_by = "none";
+        default_width = 448;
+        dock = "right";
+        status_style = "icon";
+        tree_view = true;
+      };
+      gutter = {
+        bookmarks = false;
+        breakpoints = false;
+        folds = true;
+        line_numbers = true;
+        min_line_number_digits = 3;
+        runnables = false;
+      };
+      hover_popover_delay = 400;
+      icon_theme = "Material Icon Theme";
+      indent_guides = {
+        active_line_width = 1;
+        background_coloring = "indent_aware";
+        coloring = "fixed";
+        line_width = 1;
+      };
+      inlay_hints = {
         enabled = false;
       };
-      sticky_scroll = {
-        enabled = false;
-      };
-      cursor_blink = true;
-      buffer_font_family = "Monocraft";
-      ui_font_size = 15;
-      buffer_font_size = 15;
-      theme = "Tokyo Night Dark";
-      lsp = {
-        nixd = {
-          initialization_options = {
-            formatting = {
-              command = ["alejandra" "--quiet" "--"];
+      inline_code_actions = true;
+      languages = {
+        CSS = {
+          formatter = {
+            language_server = {
+              name = "biome";
             };
           };
+          language_servers = [
+            "tailwindcss-language-server"
+          ];
+        };
+        HTML = {
+          formatter = {
+            language_server = {
+              name = "biome";
+            };
+          };
+        };
+        JSON = {
+          formatter = {
+            language_server = {
+              name = "biome";
+            };
+          };
+        };
+        JSONC = {
+          formatter = {
+            language_server = {
+              name = "biome";
+            };
+          };
+        };
+        JavaScript = {
+          formatter = {
+            language_server = {
+              name = "biome";
+            };
+          };
+        };
+        Nix = {
+          formatter = {
+            external = {
+              arguments = [
+                "--quiet"
+                "--"
+              ];
+              command = "alejandra";
+            };
+          };
+          language_servers = [
+            "nixd"
+          ];
+          tab_size = 2;
+        };
+        TSX = {
+          formatter = {
+            language_server = {
+              name = "biome";
+            };
+          };
+        };
+        TypeScript = {
+          formatter = {
+            language_server = {
+              name = "biome";
+            };
+          };
+        };
+        YAML = {
+          tab_size = 2;
+        };
+        Svelte = {
+          formatter = {
+            language_server = {
+              name = "biome";
+            };
+          };
+        };
+      };
+      line_ending = "prefer_lf";
+      lsp = {
+        vtsls = {
+          settings = {
+            typescript = {
+              updateImportsOnFileMove = {
+                enabled = "always";
+              };
+            };
+            javascript = {
+              updateImportsOnFileMove = {
+                enabled = "always";
+              };
+            };
+          };
+          enable_lsp_tasks = true;
         };
         biome = {
           settings = {
             require_config_file = true;
           };
         };
+        nixd = {
+          initialization_options = {
+            formatting = {
+              command = [
+                "alejandra"
+                "--quiet"
+                "--"
+              ];
+            };
+          };
+        };
         tailwindcss-language-server = {
           settings = {
-            classFunctions = ["cn" "cva" "clsx"];
+            classFunctions = [
+              "cn"
+              "cva"
+              "clsx"
+            ];
           };
         };
       };
-      languages = {
-        YAML.tab_size = 2;
-        Nix = {
-          tab_size = 2;
-          language_servers = ["nixd"];
-          formatter.external = {
-            command = "alejandra";
-            arguments = ["--quiet" "--"];
-          };
-        };
-        CSS = {
-          language_servers = ["tailwindcss-language-server"];
-          formatter.language_server.name = "biome";
-        };
-        HTML.formatter.language_server.name = "biome";
-        JSON.formatter.language_server.name = "biome";
-        JSONC.formatter.language_server.name = "biome";
-        JavaScript.formatter.language_server.name = "biome";
-        TSX.formatter.language_server.name = "biome";
-        TypeScript.formatter.language_server.name = "biome";
-        Svelte.formatter.language_server.name = "biome";
+      middle_click_paste = false;
+      minimap = {
+        current_line_highlight = "none";
+        max_width_columns = 80;
+        show = "always";
+        thumb = "always";
       };
-      "experimental.theme_overrides".accents = ["#848426" "#448446" "#844486" "#2C7B7C"];
+      node = {
+        npm_path = "bun";
+      };
+      outline_panel = {
+        button = false;
+        indent_size = 20;
+      };
+      preferred_line_length = 80;
+      preview_tabs = {
+        enabled = false;
+      };
+      project_panel = {
+        folder_indicator = "icon";
+        bold_folder_labels = false;
+        default_width = 320;
+        dock = "left";
+        entry_spacing = "standard";
+        file_icons = true;
+        git_status = true;
+        git_status_indicator = true;
+        hide_root = false;
+        indent_size = 20;
+        show_diagnostics = "errors";
+        sort_mode = "directories_first";
+        sticky_scroll = false;
+      };
+      redact_private_values = false;
+      scrollbar = {
+        axes = {
+          horizontal = true;
+          vertical = true;
+        };
+        cursors = true;
+        diagnostics = "all";
+        git_diff = true;
+        search_results = true;
+        selected_symbol = true;
+        selected_text = true;
+      };
+      search = {
+        button = true;
+      };
+      semantic_tokens = "combined";
+      session = {
+        trust_all_worktrees = true;
+      };
+      show_whitespaces = "selection";
+      show_wrap_guides = true;
+      status_bar = {
+        active_language_button = true;
+        cursor_position_button = true;
+        line_endings_button = true;
+        show_active_file = false;
+      };
+      sticky_scroll = {
+        enabled = false;
+      };
+      tab_bar = {
+        show = true;
+        show_nav_history_buttons = false;
+        show_pinned_tabs_in_separate_row = false;
+        show_tab_bar_buttons = true;
+      };
+      tab_size = 4;
+      tabs = {
+        close_position = "right";
+        file_icons = true;
+        git_status = true;
+        show_close_button = "hover";
+      };
+      telemetry = {
+        diagnostics = false;
+        metrics = false;
+      };
+      terminal = {
+        button = true;
+        dock = "bottom";
+        flexible = true;
+        font_size = 14;
+        max_scroll_history_lines = 100000;
+        scroll_multiplier = 1;
+        show_count_badge = false;
+        toolbar = {
+          breadcrumbs = false;
+        };
+      };
+      text_rendering_mode = "platform_default";
+      theme = "Tokyo Night Dark";
+      title_bar = {
+        button_layout = "platform_default";
+        show_branch_name = true;
+        show_branch_status_icon = false;
+        show_menus = false;
+        show_onboarding_banner = true;
+        show_project_items = true;
+        show_sign_in = true;
+        show_user_menu = true;
+        show_user_picture = true;
+      };
+      toolbar = {
+        agent_review = false;
+        breadcrumbs = true;
+        code_actions = false;
+        quick_actions = true;
+      };
+      ui_font_family = "Monocraft";
+      ui_font_size = 15;
+      which_key = {
+        delay_ms = 200;
+      };
+      code_actions_on_format = {
+        "source.organizeImports.biome" = true;
+      };
     };
 
     userKeymaps = [
       {
-        context = "Pane";
-        bindings = {
-          "ctrl-tab" = "pane::ActivateNextItem";
-          "ctrl-shift-tab" = "pane::ActivatePreviousItem";
+        unbind = {
+          ctrl-q = "zed::Quit";
         };
       }
       {
+        bindings = {
+          ctrl-shift-tab = "pane::ActivatePreviousItem";
+          ctrl-tab = "pane::ActivateNextItem";
+        };
+        context = "Pane";
+      }
+      {
+        context = "!Terminal";
         unbind = {
-          "ctrl-q" = "zed::Quit";
+          ctrl-shift-c = "collab_panel::ToggleFocus";
         };
       }
     ];
