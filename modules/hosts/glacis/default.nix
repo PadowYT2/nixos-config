@@ -3,7 +3,7 @@
   inputs,
   ...
 }: {
-  flake.nixosConfigurations.ignis = inputs.nixpkgs.lib.nixosSystem {
+  flake.nixosConfigurations.glacis = inputs.nixpkgs.lib.nixosSystem {
     specialArgs = {inherit inputs;};
     modules = with self.nixosModules;
       [
@@ -77,12 +77,12 @@
             };
           };
 
-          networking.hostName = "ignis";
+          networking.hostName = "glacis";
 
           systemd.network = {
             networks."10-ens3" = {
               matchConfig.Name = "ens3";
-              address = ["46.34.3.146/24" "2a12:bec4:1821:61f::a/64"];
+              address = ["46.34.3.245/24" "2a12:bec4:1821:61f::a/64"];
               gateway = ["46.34.3.1"];
               routes = [
                 {

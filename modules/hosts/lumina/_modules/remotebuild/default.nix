@@ -17,7 +17,7 @@
         noctis
         vesper
         orion
-        ignis
+        glacis
       ];
     };
 

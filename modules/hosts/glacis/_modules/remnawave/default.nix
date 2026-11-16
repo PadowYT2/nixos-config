@@ -15,8 +15,8 @@
     acceptTerms = true;
     defaults.email = "postmaster@proxied.host";
 
-    certs."ignis.proxied.host" = {
-      domain = "ignis.proxied.host";
+    certs."glacis.proxied.host" = {
+      domain = "glacis.proxied.host";
       dnsProvider = "cloudflare";
       credentialFiles = {
         CLOUDFLARE_DNS_API_TOKEN_FILE = config.age.secrets."acme.cloudflare".path;

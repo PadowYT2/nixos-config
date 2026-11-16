@@ -16,7 +16,7 @@
   noctis = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFFG2ZD+PwulOyShKxsrHupOpJG1qvNRIJNKBWM4fmzI noctis@proxied";
   vesper = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAGjfg1nMBqdN0wzJJl5ZRE7h/1YlFAIawRlZJrdR2Rt vesper@proxied";
   orion = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHgqipyT0vk4Eu0n5FmJ6q1FUFCzLuDf6a7ateyhuEim orion@proxied";
-  ignis = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHHj5dXsYVJUa98SQw5O0mFErflHMrTfh+Sm1rwZgVZ8 ignis@proxied";
+  glacis = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHHj5dXsYVJUa98SQw5O0mFErflHMrTfh+Sm1rwZgVZ8 glacis@proxied";
 
   # magmamc infra
   magma = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKDG7LUHrSNhTcM0ifXiBpVN7nvQHH07dFb7KYLuQymt magma@magmamc";
