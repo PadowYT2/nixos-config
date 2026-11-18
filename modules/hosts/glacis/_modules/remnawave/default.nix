@@ -1,6 +1,7 @@
 {
   inputs,
   config,
+  pkgs,
   ...
 }: {
   imports = [(inputs.self.outPath + "/modules/_overlays/remnawave/node.nix")];
@@ -22,21 +23,51 @@
         CLOUDFLARE_DNS_API_TOKEN_FILE = config.age.secrets."acme.cloudflare".path;
       };
       group = "remnawave-node";
+      reloadServices = ["caddy"];
     };
   };
 
   services.remnawave.node = {
     enable = true;
-    openFirewall = true;
     port = 8080;
     secretKeyFile = config.age.secrets."remnawave.node.key".path;
     internalRestTokenFile = config.age.secrets."remnawave.node.token".path;
   };
 
-  networking.firewall.allowedTCPPorts = [443 8443];
-  networking.firewall.allowedUDPPorts = [443];
+  services.caddy = {
+    enable = true;
 
-  users.users.remnawave-node.extraGroups = ["acme"];
+    globalConfig = ''
+      auto_https off
+      servers {
+        protocols h1 h2
+      }
+    '';
+
+    virtualHosts = {
+      "glacis.proxied.host:8443".extraConfig = ''
+        tls /var/lib/acme/glacis.proxied.host/fullchain.pem /var/lib/acme/glacis.proxied.host/key.pem
+
+        root * ${pkgs.callPackage (inputs.self.outPath + "/packages/decoy") {}}
+        file_server
+      '';
+    };
+  };
+
+  networking.firewall = {
+    allowedTCPPorts = [443];
+    allowedUDPPorts = [443];
+    extraInputRules = ''
+      iifname "lo" tcp dport 8080 accept
+      ip saddr 5.9.109.12 tcp dport 8080 accept
+      ip6 saddr 2a01:4f8:162:502e::2 tcp dport 8080 accept
+    '';
+  };
+
+  users.users = {
+    remnawave-node.extraGroups = ["acme"];
+    caddy.extraGroups = ["remnawave-node"];
+  };
 
   age.secrets = {
     "acme.cloudflare" = {
