@@ -76,7 +76,6 @@
         };
         directFileDownload.enable = true;
         disableCallIdle.enable = true;
-        disableCameras.enable = true;
         draftNavigator.enable = true;
         experiments.enable = true;
         expressionManager.enable = true;
