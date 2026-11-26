@@ -82,7 +82,7 @@
           systemd.network = {
             networks."10-ens3" = {
               matchConfig.Name = "ens3";
-              address = ["46.34.3.245/24" "2a12:bec4:1821:61f::a/64"];
+              address = ["46.34.3.253/24" "2a12:bec4:1821:61f::a/64"];
               gateway = ["46.34.3.1"];
               routes = [
                 {
