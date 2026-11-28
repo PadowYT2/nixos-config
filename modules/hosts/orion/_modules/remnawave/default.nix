@@ -46,6 +46,7 @@
 
     virtualHosts = {
       "orion.proxied.host:8443".extraConfig = ''
+        bind 127.0.0.1
         tls /var/lib/acme/orion.proxied.host/fullchain.pem /var/lib/acme/orion.proxied.host/key.pem
 
         root * ${pkgs.callPackage (inputs.self.outPath + "/packages/decoy") {}}

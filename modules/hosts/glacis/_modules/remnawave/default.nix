@@ -46,6 +46,7 @@
 
     virtualHosts = {
       "glacis.proxied.host:8443".extraConfig = ''
+        bind 127.0.0.1
         tls /var/lib/acme/glacis.proxied.host/fullchain.pem /var/lib/acme/glacis.proxied.host/key.pem
 
         root * ${pkgs.callPackage (inputs.self.outPath + "/packages/decoy") {}}

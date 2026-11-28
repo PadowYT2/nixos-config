@@ -28,6 +28,11 @@
               "net.ipv4.tcp_max_syn_backlog" = 8192;
               "net.netfilter.nf_conntrack_max" = 262144;
 
+              "net.core.rmem_default" = 4194304;
+              "net.core.wmem_default" = 4194304;
+              "net.ipv4.udp_rmem_min" = 1048576;
+              "net.ipv4.udp_wmem_min" = 1048576;
+
               "net.core.rmem_max" = 16777216;
               "net.core.wmem_max" = 16777216;
               "net.ipv4.tcp_rmem" = "4096 87380 16777216";
